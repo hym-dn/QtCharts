@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -48,10 +48,12 @@
 QT_CHARTS_BEGIN_NAMESPACE
 class ChartTheme;
 
+// 主题管理器、负责维护系统中的主题信息。
 class QT_CHARTS_PRIVATE_EXPORT ChartThemeManager: public QObject
 {
     Q_OBJECT
 public:
+    // 背景阴影模式
     enum BackgroundShadesMode {
         BackgroundShadesNone = 0,
         BackgroundShadesVertical,
@@ -60,34 +62,34 @@ public:
     };
 
 public:
-    explicit ChartThemeManager(QChart* chart);
-    void setTheme(QChart::ChartTheme theme);
-    ChartTheme* theme() const { return m_theme.data(); }
-    void decorateChart(QChart *chart, ChartTheme* theme) const;
-    void decorateLegend(QLegend *legend, ChartTheme* theme) const;
-    void updateSeries(QAbstractSeries *series);
-    QMap<QAbstractSeries *, int> seriesMap() const { return m_seriesMap; }
+    explicit ChartThemeManager(QChart* chart); // 构造
+    void setTheme(QChart::ChartTheme theme); // 设置主题
+    ChartTheme* theme() const { return m_theme.data(); } // 获取主题
+    void decorateChart(QChart *chart, ChartTheme* theme) const; // 布置图表
+    void decorateLegend(QLegend *legend, ChartTheme* theme) const; // 布置图例
+    void updateSeries(QAbstractSeries *series); // 更新指定序列
+    QMap<QAbstractSeries *, int> seriesMap() const { return m_seriesMap; } // 获取序列映射
 
 public:
-    static QList<QGradient> generateSeriesGradients(const QList<QColor>& colors);
-    static QColor colorAt(const QColor &start, const QColor &end, qreal pos);
-    static QColor colorAt(const QGradient &gradient, qreal pos);
+    static QList<QGradient> generateSeriesGradients(const QList<QColor>& colors); // 生成颜色梯度
+    static QColor colorAt(const QColor &start, const QColor &end, qreal pos); // 获取指定位置颜色
+    static QColor colorAt(const QGradient &gradient, qreal pos); // 获取梯度中指定位置颜色
 
 private:
-    int createIndexKey(QList<int> keys) const;
-    int seriesCount(QAbstractSeries::SeriesType type) const;
+    int createIndexKey(QList<int> keys) const; // 创建键值
+    int seriesCount(QAbstractSeries::SeriesType type) const; // 指定类型的序列计数
 
 public Q_SLOTS:
-    void handleSeriesAdded(QAbstractSeries *series);
-    void handleSeriesRemoved(QAbstractSeries *series);
-    void handleAxisAdded(QAbstractAxis *axis);
-    void handleAxisRemoved(QAbstractAxis *axis);
+    void handleSeriesAdded(QAbstractSeries *series); // 序列增加响应槽
+    void handleSeriesRemoved(QAbstractSeries *series); // 序列移除响应槽
+    void handleAxisAdded(QAbstractAxis *axis); // 坐标轴增加响应槽
+    void handleAxisRemoved(QAbstractAxis *axis); // 坐标轴移除响应槽
 
 protected:
-    QScopedPointer<ChartTheme> m_theme;
-    QMap<QAbstractSeries *,int> m_seriesMap;
-    QList<QAbstractAxis *> m_axisList;
-    QChart* m_chart;
+    QScopedPointer<ChartTheme> m_theme; // 主题
+    QMap<QAbstractSeries *,int> m_seriesMap; // 序列映射
+    QList<QAbstractAxis *> m_axisList; // 轴链表
+    QChart* m_chart; // 图表
 };
 
 QT_CHARTS_END_NAMESPACE

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -41,15 +41,19 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 ChartThemeManager::ChartThemeManager(QChart* chart) :
     m_chart(chart)
 {
 }
 
 
+// 设置当前主题
 void ChartThemeManager::setTheme(QChart::ChartTheme theme)
 {
+    // 如果主题为空并与目标主题不同
     if (m_theme.isNull() || theme != m_theme->id()) {
+        // 区分主题，并创建相应的主题类
         switch (theme) {
         case QChart::ChartThemeLight:
             m_theme.reset(new ChartThemeLight());
@@ -79,19 +83,20 @@ void ChartThemeManager::setTheme(QChart::ChartTheme theme)
             m_theme.reset(new ChartThemeSystem());
             break;
         }
-
+        // 如果主题
         if (!m_theme.isNull()) {
-            decorateChart(m_chart,m_theme.data());
-            decorateLegend(m_chart->legend(),m_theme.data());
-            foreach (QAbstractAxis* axis, m_axisList)
+            decorateChart(m_chart,m_theme.data()); // 利用指定主题，布置指定图表
+            decorateLegend(m_chart->legend(),m_theme.data()); // 利用指定主题，布置指定图例
+            foreach (QAbstractAxis* axis, m_axisList) // 重新初始化轴的主题
                 axis->d_ptr->initializeTheme(m_theme.data(), true);
-            foreach (QAbstractSeries* series, m_seriesMap.keys())
+            foreach (QAbstractSeries* series, m_seriesMap.keys()) // 重新初始化序列的主题
                 series->d_ptr->initializeTheme(m_seriesMap[series], m_theme.data(), true);
         }
     }
 }
 
 // decorateChart is only called when theme is forcibly initialized
+// 利用指定主题，布置指定图表
 void ChartThemeManager::decorateChart(QChart *chart, ChartTheme *theme) const
 {
     chart->setBackgroundBrush(theme->chartBackgroundGradient());
@@ -108,6 +113,7 @@ void ChartThemeManager::decorateChart(QChart *chart, ChartTheme *theme) const
 }
 
 // decorateLegend is only called when theme is forcibly initialized
+// 利用指定主题，布置指定图例
 void ChartThemeManager::decorateLegend(QLegend *legend, ChartTheme *theme) const
 {
     legend->setPen(theme->axisLinePen());
@@ -116,24 +122,27 @@ void ChartThemeManager::decorateLegend(QLegend *legend, ChartTheme *theme) const
     legend->setLabelBrush(theme->labelBrush());
 }
 
+// 创建索引键
 int ChartThemeManager::createIndexKey(QList<int> keys) const
 {
+    // 从小到达排序
     std::sort(keys.begin(), keys.end());
 
     int key = 0;
     QList<int>::iterator i;
     i = keys.begin();
-
+    // 挑选出不在链表中最小的键值
     while (i != keys.end()) {
         if (*i != key)
             break;
         key++;
         i++;
     }
-
+    // 返回键值
     return key;
 }
 
+// 指定类型的序列计数
 int ChartThemeManager::seriesCount(QAbstractSeries::SeriesType type) const
 {
     int count = 0;
@@ -145,6 +154,8 @@ int ChartThemeManager::seriesCount(QAbstractSeries::SeriesType type) const
     return count;
 }
 
+// 序列增加相应槽
+// 为序列分配主键并存储，同时初始化序列主题
 void ChartThemeManager::handleSeriesAdded(QAbstractSeries *series)
 {
     int key = createIndexKey(m_seriesMap.values());
@@ -152,31 +163,43 @@ void ChartThemeManager::handleSeriesAdded(QAbstractSeries *series)
     series->d_ptr->initializeTheme(key,m_theme.data(),false);
 }
 
+// 序列被移除相应槽
 void ChartThemeManager::handleSeriesRemoved(QAbstractSeries *series)
 {
-    m_seriesMap.remove(series);
+    m_seriesMap.remove(series); // 移除序列
 }
 
+// 坐标抽增加相应槽
 void ChartThemeManager::handleAxisAdded(QAbstractAxis *axis)
 {
+    // 增加坐标轴
     m_axisList.append(axis);
+    // 初始化主题
     axis->d_ptr->initializeTheme(m_theme.data(),false);
 }
 
+// 坐标轴移除相应槽
 void ChartThemeManager::handleAxisRemoved(QAbstractAxis *axis)
 {
+    // 移除坐标轴
     m_axisList.removeAll(axis);
 }
 
+// 更新指定序列
 void ChartThemeManager::updateSeries(QAbstractSeries *series)
 {
     if(m_seriesMap.contains(series)){
         series->d_ptr->initializeTheme(m_seriesMap[series],m_theme.data(),false);
     }
 }
+
+
+// 生成序列梯度
 QList<QGradient> ChartThemeManager::generateSeriesGradients(const QList<QColor>& colors)
 {
+    // 创建临时梯度
     QList<QGradient> result;
+    // 生成HSV颜色空间的梯度
     // Generate gradients in HSV color space
     foreach (const QColor &color, colors) {
         QLinearGradient g;
@@ -195,11 +218,14 @@ QList<QGradient> ChartThemeManager::generateSeriesGradients(const QList<QColor>&
 
         result << g;
     }
-
+    // 返回HSV颜色空间梯度
     return result;
 }
 
-
+// 获取指定位置的颜色
+// strat - 起始颜色
+// end - 结束颜色
+// pos - 指定位置
 QColor ChartThemeManager::colorAt(const QColor &start, const QColor &end, qreal pos)
 {
     Q_ASSERT(pos >= 0.0 && pos <= 1.0);
@@ -211,6 +237,9 @@ QColor ChartThemeManager::colorAt(const QColor &start, const QColor &end, qreal 
     return c;
 }
 
+// 获取梯度中指定位置的颜色
+// gradient - 指定梯度
+// pos - 指定位置
 QColor ChartThemeManager::colorAt(const QGradient &gradient, qreal pos)
 {
     Q_ASSERT(pos >= 0 && pos <= 1.0);

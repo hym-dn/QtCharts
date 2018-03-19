@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -75,6 +75,7 @@ public:
         ChartTypePolar
     };
 
+    // 主题枚举
     enum ChartTheme {
         ChartThemeLight = 0,
         ChartThemeBlueCerulean,

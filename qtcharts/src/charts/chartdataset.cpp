@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -57,42 +57,47 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 ChartDataSet::ChartDataSet(QChart *chart)
     : QObject(chart),
-      m_chart(chart),
-      m_glXYSeriesDataManager(new GLXYSeriesDataManager(this))
+      m_chart(chart), // 所属图表
+      m_glXYSeriesDataManager(new GLXYSeriesDataManager(this)) // ???
 {
 
 }
 
+// 析构
 ChartDataSet::~ChartDataSet()
 {
-    deleteAllSeries();
-    deleteAllAxes();
+    deleteAllSeries(); // 删除全部序列
+    deleteAllAxes(); // 删除全部轴
 }
 
 /*
  * This method adds series to chartdataset, series ownership is taken from caller.
  */
+// 增加序列
 void ChartDataSet::addSeries(QAbstractSeries *series)
 {
+    // 序列已存在
     if (m_seriesList.contains(series)) {
         qWarning() << QObject::tr("Can not add series. Series already on the chart.");
         return;
     }
 
     // Ignore unsupported series added to polar chart
-    if (m_chart && m_chart->chartType() == QChart::ChartTypePolar) {
+    // 忽略不支持的序列
+    if (m_chart && m_chart->chartType() == QChart::ChartTypePolar) { // 极坐标
         if (!(series->type() == QAbstractSeries::SeriesTypeArea
             || series->type() == QAbstractSeries::SeriesTypeLine
             || series->type() == QAbstractSeries::SeriesTypeScatter
-            || series->type() == QAbstractSeries::SeriesTypeSpline)) {
+            || series->type() == QAbstractSeries::SeriesTypeSpline)) { // 不支持
             qWarning() << QObject::tr("Can not add series. Series type is not supported by a polar chart.");
             return;
         }
         // Disable OpenGL for series in polar charts
-        series->setUseOpenGL(false);
-        series->d_ptr->setDomain(new XYPolarDomain());
+        series->setUseOpenGL(false); // 设置不使用OpenGL
+        series->d_ptr->setDomain(new XYPolarDomain()); // 设置X、Y极坐标区域
         // Set the correct domain for upper and lower series too
         if (series->type() == QAbstractSeries::SeriesTypeArea) {
             foreach (QObject *child, series->children()) {

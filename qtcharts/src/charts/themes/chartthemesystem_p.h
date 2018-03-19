@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -51,6 +51,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QT_CHARTS_PRIVATE_EXPORT ChartThemeSystem: public ChartTheme
 {
 public:
+    // 构造函数
     // System theme not used at the moment (the user is not able to select this theme)
     ChartThemeSystem() : ChartTheme(QChart::ChartThemeLight /*QChart::ChartThemeSystem*/)
     {

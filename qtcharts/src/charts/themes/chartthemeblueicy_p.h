@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,6 +47,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QT_CHARTS_PRIVATE_EXPORT ChartThemeBlueIcy: public ChartTheme
 {
 public:
+    // 构造函数
     ChartThemeBlueIcy() : ChartTheme(QChart::ChartThemeBlueIcy)
     {
         // Series colors

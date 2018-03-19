@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -232,32 +232,35 @@ QT_CHARTS_BEGIN_NAMESPACE
  The properties specified by \a wFlags are passed to the QGraphicsWidget constructor.
  This constructor is called only by subclasses.
 */
+// 构造
 QChart::QChart(QChart::ChartType type, QGraphicsItem *parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags),
       d_ptr(new QChartPrivate(this, type))
 {
-    d_ptr->init();
+    d_ptr->init(); // 初始化，创建图例、设置主题
 }
 
 /*!
  Constructs a chart object that is a child of \a parent.
  The properties specified by \a wFlags are passed to the QGraphicsWidget constructor.
  */
+// 构造
 QChart::QChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags),
       d_ptr(new QChartPrivate(this, ChartTypeCartesian))
 {
-    d_ptr->init();
+    d_ptr->init(); // 初始化，创建图例、设置主题
 }
 
 /*!
  Deletes the chart object and its children, such as the series and axis objects added to it.
  */
+// 析构
 QChart::~QChart()
 {
     //start by deleting dataset, it will remove all series and axes
-    delete d_ptr->m_dataset;
-    d_ptr->m_dataset = 0;
+    delete d_ptr->m_dataset; // 释放数据集
+    d_ptr->m_dataset = 0; // 数据集清零
 }
 
 /*!
@@ -378,11 +381,13 @@ QBrush QChart::titleBrush() const
     return d_ptr->m_presenter->titleBrush();
 }
 
+// 设置主题
 void QChart::setTheme(QChart::ChartTheme theme)
 {
     d_ptr->m_themeManager->setTheme(theme);
 }
 
+// 获取主题
 QChart::ChartTheme QChart::theme() const
 {
     return d_ptr->m_themeManager->theme()->id();
@@ -819,28 +824,33 @@ QPointF QChart::mapToPosition(const QPointF &value, QAbstractSeries *series)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 构造函数
 QChartPrivate::QChartPrivate(QChart *q, QChart::ChartType type):
-    q_ptr(q),
-    m_legend(0),
-    m_dataset(new ChartDataSet(q)),
-    m_presenter(new ChartPresenter(q, type)),
-    m_themeManager(new ChartThemeManager(q)),
-    m_type(type)
+    q_ptr(q), // 所属
+    m_legend(0), // 图例
+    m_dataset(new ChartDataSet(q)), // 数据集
+    m_presenter(new ChartPresenter(q, type)), // 演示器
+    m_themeManager(new ChartThemeManager(q)), // 主题
+    m_type(type) // 类型
 {
+    // 数据集-演示器信号、槽
     QObject::connect(m_dataset, SIGNAL(seriesAdded(QAbstractSeries*)), m_presenter, SLOT(handleSeriesAdded(QAbstractSeries*)));
     QObject::connect(m_dataset, SIGNAL(seriesRemoved(QAbstractSeries*)), m_presenter, SLOT(handleSeriesRemoved(QAbstractSeries*)));
     QObject::connect(m_dataset, SIGNAL(axisAdded(QAbstractAxis*)), m_presenter, SLOT(handleAxisAdded(QAbstractAxis*)));
     QObject::connect(m_dataset, SIGNAL(axisRemoved(QAbstractAxis*)), m_presenter, SLOT(handleAxisRemoved(QAbstractAxis*)));
+    // 数据集-主题信号、槽
     QObject::connect(m_dataset, SIGNAL(seriesAdded(QAbstractSeries*)), m_themeManager, SLOT(handleSeriesAdded(QAbstractSeries*)));
     QObject::connect(m_dataset, SIGNAL(seriesRemoved(QAbstractSeries*)), m_themeManager, SLOT(handleSeriesRemoved(QAbstractSeries*)));
     QObject::connect(m_dataset, SIGNAL(axisAdded(QAbstractAxis*)), m_themeManager, SLOT(handleAxisAdded(QAbstractAxis*)));
     QObject::connect(m_dataset, SIGNAL(axisRemoved(QAbstractAxis*)), m_themeManager, SLOT(handleAxisRemoved(QAbstractAxis*)));
+    // 演示器-图表信号、槽
     QObject::connect(m_presenter, &ChartPresenter::plotAreaChanged, q, &QChart::plotAreaChanged);
 }
 
+// 析构函数
 QChartPrivate::~QChartPrivate()
 {
-    delete m_themeManager;
+    delete m_themeManager; // 主题释放
 }
 
 // Hackish solution to the problem of explicitly assigning the default pen/brush/font
@@ -848,19 +858,21 @@ QChartPrivate::~QChartPrivate()
 // Initialize pens, brushes, and fonts to something nobody is likely to ever use,
 // so that default theme initialization will always set these properly.
 QPen &QChartPrivate::defaultPen()
-{
+{ // 默认画笔
     static QPen defaultPen(QColor(1, 2, 0), 0.93247536);
     return defaultPen;
 }
 
 QBrush &QChartPrivate::defaultBrush()
 {
+    // 默认画刷
     static QBrush defaultBrush(QColor(1, 2, 0), Qt::Dense7Pattern);
     return defaultBrush;
 }
 
 QFont &QChartPrivate::defaultFont()
 {
+    // 默认字体
     static bool defaultFontInitialized(false);
     static QFont defaultFont;
     if (!defaultFontInitialized) {
@@ -870,11 +882,12 @@ QFont &QChartPrivate::defaultFont()
     return defaultFont;
 }
 
+// 初始化
 void QChartPrivate::init()
 {
-    m_legend = new LegendScroller(q_ptr);
-    q_ptr->setTheme(QChart::ChartThemeLight);
-    q_ptr->setLayout(m_presenter->layout());
+    m_legend = new LegendScroller(q_ptr); // 创建图例
+    q_ptr->setTheme(QChart::ChartThemeLight); // 设置主题
+    q_ptr->setLayout(m_presenter->layout()); // 设置布局
 }
 
 void QChartPrivate::zoomIn(qreal factor)

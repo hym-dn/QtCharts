@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -50,18 +50,20 @@ class ChartPresenter;
 class QLegend;
 class ChartDataSet;
 
+/**
+ * @brief 图表类的私有成员全部聚合至此。
+ */
 class QT_CHARTS_PRIVATE_EXPORT QChartPrivate
 {
-
 public:
     QChartPrivate(QChart *q, QChart::ChartType type);
     ~QChartPrivate();
-    QChart *q_ptr;
-    QLegend *m_legend;
-    ChartDataSet *m_dataset;
-    ChartPresenter *m_presenter;
-    ChartThemeManager *m_themeManager;
-    QChart::ChartType m_type;
+    QChart *q_ptr; // 所属图表
+    QLegend *m_legend; // 图例
+    ChartDataSet *m_dataset; // 数据集
+    ChartPresenter *m_presenter; // 演示器
+    ChartThemeManager *m_themeManager; // 主题管理器
+    QChart::ChartType m_type; // 类型
 
     static QPen &defaultPen();
     static QBrush &defaultBrush();
