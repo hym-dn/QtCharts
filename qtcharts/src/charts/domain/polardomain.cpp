@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -33,15 +33,18 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 PolarDomain::PolarDomain(QObject *parent)
     : AbstractDomain(parent)
 {
 }
 
+// 析构
 PolarDomain::~PolarDomain()
 {
 }
 
+// 设置尺寸
 void PolarDomain::setSize(const QSizeF &size)
 {
     Q_ASSERT(size.width() == size.height());
@@ -50,6 +53,7 @@ void PolarDomain::setSize(const QSizeF &size)
     AbstractDomain::setSize(size);
 }
 
+// 计算几何点
 QPointF PolarDomain::calculateGeometryPoint(const QPointF &point, bool &ok) const
 {
     qreal r = 0.0;
@@ -64,6 +68,7 @@ QPointF PolarDomain::calculateGeometryPoint(const QPointF &point, bool &ok) cons
     }
 }
 
+// 计算几何点集
 QVector<QPointF> PolarDomain::calculateGeometryPoints(const QVector<QPointF> &vector) const
 {
     QVector<QPointF> result;
@@ -87,6 +92,7 @@ QVector<QPointF> PolarDomain::calculateGeometryPoints(const QVector<QPointF> &ve
     return result;
 }
 
+// 转换极坐标
 QPointF PolarDomain::polarCoordinateToPoint(qreal angularCoordinate, qreal radialCoordinate) const
 {
     qreal dx = qSin(qDegreesToRadians(angularCoordinate)) * radialCoordinate;

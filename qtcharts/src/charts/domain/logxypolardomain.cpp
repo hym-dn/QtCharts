@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -35,6 +35,7 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 LogXYPolarDomain::LogXYPolarDomain(QObject *parent)
     : PolarDomain(parent),
       m_logLeftX(0),
@@ -43,10 +44,12 @@ LogXYPolarDomain::LogXYPolarDomain(QObject *parent)
 {
 }
 
+// 析构
 LogXYPolarDomain::~LogXYPolarDomain()
 {
 }
 
+// 设置范围
 void LogXYPolarDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
 {
     bool axisXChanged = false;
@@ -78,6 +81,7 @@ void LogXYPolarDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
         emit updated();
 }
 
+// 缩小
 void LogXYPolarDomain::zoomIn(const QRectF &rect)
 {
     storeZoomReset();
@@ -98,6 +102,7 @@ void LogXYPolarDomain::zoomIn(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 放大
 void LogXYPolarDomain::zoomOut(const QRectF &rect)
 {
     storeZoomReset();
@@ -120,6 +125,7 @@ void LogXYPolarDomain::zoomOut(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 平移
 void LogXYPolarDomain::move(qreal dx, qreal dy)
 {
     qreal stepX = dx * (m_logRightX - m_logLeftX) / m_size.width();
@@ -139,6 +145,7 @@ void LogXYPolarDomain::move(qreal dx, qreal dy)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 转化为角度
 qreal LogXYPolarDomain::toAngularCoordinate(qreal value, bool &ok) const
 {
     qreal retVal;
@@ -156,6 +163,7 @@ qreal LogXYPolarDomain::toAngularCoordinate(qreal value, bool &ok) const
     return retVal;
 }
 
+// 转化为极值
 qreal LogXYPolarDomain::toRadialCoordinate(qreal value, bool &ok) const
 {
     ok = true;
@@ -168,6 +176,7 @@ qreal LogXYPolarDomain::toRadialCoordinate(qreal value, bool &ok) const
     return f * m_radius;
 }
 
+// 计算区域点
 QPointF LogXYPolarDomain::calculateDomainPoint(const QPointF &point) const
 {
     if (point == m_center)
@@ -186,6 +195,7 @@ QPointF LogXYPolarDomain::calculateDomainPoint(const QPointF &point) const
     return QPointF(a, r);
 }
 
+// 捆绑坐标轴
 bool LogXYPolarDomain::attachAxis(QAbstractAxis *axis)
 {
     AbstractDomain::attachAxis(axis);
@@ -199,6 +209,7 @@ bool LogXYPolarDomain::attachAxis(QAbstractAxis *axis)
     return true;
 }
 
+// 松绑坐标轴
 bool LogXYPolarDomain::detachAxis(QAbstractAxis *axis)
 {
     AbstractDomain::detachAxis(axis);
@@ -210,6 +221,7 @@ bool LogXYPolarDomain::detachAxis(QAbstractAxis *axis)
     return true;
 }
 
+// 水平轴底数变更信号相应槽
 void LogXYPolarDomain::handleHorizontalAxisBaseChanged(qreal baseX)
 {
     m_logBaseX = baseX;
@@ -221,7 +233,7 @@ void LogXYPolarDomain::handleHorizontalAxisBaseChanged(qreal baseX)
 }
 
 // operators
-
+// 相等判断
 bool Q_AUTOTEST_EXPORT operator== (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2)
 {
     return (qFuzzyIsNull(domain1.m_maxX - domain2.m_maxX)
@@ -230,13 +242,13 @@ bool Q_AUTOTEST_EXPORT operator== (const LogXYPolarDomain &domain1, const LogXYP
             && qFuzzyIsNull(domain1.m_minY - domain2.m_minY));
 }
 
-
+// 不等判断
 bool Q_AUTOTEST_EXPORT operator!= (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2)
 {
     return !(domain1 == domain2);
 }
 
-
+// 向指定Debug输出指定区域
 QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXYPolarDomain &domain)
 {
 #ifdef QT_NO_TEXTSTREAM

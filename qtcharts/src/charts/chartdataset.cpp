@@ -107,7 +107,7 @@ void ChartDataSet::addSeries(QAbstractSeries *series)
                 }
             }
         }
-    } else {
+    } else { // 非极坐标
         series->d_ptr->setDomain(new XYDomain());
     }
 

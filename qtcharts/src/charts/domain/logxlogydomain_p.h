@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -49,39 +49,39 @@ class QT_CHARTS_PRIVATE_EXPORT LogXLogYDomain: public AbstractDomain
 {
     Q_OBJECT
 public:
-    explicit LogXLogYDomain(QObject *object = 0);
-    virtual ~LogXLogYDomain();
+    explicit LogXLogYDomain(QObject *object = 0); // 构造函数
+    virtual ~LogXLogYDomain(); // 析构函数
 
-    DomainType type(){ return AbstractDomain::LogXLogYDomain;}
+    DomainType type(){ return AbstractDomain::LogXLogYDomain;} // 返回区域类型
 
-    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY);
+    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY); // 设置区域范围
 
-    friend bool Q_AUTOTEST_EXPORT operator== (const LogXLogYDomain &domain1, const LogXLogYDomain &domain2);
-    friend bool Q_AUTOTEST_EXPORT operator!= (const LogXLogYDomain &domain1, const LogXLogYDomain &domain2);
-    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXLogYDomain &domain);
+    friend bool Q_AUTOTEST_EXPORT operator== (const LogXLogYDomain &domain1, const LogXLogYDomain &domain2); // 判断区域是否相同
+    friend bool Q_AUTOTEST_EXPORT operator!= (const LogXLogYDomain &domain1, const LogXLogYDomain &domain2); // 判断区域是否不同
+    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXLogYDomain &domain); // 向指定Debug输出指定区域
 
-    void zoomIn(const QRectF &rect);
-    void zoomOut(const QRectF &rect);
-    void move(qreal dx, qreal dy);
+    void zoomIn(const QRectF &rect); // 缩小
+    void zoomOut(const QRectF &rect); // 放大
+    void move(qreal dx, qreal dy); // 平移
 
-    QPointF calculateGeometryPoint(const QPointF &point, bool &ok) const;
-    QPointF calculateDomainPoint(const QPointF &point) const;
-    QVector<QPointF> calculateGeometryPoints(const QVector<QPointF> &vector) const;
+    QPointF calculateGeometryPoint(const QPointF &point, bool &ok) const; // 计算几何点
+    QPointF calculateDomainPoint(const QPointF &point) const; // 计算区域点
+    QVector<QPointF> calculateGeometryPoints(const QVector<QPointF> &vector) const; // 计算几何点集
 
-    bool attachAxis(QAbstractAxis *axis);
-    bool detachAxis(QAbstractAxis *axis);
+    bool attachAxis(QAbstractAxis *axis); // 捆绑指定轴
+    bool detachAxis(QAbstractAxis *axis); // 松绑指定轴
 
 public Q_SLOTS:
-    void handleVerticalAxisBaseChanged(qreal baseY);
-    void handleHorizontalAxisBaseChanged(qreal baseX);
+    void handleVerticalAxisBaseChanged(qreal baseY); // 垂直轴低数变更信号相应槽
+    void handleHorizontalAxisBaseChanged(qreal baseX); // 水平轴低数变更信号相应槽
 
 private:
-    qreal m_logLeftX;
-    qreal m_logRightX;
-    qreal m_logBaseX;
-    qreal m_logLeftY;
-    qreal m_logRightY;
-    qreal m_logBaseY;
+    qreal m_logLeftX; // 左x
+    qreal m_logRightX; // 右x
+    qreal m_logBaseX; // x底
+    qreal m_logLeftY; // 左y
+    qreal m_logRightY; // 右y
+    qreal m_logBaseY; // y底
 };
 
 QT_CHARTS_END_NAMESPACE

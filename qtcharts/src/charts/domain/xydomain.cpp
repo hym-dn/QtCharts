@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -33,15 +33,18 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 XYDomain::XYDomain(QObject *parent)
     : AbstractDomain(parent)
 {
 }
 
+// 析构
 XYDomain::~XYDomain()
 {
 }
 
+// 设置犯法为
 void XYDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
 {
     bool axisXChanged = false;
@@ -67,23 +70,23 @@ void XYDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
         emit updated();
 }
 
-
+// 缩小
 void XYDomain::zoomIn(const QRectF &rect)
 {
     storeZoomReset();
     QRectF fixedRect = fixZoomRect(rect);
-    qreal dx = spanX() / m_size.width();
-    qreal dy = spanY() / m_size.height();
+    qreal dx = spanX() / m_size.width(); // 计算步长
+    qreal dy = spanY() / m_size.height(); // 计算步长
 
-    qreal maxX = m_maxX;
-    qreal minX = m_minX;
-    qreal minY = m_minY;
-    qreal maxY = m_maxY;
+    qreal maxX = m_maxX; // 最大x
+    qreal minX = m_minX; // 最小x
+    qreal minY = m_minY; // 最小y
+    qreal maxY = m_maxY; // 最大y
 
-    maxX = minX + dx * fixedRect.right();
-    minX = minX + dx * fixedRect.left();
-    minY = maxY - dy * fixedRect.bottom();
-    maxY = maxY - dy * fixedRect.top();
+    maxX = minX + dx * fixedRect.right(); // 最大x
+    minX = minX + dx * fixedRect.left(); // 最小x
+    minY = maxY - dy * fixedRect.bottom(); // 最小y
+    maxY = maxY - dy * fixedRect.top(); // 最大y
 
     if ((maxX - minX) == spanX()) {
         minX = m_minX;
@@ -94,9 +97,10 @@ void XYDomain::zoomIn(const QRectF &rect)
         maxY = m_maxY;
     }
 
-    setRange(minX, maxX, minY, maxY);
+    setRange(minX, maxX, minY, maxY); // 重置范围
 }
 
+// 放大
 void XYDomain::zoomOut(const QRectF &rect)
 {
     storeZoomReset();
@@ -126,6 +130,7 @@ void XYDomain::zoomOut(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 平移
 void XYDomain::move(qreal dx, qreal dy)
 {
     if (m_reverseX)
@@ -152,6 +157,7 @@ void XYDomain::move(qreal dx, qreal dy)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 计算几何点
 QPointF XYDomain::calculateGeometryPoint(const QPointF &point, bool &ok) const
 {
     const qreal deltaX = m_size.width() / (m_maxX - m_minX);
@@ -166,6 +172,7 @@ QPointF XYDomain::calculateGeometryPoint(const QPointF &point, bool &ok) const
     return QPointF(x, y);
 }
 
+// 计算几何点集
 QVector<QPointF> XYDomain::calculateGeometryPoints(const QVector<QPointF> &vector) const
 {
     const qreal deltaX = m_size.width() / (m_maxX - m_minX);
@@ -187,6 +194,7 @@ QVector<QPointF> XYDomain::calculateGeometryPoints(const QVector<QPointF> &vecto
     return result;
 }
 
+// 计算区域点
 QPointF XYDomain::calculateDomainPoint(const QPointF &point) const
 {
     const qreal deltaX = m_size.width() / (m_maxX - m_minX);
@@ -201,7 +209,7 @@ QPointF XYDomain::calculateDomainPoint(const QPointF &point) const
 }
 
 // operators
-
+// 相等判定
 bool Q_AUTOTEST_EXPORT operator== (const XYDomain &domain1, const XYDomain &domain2)
 {
     return (qFuzzyCompare(domain1.m_maxX, domain2.m_maxX)
@@ -210,13 +218,13 @@ bool Q_AUTOTEST_EXPORT operator== (const XYDomain &domain1, const XYDomain &doma
             && qFuzzyCompare(domain1.m_minY, domain2.m_minY));
 }
 
-
+// 不等判定
 bool Q_AUTOTEST_EXPORT operator!= (const XYDomain &domain1, const XYDomain &domain2)
 {
     return !(domain1 == domain2);
 }
 
-
+// 向指定Debug输出指定区域
 QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const XYDomain &domain)
 {
 #ifdef QT_NO_TEXTSTREAM

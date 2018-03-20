@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -35,6 +35,7 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 LogXYDomain::LogXYDomain(QObject *parent)
     : AbstractDomain(parent),
       m_logLeftX(0),
@@ -43,10 +44,12 @@ LogXYDomain::LogXYDomain(QObject *parent)
 {
 }
 
+// 析构函数
 LogXYDomain::~LogXYDomain()
 {
 }
 
+// 设置范围
 void LogXYDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
 {
     bool axisXChanged = false;
@@ -78,6 +81,7 @@ void LogXYDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
         emit updated();
 }
 
+// 缩小
 void LogXYDomain::zoomIn(const QRectF &rect)
 {
     storeZoomReset();
@@ -99,6 +103,7 @@ void LogXYDomain::zoomIn(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 放大
 void LogXYDomain::zoomOut(const QRectF &rect)
 {
     storeZoomReset();
@@ -122,6 +127,7 @@ void LogXYDomain::zoomOut(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 平移
 void LogXYDomain::move(qreal dx, qreal dy)
 {
     if (m_reverseX)
@@ -146,6 +152,7 @@ void LogXYDomain::move(qreal dx, qreal dy)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 计算几何点
 QPointF LogXYDomain::calculateGeometryPoint(const QPointF &point, bool &ok) const
 {
     const qreal deltaX = m_size.width() / (m_logRightX - m_logLeftX);
@@ -168,6 +175,7 @@ QPointF LogXYDomain::calculateGeometryPoint(const QPointF &point, bool &ok) cons
     return QPointF(x, y);
 }
 
+// 计算几何点集
 QVector<QPointF> LogXYDomain::calculateGeometryPoints(const QVector<QPointF> &vector) const
 {
     const qreal deltaX = m_size.width() / (m_logRightX - m_logLeftX);
@@ -195,6 +203,7 @@ QVector<QPointF> LogXYDomain::calculateGeometryPoints(const QVector<QPointF> &ve
     return result;
 }
 
+// 计算区域点
 QPointF LogXYDomain::calculateDomainPoint(const QPointF &point) const
 {
     const qreal deltaX = m_size.width() / (m_logRightX - m_logLeftX);
@@ -207,6 +216,7 @@ QPointF LogXYDomain::calculateDomainPoint(const QPointF &point) const
     return QPointF(x, y);
 }
 
+// 捆绑轴
 bool LogXYDomain::attachAxis(QAbstractAxis *axis)
 {
     AbstractDomain::attachAxis(axis);
@@ -220,6 +230,7 @@ bool LogXYDomain::attachAxis(QAbstractAxis *axis)
     return true;
 }
 
+// 松绑轴
 bool LogXYDomain::detachAxis(QAbstractAxis *axis)
 {
     AbstractDomain::detachAxis(axis);
@@ -231,6 +242,7 @@ bool LogXYDomain::detachAxis(QAbstractAxis *axis)
     return true;
 }
 
+// 水平轴底数变更信号响应槽
 void LogXYDomain::handleHorizontalAxisBaseChanged(qreal baseX)
 {
     m_logBaseX = baseX;
@@ -242,7 +254,7 @@ void LogXYDomain::handleHorizontalAxisBaseChanged(qreal baseX)
 }
 
 // operators
-
+// 相等判断
 bool Q_AUTOTEST_EXPORT operator== (const LogXYDomain &domain1, const LogXYDomain &domain2)
 {
     return (qFuzzyIsNull(domain1.m_maxX - domain2.m_maxX)
@@ -251,13 +263,13 @@ bool Q_AUTOTEST_EXPORT operator== (const LogXYDomain &domain1, const LogXYDomain
             && qFuzzyIsNull(domain1.m_minY - domain2.m_minY));
 }
 
-
+// 不等判断
 bool Q_AUTOTEST_EXPORT operator!= (const LogXYDomain &domain1, const LogXYDomain &domain2)
 {
     return !(domain1 == domain2);
 }
 
-
+// 输出
 QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXYDomain &domain)
 {
 #ifdef QT_NO_TEXTSTREAM

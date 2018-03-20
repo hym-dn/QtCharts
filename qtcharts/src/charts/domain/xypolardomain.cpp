@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -33,15 +33,18 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 XYPolarDomain::XYPolarDomain(QObject *parent)
     : PolarDomain(parent)
 {
 }
 
+// 析构
 XYPolarDomain::~XYPolarDomain()
 {
 }
 
+// 设置范围
 void XYPolarDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
 {
     bool axisXChanged = false;
@@ -67,7 +70,7 @@ void XYPolarDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
         emit updated();
 }
 
-
+// 缩小
 void XYPolarDomain::zoomIn(const QRectF &rect)
 {
     storeZoomReset();
@@ -87,6 +90,7 @@ void XYPolarDomain::zoomIn(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 放大
 void XYPolarDomain::zoomOut(const QRectF &rect)
 {
     storeZoomReset();
@@ -106,6 +110,7 @@ void XYPolarDomain::zoomOut(const QRectF &rect)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 平移
 void XYPolarDomain::move(qreal dx, qreal dy)
 {
     // One unit scrolls one degree angular and one pixel radial
@@ -128,6 +133,7 @@ void XYPolarDomain::move(qreal dx, qreal dy)
     setRange(minX, maxX, minY, maxY);
 }
 
+// 计算区域点
 QPointF XYPolarDomain::calculateDomainPoint(const QPointF &point) const
 {
     if (point == m_center)
@@ -142,6 +148,7 @@ QPointF XYPolarDomain::calculateDomainPoint(const QPointF &point) const
     return QPointF(a, r);
 }
 
+// 转化为角度
 qreal XYPolarDomain::toAngularCoordinate(qreal value, bool &ok) const
 {
     ok = true;
@@ -149,6 +156,7 @@ qreal XYPolarDomain::toAngularCoordinate(qreal value, bool &ok) const
     return f * 360.0;
 }
 
+// 转化为极值
 qreal XYPolarDomain::toRadialCoordinate(qreal value, bool &ok) const
 {
     ok = true;
@@ -162,7 +170,7 @@ qreal XYPolarDomain::toRadialCoordinate(qreal value, bool &ok) const
 }
 
 // operators
-
+// 相等判定
 bool Q_AUTOTEST_EXPORT operator== (const XYPolarDomain &domain1, const XYPolarDomain &domain2)
 {
     return (qFuzzyCompare(domain1.m_maxX, domain2.m_maxX)
@@ -171,13 +179,13 @@ bool Q_AUTOTEST_EXPORT operator== (const XYPolarDomain &domain1, const XYPolarDo
             && qFuzzyCompare(domain1.m_minY, domain2.m_minY));
 }
 
-
+// 不等判定
 bool Q_AUTOTEST_EXPORT operator!= (const XYPolarDomain &domain1, const XYPolarDomain &domain2)
 {
     return !(domain1 == domain2);
 }
 
-
+// 向指定Debug输出指定区域
 QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const XYPolarDomain &domain)
 {
 #ifdef QT_NO_TEXTSTREAM

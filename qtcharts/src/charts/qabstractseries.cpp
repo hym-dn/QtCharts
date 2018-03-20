@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -257,6 +257,7 @@ QT_CHARTS_BEGIN_NAMESPACE
     \internal
     \brief Constructs QAbstractSeries object with \a parent.
 */
+// 构造函数
 QAbstractSeries::QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent) :
     QObject(parent),
     d_ptr(&d)
@@ -266,11 +267,13 @@ QAbstractSeries::QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent) :
 /*!
     \brief Virtual destructor for the chart series.
 */
+// 析构函数
 QAbstractSeries::~QAbstractSeries()
 {
     if (d_ptr->m_chart)
         qFatal("Series still bound to a chart when destroyed!");
 }
+
 
 void QAbstractSeries::setName(const QString &name)
 {
@@ -414,11 +417,12 @@ QList<QAbstractAxis*> QAbstractSeries::attachedAxes()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 构造函数
 QAbstractSeriesPrivate::QAbstractSeriesPrivate(QAbstractSeries *q)
-    : q_ptr(q),
-      m_chart(0),
-      m_item(0),
-      m_domain(new XYDomain()),
+    : q_ptr(q), // 所属序列
+      m_chart(0), // 所属图表
+      m_item(0), // 图表项
+      m_domain(new XYDomain()), // 区域
       m_visible(true),
       m_opacity(1.0),
       m_useOpenGL(false),
@@ -426,6 +430,7 @@ QAbstractSeriesPrivate::QAbstractSeriesPrivate(QAbstractSeries *q)
 {
 }
 
+// 析构函数
 QAbstractSeriesPrivate::~QAbstractSeriesPrivate()
 {
 }

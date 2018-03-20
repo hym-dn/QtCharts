@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -45,26 +45,27 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 抽象类，极坐标区域
 class QT_CHARTS_PRIVATE_EXPORT PolarDomain: public AbstractDomain
 {
     Q_OBJECT
 public:
-    explicit PolarDomain(QObject *object = 0);
-    virtual ~PolarDomain();
+    explicit PolarDomain(QObject *object = 0); // 构造
+    virtual ~PolarDomain(); // 析构
 
-    void setSize(const QSizeF &size);
+    void setSize(const QSizeF &size); // 设置尺寸
 
-    QPointF calculateGeometryPoint(const QPointF &point, bool &ok) const;
-    QVector<QPointF> calculateGeometryPoints(const QVector<QPointF> &vector) const;
+    QPointF calculateGeometryPoint(const QPointF &point, bool &ok) const;  // 计算几何点
+    QVector<QPointF> calculateGeometryPoints(const QVector<QPointF> &vector) const; // 计算几何点集
 
-    virtual qreal toAngularCoordinate(qreal value, bool &ok) const = 0;
-    virtual qreal toRadialCoordinate(qreal value, bool &ok) const = 0;
+    virtual qreal toAngularCoordinate(qreal value, bool &ok) const = 0; // 转换角度坐标
+    virtual qreal toRadialCoordinate(qreal value, bool &ok) const = 0; // 转换径向坐标
 
 protected:
-    QPointF polarCoordinateToPoint(qreal angularCoordinate, qreal radialCoordinate) const;
+    QPointF polarCoordinateToPoint(qreal angularCoordinate, qreal radialCoordinate) const; // 坐标转换
 
-    QPointF m_center;
-    qreal m_radius;
+    QPointF m_center; // 中心点
+    qreal m_radius; // 半径
 };
 
 QT_CHARTS_END_NAMESPACE

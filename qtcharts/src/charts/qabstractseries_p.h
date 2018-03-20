@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -62,54 +62,55 @@ class ChartAnimation;
 class ChartItem;
 class BoxPlotChartItem;
 
+// 序列私有成员，各种序列的私有成员均继承于此
 class QT_CHARTS_PRIVATE_EXPORT QAbstractSeriesPrivate : public QObject
 {
     Q_OBJECT
 public:
-    QAbstractSeriesPrivate(QAbstractSeries *q);
-    ~QAbstractSeriesPrivate();
+    QAbstractSeriesPrivate(QAbstractSeries *q); // 构造函数
+    ~QAbstractSeriesPrivate(); // 析构函数
 
-    virtual void initializeDomain() = 0;
-    virtual void initializeAxes() = 0;
-    virtual void initializeTheme(int index, ChartTheme* theme, bool forced = false) = 0;
-    virtual void initializeGraphics(QGraphicsItem* parent) = 0;
+    virtual void initializeDomain() = 0; // 初始化区域
+    virtual void initializeAxes() = 0; // 初始化轴
+    virtual void initializeTheme(int index, ChartTheme* theme, bool forced = false) = 0; // 初始化主题
+    virtual void initializeGraphics(QGraphicsItem* parent) = 0; // 初始化图像
     virtual void initializeAnimations(QChart::AnimationOptions options, int duration,
-                                      QEasingCurve &curve) = 0;
+                                      QEasingCurve &curve) = 0; // 初始化动画
 
-    virtual QList<QLegendMarker*> createLegendMarkers(QLegend* legend) = 0;
+    virtual QList<QLegendMarker*> createLegendMarkers(QLegend* legend) = 0; // 创建图例标志
 
-    virtual QAbstractAxis::AxisType defaultAxisType(Qt::Orientation) const = 0;
-    virtual QAbstractAxis* createDefaultAxis(Qt::Orientation) const = 0;
+    virtual QAbstractAxis::AxisType defaultAxisType(Qt::Orientation) const = 0; // 默认轴类型
+    virtual QAbstractAxis* createDefaultAxis(Qt::Orientation) const = 0; // 创建默认轴
 
-    ChartItem* chartItem() { return m_item.data(); }
+    ChartItem* chartItem() { return m_item.data(); } // 返回图表项
 
-    virtual void setDomain(AbstractDomain* domain);
-    AbstractDomain* domain() { return m_domain.data(); }
+    virtual void setDomain(AbstractDomain* domain); // 设置区域
+    AbstractDomain* domain() { return m_domain.data(); } // 返回区域
 
-    virtual void setPresenter(ChartPresenter *presenter);
-    ChartPresenter *presenter() const;
+    virtual void setPresenter(ChartPresenter *presenter); // 设置表达器
+    ChartPresenter *presenter() const; // 返回表达器
 
-    QChart* chart() { return m_chart; }
+    QChart* chart() { return m_chart; } // 返回所属图表
 
-    void setBlockOpenGL(bool enable);
+    void setBlockOpenGL(bool enable); // ???
 
 Q_SIGNALS:
-    void countChanged();
+    void countChanged(); // 计数变更信号
 
 protected:
-    QAbstractSeries *q_ptr;
-    QChart *m_chart;
-    QScopedPointer<ChartItem> m_item;
-    QList<QAbstractAxis*> m_axes;
+    QAbstractSeries *q_ptr; // 源序列指针
+    QChart *m_chart; // 源图表指针
+    QScopedPointer<ChartItem> m_item; // 图表项
+    QList<QAbstractAxis*> m_axes; // 坐标轴
 
 private:
-    QScopedPointer<AbstractDomain> m_domain;
-    QString m_name;
-    bool m_visible;
-    qreal m_opacity;
-    ChartPresenter *m_presenter;
-    bool m_useOpenGL;
-    bool m_blockOpenGL;
+    QScopedPointer<AbstractDomain> m_domain; // 区域
+    QString m_name; // 名称
+    bool m_visible; // 是否可见
+    qreal m_opacity;  // 不透明
+    ChartPresenter *m_presenter; // 表达器
+    bool m_useOpenGL; // 是否使用OpenGL
+    bool m_blockOpenGL; // ???
 
     friend class QAbstractSeries;
     friend class ChartDataSet;

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -45,41 +45,42 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// LogX-Y 极坐标区域
 class QT_CHARTS_PRIVATE_EXPORT LogXYPolarDomain: public PolarDomain
 {
     Q_OBJECT
 public:
-    explicit LogXYPolarDomain(QObject *object = 0);
-    virtual ~LogXYPolarDomain();
+    explicit LogXYPolarDomain(QObject *object = 0); // 构造
+    virtual ~LogXYPolarDomain(); // 析构
 
-    DomainType type() { return AbstractDomain::LogXYPolarDomain; }
+    DomainType type() { return AbstractDomain::LogXYPolarDomain; } // 区域类型
 
-    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY);
+    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY); // 设置范围
 
-    friend bool Q_AUTOTEST_EXPORT operator== (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2);
-    friend bool Q_AUTOTEST_EXPORT operator!= (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2);
-    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXYPolarDomain &domain);
+    friend bool Q_AUTOTEST_EXPORT operator== (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2); // 相等判定
+    friend bool Q_AUTOTEST_EXPORT operator!= (const LogXYPolarDomain &domain1, const LogXYPolarDomain &domain2); // 不等判定
+    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const LogXYPolarDomain &domain); // 向指定Debug输出指定区域
 
-    void zoomIn(const QRectF &rect);
-    void zoomOut(const QRectF &rect);
-    void move(qreal dx, qreal dy);
+    void zoomIn(const QRectF &rect); // 缩小
+    void zoomOut(const QRectF &rect); // 放大
+    void move(qreal dx, qreal dy); // 平移
 
-    QPointF calculateDomainPoint(const QPointF &point) const;
+    QPointF calculateDomainPoint(const QPointF &point) const; // 计算区域点
 
-    bool attachAxis(QAbstractAxis *axis);
-    bool detachAxis(QAbstractAxis *axis);
+    bool attachAxis(QAbstractAxis *axis); // 捆绑轴
+    bool detachAxis(QAbstractAxis *axis); // 松绑轴
 
 public Q_SLOTS:
-    void handleHorizontalAxisBaseChanged(qreal baseX);
+    void handleHorizontalAxisBaseChanged(qreal baseX); // 水平轴底数变更信号响应槽
 
 protected:
-    qreal toAngularCoordinate(qreal value, bool &ok) const;
-    qreal toRadialCoordinate(qreal value, bool &ok) const;
+    qreal toAngularCoordinate(qreal value, bool &ok) const; // 转化为角度坐标
+    qreal toRadialCoordinate(qreal value, bool &ok) const; // 转化为极坐标
 
 private:
-    qreal m_logLeftX;
-    qreal m_logRightX;
-    qreal m_logBaseX;
+    qreal m_logLeftX; // 左x
+    qreal m_logRightX; // 右x
+    qreal m_logBaseX; // 底x
 };
 
 QT_CHARTS_END_NAMESPACE

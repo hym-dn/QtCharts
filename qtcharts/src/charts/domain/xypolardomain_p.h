@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -44,30 +44,31 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// x-y极坐标区域
 class QT_CHARTS_PRIVATE_EXPORT XYPolarDomain: public PolarDomain
 {
     Q_OBJECT
 public:
-    explicit XYPolarDomain(QObject *object = 0);
-    virtual ~XYPolarDomain();
+    explicit XYPolarDomain(QObject *object = 0); // 构造
+    virtual ~XYPolarDomain(); // 析构
 
-    DomainType type(){ return AbstractDomain::XYPolarDomain;}
+    DomainType type(){ return AbstractDomain::XYPolarDomain;} // 返回区域类型
 
-    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY);
+    void setRange(qreal minX, qreal maxX, qreal minY, qreal maxY); // 设置范围
 
-    friend bool Q_AUTOTEST_EXPORT operator== (const XYPolarDomain &Domain1, const XYPolarDomain &Domain2);
-    friend bool Q_AUTOTEST_EXPORT operator!= (const XYPolarDomain &Domain1, const XYPolarDomain &Domain2);
-    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const XYPolarDomain &AbstractDomain);
+    friend bool Q_AUTOTEST_EXPORT operator== (const XYPolarDomain &Domain1, const XYPolarDomain &Domain2); // 相等判定
+    friend bool Q_AUTOTEST_EXPORT operator!= (const XYPolarDomain &Domain1, const XYPolarDomain &Domain2); // 不等判定
+    friend QDebug Q_AUTOTEST_EXPORT operator<<(QDebug dbg, const XYPolarDomain &AbstractDomain); // 向指定Debug输出指定区域
 
-    void zoomIn(const QRectF &rect);
-    void zoomOut(const QRectF &rect);
-    void move(qreal dx, qreal dy);
+    void zoomIn(const QRectF &rect); // 缩小
+    void zoomOut(const QRectF &rect); // 放大
+    void move(qreal dx, qreal dy); // 平移
 
-    QPointF calculateDomainPoint(const QPointF &point) const;
+    QPointF calculateDomainPoint(const QPointF &point) const; // 计算区域点
 
 protected:
-    qreal toAngularCoordinate(qreal value, bool &ok) const;
-    qreal toRadialCoordinate(qreal value, bool &ok) const;
+    qreal toAngularCoordinate(qreal value, bool &ok) const; // 转换为角度
+    qreal toRadialCoordinate(qreal value, bool &ok) const; // 转换为极值
 };
 
 QT_CHARTS_END_NAMESPACE
