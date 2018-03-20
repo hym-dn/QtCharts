@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -49,23 +49,24 @@ QT_END_NAMESPACE
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 图表背景类，负责描述图表的背景
 class QT_CHARTS_PRIVATE_EXPORT ChartBackground: public QGraphicsRectItem
 {
 public:
-    ChartBackground(QGraphicsItem *parent = 0);
-    ~ChartBackground();
+    ChartBackground(QGraphicsItem *parent = 0); // 构造
+    ~ChartBackground(); // 析构
 
-    void setDiameter(qreal diameter);
-    qreal diameter() const;
-    void setDropShadowEnabled(bool enabled);
-    bool isDropShadowEnabled() { return m_dropShadow != 0; }
+    void setDiameter(qreal diameter); // 设置直径
+    qreal diameter() const; // 获取直径
+    void setDropShadowEnabled(bool enabled); // 启动下拉阴影效果
+    bool isDropShadowEnabled() { return m_dropShadow != 0; } // 是否启动下拉阴影效果
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); // 背景绘制
 
 private:
-    qreal m_diameter;
-    QGraphicsDropShadowEffect *m_dropShadow;
+    qreal m_diameter; // 直径
+    QGraphicsDropShadowEffect *m_dropShadow; // 下拉阴影效果
 };
 
 QT_CHARTS_END_NAMESPACE

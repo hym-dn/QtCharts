@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -52,15 +52,16 @@ class ChartPresenter;
 class QLegend;
 class ChartBackground;
 
+// 图表布局抽象类，它是全部图表布局的基类
 class QT_CHARTS_PRIVATE_EXPORT AbstractChartLayout : public QGraphicsLayout
 {
 public:
-    AbstractChartLayout(ChartPresenter *presenter);
-    virtual ~AbstractChartLayout();
+    AbstractChartLayout(ChartPresenter *presenter); // 构造
+    virtual ~AbstractChartLayout(); // 析构
 
-    virtual void setMargins(const QMargins &margins);
-    virtual QMargins margins() const;
-    virtual void setGeometry(const QRectF &rect);
+    virtual void setMargins(const QMargins &margins); // 设置间隔
+    virtual QMargins margins() const; // 获取间隔
+    virtual void setGeometry(const QRectF &rect); // 设置几何尺寸
 
 protected:
     virtual QRectF calculateBackgroundGeometry(const QRectF &geometry, ChartBackground *background) const;
@@ -81,9 +82,9 @@ protected:
     QGraphicsLayoutItem *itemAt(int) const { return 0; };
     void removeAt(int) {};
 
-    ChartPresenter *m_presenter;
-    QMargins m_margins;
-    QRectF m_minAxisRect;
+    ChartPresenter *m_presenter; // 图表主持人
+    QMargins m_margins; // 间隔
+    QRectF m_minAxisRect; // 最小轴矩形
 };
 
 QT_CHARTS_END_NAMESPACE

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -256,14 +256,16 @@ QT_CHARTS_BEGIN_NAMESPACE
     \fn void QLegend::showToolTipsChanged(bool showToolTips)
     This signal is emitted when the visibility of tooltips is changed to \a showToolTips.
 */
-
+// 构造函数
 QLegend::QLegend(QChart *chart): QGraphicsWidget(chart),
     d_ptr(new QLegendPrivate(chart->d_ptr->m_presenter, chart, this))
 {
-    setZValue(ChartPresenter::LegendZValue);
-    setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+    setZValue(ChartPresenter::LegendZValue); // 设置Z轴坐标
+    setFlags(QGraphicsItem::ItemClipsChildrenToShape); // 命令所有的后代绘制到自己的形状里
+    // 序列添加、删除信号、槽
     QObject::connect(chart->d_ptr->m_dataset, SIGNAL(seriesAdded(QAbstractSeries*)), d_ptr.data(), SLOT(handleSeriesAdded(QAbstractSeries*)));
     QObject::connect(chart->d_ptr->m_dataset, SIGNAL(seriesRemoved(QAbstractSeries*)), d_ptr.data(), SLOT(handleSeriesRemoved(QAbstractSeries*)));
+    // 设置布局
     setLayout(d_ptr->m_layout);
 }
 
@@ -271,6 +273,7 @@ QLegend::QLegend(QChart *chart): QGraphicsWidget(chart),
     Destroys the legend object. The legend is always owned by a QChart, so an application
     should never call this function.
 */
+// 析构函数
 QLegend::~QLegend()
 {
 }
@@ -278,6 +281,7 @@ QLegend::~QLegend()
 /*!
  \internal
  */
+// 绘制
 void QLegend::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
@@ -584,12 +588,12 @@ void QLegend::showEvent(QShowEvent *event)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造函数
 QLegendPrivate::QLegendPrivate(ChartPresenter *presenter, QChart *chart, QLegend *q)
-    : q_ptr(q),
-      m_presenter(presenter),
-      m_layout(new LegendLayout(q)),
-      m_chart(chart),
+    : q_ptr(q), // 源图例
+      m_presenter(presenter), // 图表主持
+      m_layout(new LegendLayout(q)), // 布局
+      m_chart(chart), // 图表
       m_items(new QGraphicsItemGroup(q)),
       m_alignment(Qt::AlignTop),
       m_brush(QChartPrivate::defaultBrush()),

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -48,110 +48,129 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 LegendMarkerItem::LegendMarkerItem(QLegendMarkerPrivate *marker, QGraphicsObject *parent) :
     QGraphicsObject(parent),
-    m_marker(marker),
-    m_defaultMarkerRect(0.0, 0.0, 10.0, 10.0),
-    m_markerRect(0.0, 0.0, -1.0, -1.0),
-    m_boundingRect(0,0,0,0),
-    m_textItem(new QGraphicsTextItem(this)),
-    m_markerItem(nullptr),
-    m_margin(3),
-    m_space(4),
-    m_markerShape(QLegend::MarkerShapeDefault),
-    m_hovering(false),
-    m_itemType(TypeRect)
+    m_marker(marker), // 源标记私有成员
+    m_defaultMarkerRect(0.0, 0.0, 10.0, 10.0), // 默认标记矩形
+    m_markerRect(0.0, 0.0, -1.0, -1.0), // 标记矩形
+    m_boundingRect(0,0,0,0), // 标记外接矩形
+    m_textItem(new QGraphicsTextItem(this)), // 标记文本
+    m_markerItem(nullptr), // 标记项
+    m_margin(3), // 留白
+    m_space(4), // 间隔
+    m_markerShape(QLegend::MarkerShapeDefault), // 标记形状
+    m_hovering(false), // 捕获鼠标在其上
+    m_itemType(TypeRect) // 项类型
 {
-    m_textItem->document()->setDocumentMargin(ChartPresenter::textMargin());
-    setAcceptHoverEvents(true);
+    m_textItem->document()->setDocumentMargin(ChartPresenter::textMargin()); // 设置文本留白
+    setAcceptHoverEvents(true); // 设置接收捕获鼠标在其上事件
 }
 
+// 析构函数
 LegendMarkerItem::~LegendMarkerItem()
 {
-    if (m_hovering) {
-        emit m_marker->q_ptr->hovered(false);
+    if (m_hovering) { // 鼠标在其上
+        emit m_marker->q_ptr->hovered(false); // 发送信号
     }
 }
 
+// 设置画笔
 void LegendMarkerItem::setPen(const QPen &pen)
 {
-    m_pen = pen;
-    setItemBrushAndPen();
+    m_pen = pen; // 保存画笔
+    setItemBrushAndPen(); // 设置画笔
 }
 
+// 获取画笔
 QPen LegendMarkerItem::pen() const
 {
     return m_pen;
 }
 
+// 设置画刷
 void LegendMarkerItem::setBrush(const QBrush &brush)
 {
     m_brush = brush;
     setItemBrushAndPen();
 }
 
+// 获取画刷
 QBrush LegendMarkerItem::brush() const
 {
     return m_brush;
 }
 
+// 设置序列画笔
 void LegendMarkerItem::setSeriesPen(const QPen &pen)
 {
     m_seriesPen = pen;
     setItemBrushAndPen();
 }
 
+// 设置序列画刷
 void LegendMarkerItem::setSeriesBrush(const QBrush &brush)
 {
     m_seriesBrush = brush;
     setItemBrushAndPen();
 }
 
+// 设置字体
 void LegendMarkerItem::setFont(const QFont &font)
 {
-    QFontMetrics fn(font);
-    m_font = font;
+    QFontMetrics fn(font); // 创建字体
+    m_font = font; // 记录字体
 
-    m_defaultMarkerRect = QRectF(0, 0, fn.height() / 2, fn.height() / 2);
-    if (effectiveMarkerShape() != QLegend::MarkerShapeFromSeries)
-        updateMarkerShapeAndSize();
-    m_marker->invalidateLegend();
+    m_defaultMarkerRect = QRectF(0, 0, fn.height() / 2, fn.height() / 2); // 设置默认标记矩形
+    if (effectiveMarkerShape() != QLegend::MarkerShapeFromSeries) // 从序列继承形状
+        updateMarkerShapeAndSize(); // 更新标记形状、尺寸
+    m_marker->invalidateLegend(); // 更新图例
 }
 
+// 获取字体
 QFont LegendMarkerItem::font() const
 {
     return m_font;
 }
 
+// 设置标签
 void LegendMarkerItem::setLabel(const QString label)
 {
     m_label = label;
     updateGeometry();
 }
 
+// 获取标签
 QString LegendMarkerItem::label() const
 {
     return m_label;
 }
 
+// 设置标签画刷
 void LegendMarkerItem::setLabelBrush(const QBrush &brush)
 {
-    m_textItem->setDefaultTextColor(brush.color());
+    m_textItem->setDefaultTextColor(brush.color()); // 设置默认颜色
 }
 
+// 获取标签画刷
 QBrush LegendMarkerItem::labelBrush() const
 {
     return QBrush(m_textItem->defaultTextColor());
 }
 
+// 设置几何尺寸
 void LegendMarkerItem::setGeometry(const QRectF &rect)
 {
+    // 如果标记项不存在，则按形状、尺寸创建
     if (!m_markerItem)
-        updateMarkerShapeAndSize();
-
+        updateMarkerShapeAndSize(); // 更新形状、尺寸
+    // 记录输入宽度
     const qreal width = rect.width();
+    // 有效宽度
     const qreal markerWidth = effectiveMarkerWidth();
+
     const qreal x = m_margin + markerWidth + m_space + m_margin;
+
     QRectF truncatedRect;
     const QString html = ChartPresenter::truncatedText(m_font, m_label, qreal(0.0),
                                                        width - x, rect.height(), truncatedRect);
@@ -261,35 +280,54 @@ void LegendMarkerItem::setMarkerShape(QLegend::MarkerShape shape)
     m_markerShape = shape;
 }
 
+// 更新标记形状、尺寸
 void LegendMarkerItem::updateMarkerShapeAndSize()
 {
+    // 获取有效形状
     const QLegend::MarkerShape shape = effectiveMarkerShape();
 
+    // 项类型
     ItemType itemType = TypeRect;
+
+    // 默认标记矩形尺寸
     QRectF newRect = m_defaultMarkerRect;
+
+    // 从序列继承形状
     if (shape == QLegend::MarkerShapeFromSeries) {
+        // 散点序列
         QScatterSeries *scatter = qobject_cast<QScatterSeries *>(m_marker->series());
+        // 确认散点序列
         if (scatter) {
+            // 新标记尺寸
             newRect.setSize(QSizeF(scatter->markerSize(), scatter->markerSize()));
+            // 原型标记
             if (scatter->markerShape() == QScatterSeries::MarkerShapeCircle)
-                itemType = TypeCircle;
-        } else if (qobject_cast<QLineSeries *>(m_marker->series())
-                   || qobject_cast<QSplineSeries *>(m_marker->series())) {
-            newRect.setHeight(m_seriesPen.width());
-            newRect.setWidth(qRound(m_defaultMarkerRect.width() * 1.5));
-            itemType = TypeLine;
+                itemType = TypeCircle; // 更新项类型
         }
-    } else if (shape == QLegend::MarkerShapeCircle) {
-        itemType = TypeCircle;
+        // 线或样条
+        else if (qobject_cast<QLineSeries *>(m_marker->series())
+                   || qobject_cast<QSplineSeries *>(m_marker->series())) {
+            newRect.setHeight(m_seriesPen.width()); // 高度
+            newRect.setWidth(qRound(m_defaultMarkerRect.width() * 1.5)); // 宽度
+            itemType = TypeLine; // 更新项类型
+        }
+    }
+    // 圆形
+    else if (shape == QLegend::MarkerShapeCircle) {
+        itemType = TypeCircle; // 更新项类型
     }
 
+    // 如果当前标记不存在或者项目类型与预期不符
     if (!m_markerItem || m_itemType != itemType) {
+        // 保存项类型
         m_itemType = itemType;
+        // 删除当前项，并记录其位置
         QPointF oldPos;
         if (m_markerItem) {
             oldPos = m_markerItem->pos();
             delete m_markerItem;
         }
+        // 根据不同类型创建相应项
         if (itemType == TypeRect)
             m_markerItem = new QGraphicsRectItem(this);
         else if (itemType == TypeCircle)
@@ -298,72 +336,83 @@ void LegendMarkerItem::updateMarkerShapeAndSize()
             m_markerItem =  new QGraphicsLineItem(this);
         // Immediately update the position to the approximate correct position to avoid marker
         // jumping around when changing markers
+        // 恢复项的位置
         m_markerItem->setPos(oldPos);
     }
+    // 更新画笔、画刷
     setItemBrushAndPen();
-
+    // 新尺寸不等于当前标记尺寸
     if (newRect != m_markerRect) {
+        // 尺寸小于新尺寸
         if (useMaxWidth() && m_marker->m_legend->d_ptr->maxMarkerWidth() < newRect.width())
-            m_marker->invalidateAllItems();
+            m_marker->invalidateAllItems(); // 更新全部标记、布局
+        // 更新尺寸
         m_markerRect = newRect;
-        setItemRect();
-        emit markerRectChanged();
-        updateGeometry();
+        setItemRect(); // 更新当前标记向尺寸
+        emit markerRectChanged(); // 发送信号
+        updateGeometry(); // 更新几何
     }
 }
 
+// 获取有效的标记形状
 QLegend::MarkerShape LegendMarkerItem::effectiveMarkerShape() const
 {
-    QLegend::MarkerShape shape = m_markerShape;
-    if (shape == QLegend::MarkerShapeDefault)
-        shape = m_marker->m_legend->markerShape();
-    return shape;
+    QLegend::MarkerShape shape = m_markerShape; // 获取标志形状
+    if (shape == QLegend::MarkerShapeDefault) // 如果为默认标记形状
+        shape = m_marker->m_legend->markerShape(); // 返回图例中记录的标记形状
+    return shape; // 返回相应形状
 }
 
+// 获取有效宽度
 qreal LegendMarkerItem::effectiveMarkerWidth() const
 {
     return useMaxWidth() ? m_marker->m_legend->d_ptr->maxMarkerWidth()
                          : m_markerRect.width();
 }
 
+// 设置画刷以及画笔
 void LegendMarkerItem::setItemBrushAndPen()
 {
-    if (m_markerItem) {
+    if (m_markerItem) { // 标记项存在
+        // 转化为形状项
         QAbstractGraphicsShapeItem *shapeItem =
                 qgraphicsitem_cast<QGraphicsRectItem *>(m_markerItem);
+        // 转化失败
         if (!shapeItem)
-            shapeItem = qgraphicsitem_cast<QGraphicsEllipseItem *>(m_markerItem);
-        if (shapeItem) {
-            if (effectiveMarkerShape() == QLegend::MarkerShapeFromSeries) {
-                shapeItem->setPen(m_seriesPen);
-                shapeItem->setBrush(m_seriesBrush);
-            } else {
-                shapeItem->setPen(m_pen);
-                shapeItem->setBrush(m_brush);
+            shapeItem = qgraphicsitem_cast<QGraphicsEllipseItem *>(m_markerItem); // 转化为椭圆项
+        if (shapeItem) { // 转化成功
+            if (effectiveMarkerShape() == QLegend::MarkerShapeFromSeries) { // 采用序列的形状
+                shapeItem->setPen(m_seriesPen); // 设置序列画笔
+                shapeItem->setBrush(m_seriesBrush); // 设置序列画刷
+            } else { // 如果不采用序列的形状
+                shapeItem->setPen(m_pen); // 设置画笔
+                shapeItem->setBrush(m_brush); // 设置画刷
             }
-        } else {
+        } else { // 转化失败
             // Must be line item, it has no brush.
             QGraphicsLineItem *lineItem =
-                    qgraphicsitem_cast<QGraphicsLineItem *>(m_markerItem);
-            if (lineItem)
-                lineItem->setPen(m_seriesPen);
+                    qgraphicsitem_cast<QGraphicsLineItem *>(m_markerItem); // 转化为线
+            if (lineItem) // 转化成功
+                lineItem->setPen(m_seriesPen); // 设定画笔
         }
     }
 }
 
+// 设置标记项尺寸
 void LegendMarkerItem::setItemRect()
 {
-    if (m_itemType == TypeRect) {
+    if (m_itemType == TypeRect) { // 矩形标记
         static_cast<QGraphicsRectItem *>(m_markerItem)->setRect(m_markerRect);
-    } else if (m_itemType == TypeCircle) {
+    } else if (m_itemType == TypeCircle) { // 圆标记
         static_cast<QGraphicsEllipseItem *>(m_markerItem)->setRect(m_markerRect);
-    } else {
+    } else { // 其他标记（线标记）
         qreal y = m_markerRect.height() / 2.0;
         QLineF line(0.0, y, m_markerRect.width(), y);
         static_cast<QGraphicsLineItem *>(m_markerItem)->setLine(line);
     }
 }
 
+// 是否使用最大宽度
 bool LegendMarkerItem::useMaxWidth() const
 {
     return (m_marker->m_legend->alignment() == Qt::AlignLeft

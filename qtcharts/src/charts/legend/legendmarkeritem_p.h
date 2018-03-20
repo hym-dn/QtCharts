@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -53,19 +53,20 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QLegendMarkerPrivate;
 
+// 图例中的标记项，描述图例中一项标记
 class QT_CHARTS_PRIVATE_EXPORT LegendMarkerItem : public QGraphicsObject, public QGraphicsLayoutItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsLayoutItem)
 public:
-    enum ItemType {
-        TypeRect,
-        TypeLine,
-        TypeCircle
+    enum ItemType { // 标记类型
+        TypeRect, // 矩形
+        TypeLine, // 线
+        TypeCircle // 圆圈
     };
 
-    explicit LegendMarkerItem(QLegendMarkerPrivate *marker, QGraphicsObject *parent = nullptr);
-    ~LegendMarkerItem();
+    explicit LegendMarkerItem(QLegendMarkerPrivate *marker, QGraphicsObject *parent = nullptr); // 构造
+    ~LegendMarkerItem(); // 析构
 
     void setPen(const QPen &pen);
     QPen pen() const;
@@ -115,26 +116,26 @@ protected:
     void setItemRect();
     bool useMaxWidth() const;
 
-    QLegendMarkerPrivate *m_marker; // Knows
-    QRectF m_defaultMarkerRect;
-    QRectF m_markerRect;
-    QRectF m_boundingRect;
-    QGraphicsTextItem *m_textItem;
-    QGraphicsItem *m_markerItem;
-    qreal m_margin;
-    qreal m_space;
-    QString m_label;
-    QLegend::MarkerShape m_markerShape;
+    QLegendMarkerPrivate *m_marker; // Knows // 源标记
+    QRectF m_defaultMarkerRect; //默认标记矩形
+    QRectF m_markerRect; // 标记矩形
+    QRectF m_boundingRect; // 外接矩形
+    QGraphicsTextItem *m_textItem; // 文本项
+    QGraphicsItem *m_markerItem; // 标记项
+    qreal m_margin; // 留白
+    qreal m_space; // 间隔
+    QString m_label; // 标签
+    QLegend::MarkerShape m_markerShape; // 标记形状
 
-    QBrush m_labelBrush;
-    QPen m_pen;
-    QBrush m_brush;
-    QPen m_seriesPen;
-    QBrush m_seriesBrush;
-    QFont m_font;
-    bool m_hovering;
+    QBrush m_labelBrush; // 标签画刷
+    QPen m_pen; // 画笔
+    QBrush m_brush; // 画刷
+    QPen m_seriesPen; // 序列画笔
+    QBrush m_seriesBrush; // 序列画刷
+    QFont m_font; // 字体
+    bool m_hovering; // 是否鼠标处于其上
 
-    ItemType m_itemType;
+    ItemType m_itemType; // 项目类型
 
     friend class QLegendMarker;
     friend class QLegendMarkerPrivate;

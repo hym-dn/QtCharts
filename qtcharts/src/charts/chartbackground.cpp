@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -36,26 +36,29 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 ChartBackground::ChartBackground(QGraphicsItem *parent)
     : QGraphicsRectItem(parent),
-      m_diameter(5),
-      m_dropShadow(0)
+      m_diameter(5), // 直径
+      m_dropShadow(0) // 下拉阴影效果
 {
 }
 
+// 析构函数
 ChartBackground::~ChartBackground()
 {
 
 }
 
+// 设置下拉阴影效果
 void ChartBackground::setDropShadowEnabled(bool enabled)
 {
 #ifdef QT_NO_GRAPHICSEFFECT
     Q_UNUSED(enabled)
 #else
-    if (enabled) {
-        if (!m_dropShadow) {
-            m_dropShadow = new QGraphicsDropShadowEffect();
+    if (enabled) { // 启用
+        if (!m_dropShadow) { // 尚未创建
+            m_dropShadow = new QGraphicsDropShadowEffect(); // 创建
 #ifdef Q_OS_MAC
             m_dropShadow->setBlurRadius(15);
             m_dropShadow->setOffset(0, 0);
@@ -63,34 +66,37 @@ void ChartBackground::setDropShadowEnabled(bool enabled)
             m_dropShadow->setBlurRadius(10);
             m_dropShadow->setOffset(0, 0);
 #else
-            m_dropShadow->setBlurRadius(10);
-            m_dropShadow->setOffset(5, 5);
+            m_dropShadow->setBlurRadius(10); // 设置半径
+            m_dropShadow->setOffset(5, 5); // 设置偏移
 #endif
-            setGraphicsEffect(m_dropShadow);
+            setGraphicsEffect(m_dropShadow); // 设置效果
         }
-    } else {
-        delete m_dropShadow;
-        m_dropShadow = 0;
+    } else { // 禁用
+        delete m_dropShadow; // 删除
+        m_dropShadow = 0; // 置零
     }
 #endif
 }
 
+// 绘制
 void ChartBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->save();
-    painter->setPen(pen());
-    painter->setBrush(brush());
-    painter->drawRoundedRect(rect(), m_diameter, m_diameter);
-    painter->restore();
+    painter->save(); // 存储
+    painter->setPen(pen()); // 设置画笔
+    painter->setBrush(brush()); // 设置画刷
+    painter->drawRoundedRect(rect(), m_diameter, m_diameter); // 绘制
+    painter->restore(); // 恢复
 }
 
+// 获取绘制直径
 qreal ChartBackground::diameter() const
 {
     return m_diameter;
 }
 
+// 设置绘制直径
 void ChartBackground::setDiameter(qreal diameter)
 {
     m_diameter = diameter;

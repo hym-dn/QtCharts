@@ -87,8 +87,8 @@ public:
     virtual void setDomain(AbstractDomain* domain); // 设置区域
     AbstractDomain* domain() { return m_domain.data(); } // 返回区域
 
-    virtual void setPresenter(ChartPresenter *presenter); // 设置表达器
-    ChartPresenter *presenter() const; // 返回表达器
+    virtual void setPresenter(ChartPresenter *presenter); // 设置主持人
+    ChartPresenter *presenter() const; // 返回主持人
 
     QChart* chart() { return m_chart; } // 返回所属图表
 
@@ -108,9 +108,9 @@ private:
     QString m_name; // 名称
     bool m_visible; // 是否可见
     qreal m_opacity;  // 不透明
-    ChartPresenter *m_presenter; // 表达器
+    ChartPresenter *m_presenter; // 主持人
     bool m_useOpenGL; // 是否使用OpenGL
-    bool m_blockOpenGL; // ???
+    bool m_blockOpenGL; // 是否阻止OpenGL
 
     friend class QAbstractSeries;
     friend class ChartDataSet;

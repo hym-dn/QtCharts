@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -54,6 +54,7 @@ class QLegend;
 class QLegendMarker;
 class LegendMarkerItem;
 
+// 图例标记私有成员
 class QT_CHARTS_PRIVATE_EXPORT QLegendMarkerPrivate : public QObject
 {
     Q_OBJECT
@@ -65,7 +66,7 @@ public:
     LegendMarkerItem* item() const { return m_item; }
 
     virtual QAbstractSeries* series() = 0;
-    virtual QObject* relatedObject() = 0;
+    virtual QObject* relatedsetPosObject() = 0;
 
     void invalidateLegend();
     void invalidateAllItems();
@@ -82,7 +83,7 @@ protected:
     bool m_customPen;
 
 private:
-    QLegendMarker *q_ptr;
+    QLegendMarker *q_ptr; // 源图例标记
 
     friend class QLegendPrivate;
     friend class LegendMarkerItem;

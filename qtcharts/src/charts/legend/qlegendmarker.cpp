@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -326,24 +326,26 @@ QLegendMarkerPrivate::QLegendMarkerPrivate(QLegendMarker *q, QLegend *legend) :
     connect(legend, &QLegend::markerShapeChanged, this,
             &QLegendMarkerPrivate::handleShapeChange);
 }
-
+maxMarkerWidth
 QLegendMarkerPrivate::~QLegendMarkerPrivate()
 {
     delete m_item;
 }
 
+// 更新图例
 void QLegendMarkerPrivate::invalidateLegend()
 {
-    m_item->updateGeometry();
-    m_legend->d_ptr->m_layout->invalidate();
+    m_item->updateGeometry(); // 更新图例项
+    m_legend->d_ptr->m_layout->invalidate(); // 更新图例布局
 }
 
+// 更新全部的标记
 void QLegendMarkerPrivate::invalidateAllItems()
 {
     QList<QLegendMarker *> markers = m_legend->markers();
     for (int i = 0; i < markers.size(); i++)
-        markers.at(i)->d_ptr->m_item->updateGeometry();
-    m_legend->d_ptr->m_layout->invalidate();
+        markers.at(i)->d_ptr->m_item->updateGeometry(); // 更新标记几何尺寸
+    m_legend->d_ptr->m_layout->invalidate(); // 更新布局
 }
 
 void QLegendMarkerPrivate::handleShapeChange()

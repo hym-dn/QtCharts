@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,12 +47,12 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QLegend;
 class LegendMarkerItem;
 
+// 图列布局
 class QT_CHARTS_PRIVATE_EXPORT LegendLayout : public QGraphicsLayout
 {
 public:
-
-    LegendLayout(QLegend *legend);
-    virtual ~LegendLayout();
+    LegendLayout(QLegend *legend); // 构造
+    virtual ~LegendLayout(); // 析构
 
     void setGeometry(const QRectF &rect);
 
@@ -78,15 +78,15 @@ private:
                                 const LegendWidthStruct *item2);
 
 private:
-    QLegend *m_legend;
-    qreal m_offsetX;
-    qreal m_offsetY;
-    qreal m_minOffsetX;
-    qreal m_minOffsetY;
-    qreal m_maxOffsetX;
-    qreal m_maxOffsetY;
-    qreal m_width;
-    qreal m_height;
+    QLegend *m_legend; // 源图列
+    qreal m_offsetX; // x偏移
+    qreal m_offsetY; // y偏移
+    qreal m_minOffsetX; // 最小x偏移
+    qreal m_minOffsetY; // 最小y偏移
+    qreal m_maxOffsetX; // 最大x偏移
+    qreal m_maxOffsetY; // 最大y偏移
+    qreal m_width; // 宽度
+    qreal m_height; // 高度
 };
 
 QT_CHARTS_END_NAMESPACE

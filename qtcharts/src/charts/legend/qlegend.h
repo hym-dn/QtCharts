@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -42,6 +42,7 @@ class QLegendPrivate;
 class QLegendMarker;
 class QAbstractSeries;
 
+// 图例类，负责抽象描述一项图列信息
 class QT_CHARTS_EXPORT QLegend : public QGraphicsWidget
 {
     Q_OBJECT
@@ -56,9 +57,10 @@ class QT_CHARTS_EXPORT QLegend : public QGraphicsWidget
     Q_PROPERTY(MarkerShape markerShape READ markerShape WRITE setMarkerShape NOTIFY markerShapeChanged)
 
 private:
-    explicit QLegend(QChart *chart);
+    explicit QLegend(QChart *chart); // 构造
 
 public:
+    // 标记形状
     enum MarkerShape {
         MarkerShapeDefault,
         MarkerShapeRectangle,
@@ -67,7 +69,7 @@ public:
     };
     Q_ENUMS(MarkerShape)
 
-    ~QLegend();
+    ~QLegend(); // 析构函数
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
@@ -125,7 +127,7 @@ Q_SIGNALS:
     void markerShapeChanged(MarkerShape shape);
 
 private:
-    QScopedPointer<QLegendPrivate> d_ptr;
+    QScopedPointer<QLegendPrivate> d_ptr; // 图列私有成员
     Q_DISABLE_COPY(QLegend)
     friend class LegendScroller;
     friend class LegendLayout;

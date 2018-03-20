@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -45,17 +45,18 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 图表标题
 class QT_CHARTS_PRIVATE_EXPORT ChartTitle : public QGraphicsTextItem
 {
 public:
-    ChartTitle(QGraphicsItem *parent = 0);
-    ~ChartTitle();
-    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const;
-    void setText(const QString &text);
-    QString text() const;
-    void setGeometry(const QRectF &rect);
+    ChartTitle(QGraphicsItem *parent = 0); // 构造
+    ~ChartTitle(); // 析构
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const; // 默认尺寸
+    void setText(const QString &text); // 设置文本
+    QString text() const; // 获取文本
+    void setGeometry(const QRectF &rect); // 设置几何尺寸
 private:
-    QString m_text;
+    QString m_text; // 文本
 };
 
 QT_CHARTS_END_NAMESPACE

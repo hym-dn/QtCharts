@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -63,11 +63,13 @@ class ChartTitle;
 class ChartAnimation;
 class AbstractChartLayout;
 
+// 图表主持人，负责图表绘制过程中的控制操作
 class QT_CHARTS_PRIVATE_EXPORT ChartPresenter: public QObject
 {
     Q_OBJECT
 public:
-    enum ZValues {
+    // z轴坐标,利用控制图层
+    enum ZValues{
         BackgroundZValue = -1,
         PlotAreaZValue,
         ShadesZValue,
@@ -85,6 +87,7 @@ public:
         TopMostZValue
     };
 
+    // 状态
     enum State {
         ShowState,
         ScrollUpState,
@@ -95,8 +98,8 @@ public:
         ZoomOutState
     };
 
-    ChartPresenter(QChart *chart, QChart::ChartType type);
-    virtual ~ChartPresenter();
+    ChartPresenter(QChart *chart, QChart::ChartType type); // 构造
+    virtual ~ChartPresenter(); // 析构
 
 
     void setGeometry(QRectF rect);
@@ -194,27 +197,27 @@ Q_SIGNALS:
     void plotAreaChanged(const QRectF &plotArea);
 
 private:
-    QChart *m_chart;
-    QList<ChartItem *> m_chartItems;
-    QList<ChartAxisElement *> m_axisItems;
-    QList<QAbstractSeries *> m_series;
-    QList<QAbstractAxis *> m_axes;
-    QChart::AnimationOptions m_options;
-    int m_animationDuration;
-    QEasingCurve m_animationCurve;
-    State m_state;
-    QPointF m_statePoint;
-    AbstractChartLayout *m_layout;
-    ChartBackground *m_background;
-    QAbstractGraphicsShapeItem *m_plotAreaBackground;
-    ChartTitle *m_title;
-    QRectF m_rect;
-    bool m_localizeNumbers;
-    QLocale m_locale;
+    QChart *m_chart; // 所属图表
+    QList<ChartItem *> m_chartItems; // 图表项
+    QList<ChartAxisElement *> m_axisItems; // 轴元素项
+    QList<QAbstractSeries *> m_series; // 序列项
+    QList<QAbstractAxis *> m_axes; // 轴项
+    QChart::AnimationOptions m_options; // 动画选项
+    int m_animationDuration; // ???
+    QEasingCurve m_animationCurve; // ???
+    State m_state; // 状态
+    QPointF m_statePoint; // 状态点
+    AbstractChartLayout *m_layout; // 布局
+    ChartBackground *m_background; // 背景
+    QAbstractGraphicsShapeItem *m_plotAreaBackground; // 绘图区域背景
+    ChartTitle *m_title; // 标题
+    QRectF m_rect; // 矩形空间
+    bool m_localizeNumbers; // ???
+    QLocale m_locale; // ???
 #ifndef QT_NO_OPENGL
-    QPointer<GLWidget> m_glWidget;
+    QPointer<GLWidget> m_glWidget; // OpenGL 部件
 #endif
-    bool m_glUseWidget;
+    bool m_glUseWidget; // 是否使用OpengGL部件
 };
 
 QT_CHARTS_END_NAMESPACE

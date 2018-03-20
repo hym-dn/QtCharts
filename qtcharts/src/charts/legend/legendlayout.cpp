@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -38,19 +38,22 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 LegendLayout::LegendLayout(QLegend *legend)
-    : m_legend(legend),
-      m_offsetX(0),
-      m_offsetY(0)
+    : m_legend(legend), // 源图例
+      m_offsetX(0), // x偏移
+      m_offsetY(0) // y偏移
 {
 
 }
 
+// 析构
 LegendLayout::~LegendLayout()
 {
 
 }
 
+// 设置偏移量
 void LegendLayout::setOffset(qreal x, qreal y)
 {
     bool scrollHorizontal = true;
@@ -106,50 +109,65 @@ void LegendLayout::invalidate()
         m_legend->d_ptr->m_presenter->layout()->invalidate();
 }
 
+// 设置几何尺寸
 void LegendLayout::setGeometry(const QRectF &rect)
 {
+    // 设置图例是否可见
     m_legend->d_ptr->items()->setVisible(m_legend->isVisible());
 
+    // 设置几何尺寸
     QGraphicsLayout::setGeometry(rect);
 
+    // 如果图例捆绑了图表
     if (m_legend->isAttachedToChart())
-        setAttachedGeometry(rect);
+        setAttachedGeometry(rect); // 设置绑定几何尺寸
+    // 如果图例尚未捆绑图表
     else
-        setDettachedGeometry(rect);
+        setDettachedGeometry(rect); // 设置未绑定几何尺寸
 }
 
+// 设置绑定几何尺寸
 void LegendLayout::setAttachedGeometry(const QRectF &rect)
 {
+    // 尺寸无效
     if (!rect.isValid())
         return;
 
+    // 记录x、y偏移
     qreal oldOffsetX = m_offsetX;
     qreal oldOffsetY = m_offsetY;
+
+    // 清空x、y偏移
     m_offsetX = 0;
     m_offsetY = 0;
 
     QSizeF size(0, 0);
 
+    // 图例中标记为空
     if (m_legend->d_ptr->markers().isEmpty()) {
-        return;
+        return; // 直接返回
     }
 
+    // 清空宽、高
     m_width = 0;
     m_height = 0;
 
+    // 获取留白尺寸
     qreal left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
 
+    // 调整几何尺寸
     QRectF geometry = rect.adjusted(left, top, -right, -bottom);
 
+    // 分辨停靠方式
     switch(m_legend->alignment()) {
     case Qt::AlignTop:
-    case Qt::AlignBottom: {
+    case Qt::AlignBottom: { // 顶部、底部停靠
             // Calculate the space required for items and add them to a sorted list.
             qreal markerItemsWidth = 0;
             qreal itemMargins = 0;
             QList<LegendWidthStruct *> legendWidthList;
-            foreach (QLegendMarker *marker, m_legend->d_ptr->markers()) {
+            foreach (QLegendMarker *marker, m_legend->d_ptr->markers()) { // 遍历标记
                 LegendMarkerItem *item = marker->d_ptr->item();
                 if (item->isVisible()) {
                     QSizeF dummySize;

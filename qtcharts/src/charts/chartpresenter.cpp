@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -48,29 +48,32 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 ChartPresenter::ChartPresenter(QChart *chart, QChart::ChartType type)
     : QObject(chart),
-      m_chart(chart),
-      m_options(QChart::NoAnimation),
-      m_animationDuration(ChartAnimationDuration),
-      m_animationCurve(QEasingCurve::OutQuart),
-      m_state(ShowState),
-      m_background(0),
-      m_plotAreaBackground(0),
-      m_title(0),
-      m_localizeNumbers(false)
+      m_chart(chart), // 所属图表
+      m_options(QChart::NoAnimation), // 动画选项s
+      m_animationDuration(ChartAnimationDuration), // ???
+      m_animationCurve(QEasingCurve::OutQuart), // ???
+      m_state(ShowState), // 状态
+      m_background(0), // 背景
+      m_plotAreaBackground(0), // 绘图背景
+      m_title(0), // 标题
+      m_localizeNumbers(false) // ???
 #ifndef QT_NO_OPENGL
-      , m_glWidget(0)
-      , m_glUseWidget(true)
+      , m_glWidget(0) // OpenGL 部件
+      , m_glUseWidget(true) // 是否使用OpenGL 部件
 #endif
 {
-    if (type == QChart::ChartTypeCartesian)
-        m_layout = new CartesianChartLayout(this);
-    else if (type == QChart::ChartTypePolar)
-        m_layout = new PolarChartLayout(this);
+    // 初始化布局
+    if (type == QChart::ChartTypeCartesian) // 笛卡尔坐标
+        m_layout = new CartesianChartLayout(this); // 笛卡尔坐标布局
+    else if (type == QChart::ChartTypePolar) // 极坐标
+        m_layout = new PolarChartLayout(this); // 极坐标布局
     Q_ASSERT(m_layout);
 }
 
+// 析构函数
 ChartPresenter::~ChartPresenter()
 {
 #ifndef QT_NO_OPENGL

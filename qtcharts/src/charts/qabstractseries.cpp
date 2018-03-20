@@ -435,29 +435,38 @@ QAbstractSeriesPrivate::~QAbstractSeriesPrivate()
 {
 }
 
+// 设置区域
 void QAbstractSeriesPrivate::setDomain(AbstractDomain* domain)
 {
     Q_ASSERT(domain);
-    if(m_domain.data()!=domain) {
+    if(m_domain.data()!=domain) { // 区域是否变更
+        // 图表项存在,断开以前信号
         if(!m_item.isNull()) QObject::disconnect(m_domain.data(), SIGNAL(updated()), m_item.data(), SLOT(handleDomainUpdated()));
+        // 重置区域
         m_domain.reset(domain);
+        // 图表项非空
         if(!m_item.isNull()) {
+            // 绑定新信号
             QObject::connect(m_domain.data(), SIGNAL(updated()),m_item.data(), SLOT(handleDomainUpdated()));
+            // 更新图表项
             m_item->handleDomainUpdated();
         }
     }
 }
 
+// 设置主持人（处理事件）
 void QAbstractSeriesPrivate::setPresenter(ChartPresenter *presenter)
 {
     m_presenter = presenter;
 }
 
+// 获取主持人（协调处理事件）
 ChartPresenter *QAbstractSeriesPrivate::presenter() const
 {
     return m_presenter;
 }
 
+// 初始化图像
 void QAbstractSeriesPrivate::initializeGraphics(QGraphicsItem* parent)
 {
     Q_ASSERT(!m_item.isNull());
@@ -465,6 +474,7 @@ void QAbstractSeriesPrivate::initializeGraphics(QGraphicsItem* parent)
     QObject::connect(m_domain.data(), SIGNAL(updated()),m_item.data(), SLOT(handleDomainUpdated()));
 }
 
+// 初始化动画
 void QAbstractSeriesPrivate::initializeAnimations(QChart::AnimationOptions options, int duration,
                                                   QEasingCurve &curve)
 {
@@ -475,6 +485,7 @@ void QAbstractSeriesPrivate::initializeAnimations(QChart::AnimationOptions optio
 
 // This function can be used to explicitly block OpenGL use from some otherwise supported series,
 // such as the line series used as edge series of an area series.
+// 设置是否阻止penGL
 void QAbstractSeriesPrivate::setBlockOpenGL(bool enable)
 {
     m_blockOpenGL = enable;

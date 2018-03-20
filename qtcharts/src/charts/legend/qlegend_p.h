@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -50,14 +50,15 @@ class QAbstractSeries;
 class LegendLayout;
 class QLegendMarker;
 
+// 图例私有成员类
 class QT_CHARTS_PRIVATE_EXPORT QLegendPrivate : public QObject
 {
     Q_OBJECT
 public:
-    QLegendPrivate(ChartPresenter *presenter, QChart *chart, QLegend *q);
-    ~QLegendPrivate();
+    QLegendPrivate(ChartPresenter *presenter, QChart *chart, QLegend *q); // 构造
+    ~QLegendPrivate(); // 析构
 
-    void setOffset(const QPointF &offset);
+    void setOffset(const QPointF &offset); // 设置偏移
     QPointF offset() const;
     int roundness(qreal size);
 
@@ -80,28 +81,28 @@ private:
     void updateToolTips();
 
 private:
-    QLegend *q_ptr;
-    ChartPresenter *m_presenter;
-    LegendLayout *m_layout;
-    QChart *m_chart;
-    QGraphicsItemGroup *m_items;
-    Qt::Alignment m_alignment;
-    QBrush m_brush;
-    QPen m_pen;
-    QFont m_font;
-    QBrush m_labelBrush;
+    QLegend *q_ptr; // 源图例
+    ChartPresenter *m_presenter; // 图表主持
+    LegendLayout *m_layout; // 图表布局
+    QChart *m_chart; // 图表
+    QGraphicsItemGroup *m_items; // 项目组
+    Qt::Alignment m_alignment; // 停靠方式
+    QBrush m_brush; // 画刷
+    QPen m_pen; // 画笔
+    QFont m_font; // 字体
+    QBrush m_labelBrush; // 标签画刷
 
-    qreal m_diameter;
-    bool m_attachedToChart;
-    bool m_backgroundVisible;
-    bool m_reverseMarkers;
-    bool m_showToolTips;
-    QLegend::MarkerShape m_markerShape;
+    qreal m_diameter; // 直径
+    bool m_attachedToChart; // 是否捆绑到图表
+    bool m_backgroundVisible; // 背景是否可见
+    bool m_reverseMarkers; // 标记是否逆向
+    bool m_showToolTips; // 是否显示提示
+    QLegend::MarkerShape m_markerShape; // 标记形状
 
-    QList<QLegendMarker *> m_markers;
-    QList<QAbstractSeries *> m_series;
+    QList<QLegendMarker *> m_markers; // 标记链表
+    QList<QAbstractSeries *> m_series; // 序列链表
 
-    QHash<QGraphicsItem *, QLegendMarker *> m_markerHash;
+    QHash<QGraphicsItem *, QLegendMarker *> m_markerHash; // 标记映射
 
     friend class QLegend;
     friend class LegendMarkerItem;

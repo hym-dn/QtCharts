@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -36,61 +36,67 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 ChartTitle::ChartTitle(QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
 {
     document()->setDocumentMargin(ChartPresenter::textMargin());
 }
 
+// 析构函数
 ChartTitle::~ChartTitle()
 {
 
 }
 
+// 设置文本
 void ChartTitle::setText(const QString &text)
 {
     m_text = text;
 }
 
+// 获取文本
 QString ChartTitle::text() const
 {
     return m_text;
 }
 
+// 设置几何尺寸
 void ChartTitle::setGeometry(const QRectF &rect)
 {
     QRectF truncatedRect;
-    if (m_text.isEmpty()) {
+    if (m_text.isEmpty()) { // 文本为空
         QGraphicsTextItem::setHtml(m_text);
         QGraphicsTextItem::setTextWidth(0.0);
-    } else {
+    } else { // 文本非空
         QGraphicsTextItem::setHtml(ChartPresenter::truncatedText(font(), m_text, qreal(0.0),
                                                                  rect.width(), rect.height(),
                                                                  truncatedRect));
         QGraphicsTextItem::setTextWidth(truncatedRect.width());
     }
+    // 设置标题位置
     setPos(rect.topLeft());
 }
 
-
+// 默认尺寸
 QSizeF ChartTitle::sizeHint(Qt::SizeHint which, const QSizeF &constraint) const
 {
     Q_UNUSED(constraint);
     QSizeF sh;
 
     switch (which) {
-    case Qt::MinimumSize: {
+    case Qt::MinimumSize: { // 最小尺寸
         QRectF titleRect = ChartPresenter::textBoundingRect(font(), QStringLiteral("..."));
         sh = QSizeF(titleRect.width(), titleRect.height());
         break;
     }
     case Qt::PreferredSize:
-    case Qt::MaximumSize: {
+    case Qt::MaximumSize: { // 最大尺寸
         QRectF titleRect = ChartPresenter::textBoundingRect(font(), m_text);
         sh = QSizeF(titleRect.width(), titleRect.height());
         break;
     }
-    case Qt::MinimumDescent: {
+    case Qt::MinimumDescent: { // ???
         QFontMetrics fn(font());
         sh = QSizeF(0, fn.descent());
         break;

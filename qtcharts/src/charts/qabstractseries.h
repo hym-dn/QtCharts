@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -40,6 +40,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QAbstractSeriesPrivate;
 class QChart;
 
+// 序列类，负责抽象描述一项序列信息
 class QT_CHARTS_EXPORT QAbstractSeries : public QObject
 {
     Q_OBJECT
@@ -51,6 +52,7 @@ class QT_CHARTS_EXPORT QAbstractSeries : public QObject
     Q_ENUMS(SeriesType)
 
 public:
+    // 序列类型
     enum SeriesType {
         SeriesTypeLine,
         SeriesTypeArea,
@@ -99,7 +101,7 @@ Q_SIGNALS:
     void useOpenGLChanged();
 
 protected:
-    QScopedPointer<QAbstractSeriesPrivate> d_ptr;
+    QScopedPointer<QAbstractSeriesPrivate> d_ptr; // 序列类私有成员
     friend class ChartDataSet;
     friend class ChartPresenter;
     friend class ChartThemeManager;

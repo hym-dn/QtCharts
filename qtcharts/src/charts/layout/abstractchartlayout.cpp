@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -39,12 +39,14 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 static const qreal golden_ratio = 0.4;
 
+// 构造
 AbstractChartLayout::AbstractChartLayout(ChartPresenter *presenter)
-    : m_presenter(presenter),
-      m_margins(20, 20, 20, 20)
+    : m_presenter(presenter), // 图表主持
+      m_margins(20, 20, 20, 20) // 间隔
 {
 }
 
+// 析构
 AbstractChartLayout::~AbstractChartLayout()
 {
 }
@@ -60,52 +62,62 @@ void AbstractChartLayout::setGeometry(const QRectF &rect)
         QLegend *legend = m_presenter->legend();
         ChartBackground *background = m_presenter->backgroundElement();
 
+        // 计算背景尺寸
         QRectF contentGeometry = calculateBackgroundGeometry(rect, background);
 
+        // 计算内容尺寸
         contentGeometry = calculateContentGeometry(contentGeometry);
 
+        // 计算标题尺寸
         if (title && title->isVisible())
             contentGeometry = calculateTitleGeometry(contentGeometry, title);
 
+        // 计算图例尺寸
         if (legend->isAttachedToChart() && legend->isVisible())
             contentGeometry = calculateLegendGeometry(contentGeometry, legend);
 
+        // 计算坐标轴尺寸
         contentGeometry = calculateAxisGeometry(contentGeometry, axes);
 
+        // 存储几何尺寸
         m_presenter->setGeometry(contentGeometry);
-        if (m_presenter->chart()->chartType() == QChart::ChartTypeCartesian)
+        if (m_presenter->chart()->chartType() == QChart::ChartTypeCartesian) // 笛卡尔坐标
             static_cast<QGraphicsRectItem *>(m_presenter->plotAreaElement())->setRect(contentGeometry);
-        else
+        else // 极坐标
             static_cast<QGraphicsEllipseItem *>(m_presenter->plotAreaElement())->setRect(contentGeometry);
     }
 
+    // 设置布局尺寸
     QGraphicsLayout::setGeometry(rect);
 }
 
+// 计算内容几何尺寸
 QRectF AbstractChartLayout::calculateContentGeometry(const QRectF &geometry) const
 {
     return geometry.adjusted(m_margins.left(), m_margins.top(), -m_margins.right(), -m_margins.bottom());
 }
 
+// 计算内容最小尺寸
 QRectF AbstractChartLayout::calculateContentMinimum(const QRectF &minimum) const
 {
     return  minimum.adjusted(0, 0, m_margins.left() + m_margins.right(), m_margins.top() + m_margins.bottom());
 }
 
-
+// 计算背景几何尺寸
 QRectF AbstractChartLayout::calculateBackgroundGeometry(const QRectF &geometry, ChartBackground *background) const
 {
     qreal left;
     qreal top;
     qreal right;
     qreal bottom;
-    getContentsMargins(&left, &top, &right, &bottom);
-    QRectF backgroundGeometry = geometry.adjusted(left, top, -right, -bottom);
-    if (background)
-        background->setRect(backgroundGeometry);
-    return backgroundGeometry;
+    getContentsMargins(&left, &top, &right, &bottom); // 基类函数，获取上、下、左、右间隔
+    QRectF backgroundGeometry = geometry.adjusted(left, top, -right, -bottom); // 调整尺寸
+    if (background) // 设置背景尺寸
+        background->setRect(backgroundGeometry); // 更新背景尺寸
+    return backgroundGeometry; // 返回背景几何尺寸
 }
 
+// 计算背景最小尺寸
 QRectF AbstractChartLayout::calculateBackgroundMinimum(const QRectF &minimum) const
 {
     qreal left;
@@ -116,6 +128,7 @@ QRectF AbstractChartLayout::calculateBackgroundMinimum(const QRectF &minimum) co
     return minimum.adjusted(0, 0, left + right, top + bottom);
 }
 
+// 计算图例几何尺寸
 QRectF AbstractChartLayout::calculateLegendGeometry(const QRectF &geometry, QLegend *legend) const
 {
     QSizeF size = legend->effectiveSizeHint(Qt::PreferredSize, QSizeF(-1, -1));
@@ -157,6 +170,7 @@ QRectF AbstractChartLayout::calculateLegendGeometry(const QRectF &geometry, QLeg
     return result;
 }
 
+// 计算图例最小尺寸
 QRectF AbstractChartLayout::calculateLegendMinimum(const QRectF &geometry, QLegend *legend) const
 {
     if (!legend->isAttachedToChart() || !legend->isVisible()) {
@@ -167,20 +181,21 @@ QRectF AbstractChartLayout::calculateLegendMinimum(const QRectF &geometry, QLege
     }
 }
 
+// 计算标题几何尺寸
 QRectF AbstractChartLayout::calculateTitleGeometry(const QRectF &geometry, ChartTitle *title) const
 {
-    title->setGeometry(geometry);
-    if (title->text().isEmpty()) {
+    title->setGeometry(geometry); // 更新标题尺寸
+    if (title->text().isEmpty()) { // 标题为空
         return geometry;
-    } else {
+    } else { // 标题非空
         // Round to full pixel via QPoint to avoid one pixel clipping on the edge in some cases
         QPointF center((geometry.center() - title->boundingRect().center()).toPoint());
-
-        title->setPos(center.x(), title->pos().y());
-        return geometry.adjusted(0, title->boundingRect().height() + 1, 0, 0);
+        title->setPos(center.x(), title->pos().y()); // 设置标题位置
+        return geometry.adjusted(0, title->boundingRect().height() + 1, 0, 0); // 返回几何尺寸
     }
 }
 
+// 计算标题最小尺寸
 QRectF AbstractChartLayout::calculateTitleMinimum(const QRectF &minimum, ChartTitle *title) const
 {
     if (!title->isVisible() || title->text().isEmpty()) {
