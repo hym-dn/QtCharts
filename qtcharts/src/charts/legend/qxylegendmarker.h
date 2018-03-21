@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -38,20 +38,21 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QXYLegendMarkerPrivate;
 
+// XY图例标记
 class QT_CHARTS_EXPORT QXYLegendMarker : public QLegendMarker
 {
     Q_OBJECT
 public:
-    explicit QXYLegendMarker(QXYSeries *series, QLegend *legend, QObject *parent = nullptr);
-    virtual ~QXYLegendMarker();
+    explicit QXYLegendMarker(QXYSeries *series, QLegend *legend, QObject *parent = nullptr); // 构造
+    virtual ~QXYLegendMarker(); // 析构
 
-    virtual LegendMarkerType type() { return LegendMarkerTypeXY; }
+    virtual LegendMarkerType type() { return LegendMarkerTypeXY; } // 图例标记类型
 
     // Related series
-    virtual QXYSeries* series();
+    virtual QXYSeries* series(); // 所属序列
 
 protected:
-    QXYLegendMarker(QXYLegendMarkerPrivate &d, QObject *parent = nullptr);
+    QXYLegendMarker(QXYLegendMarkerPrivate &d, QObject *parent = nullptr); // 构造
 
 private:
     Q_DECLARE_PRIVATE(QXYLegendMarker)

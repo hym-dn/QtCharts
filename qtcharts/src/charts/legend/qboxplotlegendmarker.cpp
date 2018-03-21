@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -52,15 +52,17 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
   \internal
 */
+// 构造
 QBoxPlotLegendMarker::QBoxPlotLegendMarker(QBoxPlotSeries *series, QLegend *legend, QObject *parent) :
     QLegendMarker(*new QBoxPlotLegendMarkerPrivate(this,series,legend), parent)
 {
-    d_ptr->updated();
+    d_ptr->updated(); // 更新
 }
 
 /*!
     Removes the legend marker for a box plot series.
 */
+// 析构
 QBoxPlotLegendMarker::~QBoxPlotLegendMarker()
 {
 }
@@ -68,6 +70,7 @@ QBoxPlotLegendMarker::~QBoxPlotLegendMarker()
 /*!
     \internal
 */
+// 构造
 QBoxPlotLegendMarker::QBoxPlotLegendMarker(QBoxPlotLegendMarkerPrivate &d, QObject *parent) :
     QLegendMarker(d, parent)
 {
@@ -76,6 +79,7 @@ QBoxPlotLegendMarker::QBoxPlotLegendMarker(QBoxPlotLegendMarkerPrivate &d, QObje
 /*!
     \reimp
 */
+// 获取所属序列
 QBoxPlotSeries* QBoxPlotLegendMarker::series()
 {
     Q_D(QBoxPlotLegendMarker);
@@ -83,45 +87,53 @@ QBoxPlotSeries* QBoxPlotLegendMarker::series()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 QBoxPlotLegendMarkerPrivate::QBoxPlotLegendMarkerPrivate(QBoxPlotLegendMarker *q, QBoxPlotSeries *series, QLegend *legend) :
     QLegendMarkerPrivate(q,legend),
-    q_ptr(q),
-    m_series(series)
+    q_ptr(q), // 所属图列标记
+    m_series(series) // 所属序列
 {
+    // 信号、槽
     QObject::connect(m_series, SIGNAL(nameChanged()), this, SLOT(updated()));
     QObject::connect(m_series->d_func(), SIGNAL(updated()), this, SLOT(updated()));
 }
 
+// 析构
 QBoxPlotLegendMarkerPrivate::~QBoxPlotLegendMarkerPrivate()
 {
 }
 
+// 所属序列
 QAbstractSeries* QBoxPlotLegendMarkerPrivate::series()
 {
     return m_series;
 }
 
+// 相关对象
 QObject* QBoxPlotLegendMarkerPrivate::relatedObject()
 {
     return m_series;
 }
 
+// 更新
 void QBoxPlotLegendMarkerPrivate::updated()
 {
+    // 更新标记
     bool labelChanged = false;
     bool brushChanged = false;
-
+    // 更新标签
     if (!m_customLabel && (m_item->label() != m_series->name())) {
         m_item->setLabel(m_series->name());
         labelChanged = true;
     }
+    // 更新画刷
     if (!m_customBrush && (m_item->brush() != m_series->brush())) {
         m_item->setBrush(m_series->brush());
         brushChanged = true;
     }
+    // 更新图例
     invalidateLegend();
-
+    // 发送信号
     if (labelChanged)
         emit q_ptr->labelChanged();
     if (brushChanged)

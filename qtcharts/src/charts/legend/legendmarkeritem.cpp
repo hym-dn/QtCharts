@@ -158,7 +158,7 @@ QBrush LegendMarkerItem::labelBrush() const
     return QBrush(m_textItem->defaultTextColor());
 }
 
-// 设置几何尺寸
+// 设置几何尺寸，同时设定标记、文本的位置
 void LegendMarkerItem::setGeometry(const QRectF &rect)
 {
     // 如果标记项不存在，则按形状、尺寸创建
@@ -168,48 +168,57 @@ void LegendMarkerItem::setGeometry(const QRectF &rect)
     const qreal width = rect.width();
     // 有效宽度
     const qreal markerWidth = effectiveMarkerWidth();
-
+    // 计算文本的起始x坐标
     const qreal x = m_margin + markerWidth + m_space + m_margin;
-
+    // 计算文本外接矩形，并对其进行剪裁
     QRectF truncatedRect;
     const QString html = ChartPresenter::truncatedText(m_font, m_label, qreal(0.0),
                                                        width - x, rect.height(), truncatedRect);
+    // 设置文本
     m_textItem->setHtml(html);
+    // 设置tooltip
 #if QT_CONFIG(tooltip)
     if (m_marker->m_legend->showToolTips() && html != m_label)
         m_textItem->setToolTip(m_label);
     else
         m_textItem->setToolTip(QString());
 #endif
+    // 设置字体
     m_textItem->setFont(m_font);
+    // 设置文本宽度
     m_textItem->setTextWidth(truncatedRect.width());
-
+    // 计算起始y坐标
     qreal y = qMax(m_markerRect.height() + 2 * m_margin, truncatedRect.height() + 2 * m_margin);
-
+    // 计算文本外接矩形
     const QRectF &textRect = m_textItem->boundingRect();
-
+    // 设置文本位置
     m_textItem->setPos(x - m_margin, y / 2 - textRect.height() / 2);
+    // 设置项目矩形
     setItemRect();
-
     // The textMargin adjustments to position are done to make default case rects less blurry with anti-aliasing
+    // 设置标记位置
     m_markerItem->setPos(m_margin - ChartPresenter::textMargin()
                          + (markerWidth - m_markerRect.width()) / 2.0,
                          y / 2.0  - m_markerRect.height() / 2.0 + ChartPresenter::textMargin());
-
-    prepareGeometryChange();
+    // 更新几何图形
+    prepareGeometryChange(); // 继承自QGraphicsItem
+    // 重新计算外接矩形
     m_boundingRect = QRectF(0, 0, x + textRect.width() + m_margin, y);
 }
 
+// 获取外接矩形
 QRectF LegendMarkerItem::boundingRect() const
 {
     return m_boundingRect;
 }
 
+// 获取标记矩形
 QRectF LegendMarkerItem::markerRect() const
 {
     return m_markerRect;
 }
 
+// 绘图
 void LegendMarkerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
@@ -217,21 +226,22 @@ void LegendMarkerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(painter)
 }
 
+// 默认尺寸
 QSizeF LegendMarkerItem::sizeHint(Qt::SizeHint which, const QSizeF& constraint) const
 {
     Q_UNUSED(constraint)
 
     QSizeF sh;
-    const qreal markerWidth = effectiveMarkerWidth();
+    const qreal markerWidth = effectiveMarkerWidth(); // 有效的标记宽度
 
     switch (which) {
-    case Qt::MinimumSize: {
+    case Qt::MinimumSize: { // 最小尺寸
         const QRectF labelRect = ChartPresenter::textBoundingRect(m_font, QStringLiteral("..."));
         sh = QSizeF(labelRect.width() + (2.0 * m_margin) + m_space + markerWidth,
                     qMax(m_markerRect.height(), labelRect.height()) + (2.0 * m_margin));
         break;
     }
-    case Qt::PreferredSize: {
+    case Qt::PreferredSize: { // 合适尺寸
         const QRectF labelRect = ChartPresenter::textBoundingRect(m_font, m_label);
         sh = QSizeF(labelRect.width() + (2.0 * m_margin) + m_space + markerWidth,
                     qMax(m_markerRect.height(), labelRect.height()) + (2.0 * m_margin));
@@ -244,6 +254,7 @@ QSizeF LegendMarkerItem::sizeHint(Qt::SizeHint which, const QSizeF& constraint) 
     return sh;
 }
 
+// 在其上进入事件
 void LegendMarkerItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
@@ -251,6 +262,7 @@ void LegendMarkerItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     emit m_marker->q_ptr->hovered(true);
 }
 
+// 在其上离开事件
 void LegendMarkerItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
@@ -258,11 +270,13 @@ void LegendMarkerItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     emit m_marker->q_ptr->hovered(false);
 }
 
+// 获取显示的标签
 QString LegendMarkerItem::displayedLabel() const
 {
     return m_textItem->toHtml();
 }
 
+// 设置提示气泡
 void LegendMarkerItem::setToolTip(const QString &tip)
 {
 #if QT_CONFIG(tooltip)
@@ -270,11 +284,13 @@ void LegendMarkerItem::setToolTip(const QString &tip)
 #endif
 }
 
+// 获取标记形状
 QLegend::MarkerShape LegendMarkerItem::markerShape() const
 {
     return m_markerShape;
 }
 
+// 设置标记形状
 void LegendMarkerItem::setMarkerShape(QLegend::MarkerShape shape)
 {
     m_markerShape = shape;

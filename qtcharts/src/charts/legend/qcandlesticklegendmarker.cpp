@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -49,15 +49,17 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
     \internal
 */
+// 构造
 QCandlestickLegendMarker::QCandlestickLegendMarker(QCandlestickSeries *series, QLegend *legend,
                                                    QObject *parent)
     : QLegendMarker(*new QCandlestickLegendMarkerPrivate(this, series, legend), parent)
 {
     Q_D(QCandlestickLegendMarker);
 
-    d->updated();
+    d->updated(); // 更新s
 }
 
+// 析构
 QCandlestickLegendMarker::~QCandlestickLegendMarker()
 {
 }
@@ -65,6 +67,7 @@ QCandlestickLegendMarker::~QCandlestickLegendMarker()
 /*!
     \reimp
 */
+// 类型
 QLegendMarker::LegendMarkerType QCandlestickLegendMarker::type()
 {
     return LegendMarkerTypeCandlestick;
@@ -73,6 +76,7 @@ QLegendMarker::LegendMarkerType QCandlestickLegendMarker::type()
 /*!
     \reimp
 */
+// 所属序列
 QCandlestickSeries* QCandlestickLegendMarker::series()
 {
     Q_D(QCandlestickLegendMarker);
@@ -82,41 +86,49 @@ QCandlestickSeries* QCandlestickLegendMarker::series()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 构造
 QCandlestickLegendMarkerPrivate::QCandlestickLegendMarkerPrivate(QCandlestickLegendMarker *q,
                                                                  QCandlestickSeries *series,
                                                                  QLegend *legend)
     : QLegendMarkerPrivate(q, legend),
-      q_ptr(q),
-      m_series(series)
+      q_ptr(q), // 所属标记
+      m_series(series) // 所属序列
 {
+    // 信号、槽
     QObject::connect(m_item, SIGNAL(markerRectChanged()), this, SLOT(updated()));
     QObject::connect(m_series, SIGNAL(nameChanged()), this, SLOT(updated()));
     QObject::connect(m_series->d_func(), SIGNAL(updated()), this, SLOT(updated()));
 }
 
+// 析构
 QCandlestickLegendMarkerPrivate::~QCandlestickLegendMarkerPrivate()
 {
 }
 
+// 所属序列
 QAbstractSeries* QCandlestickLegendMarkerPrivate::series()
 {
     return m_series;
 }
 
+// 相关对象
 QObject* QCandlestickLegendMarkerPrivate::relatedObject()
 {
     return m_series;
 }
 
+// 更新
 void QCandlestickLegendMarkerPrivate::updated()
 {
+    // 标记
     bool labelChanged = false;
     bool brushChanged = false;
-
+    // 标记更新
     if (!m_customLabel && (m_item->label() != m_series->name())) {
         m_item->setLabel(m_series->name());
         labelChanged = true;
     }
+    // 画刷更新
     if (!m_customBrush) {
         QLinearGradient gradient;
         gradient.setStart(0.0, 0.0);
@@ -132,8 +144,9 @@ void QCandlestickLegendMarkerPrivate::updated()
             brushChanged = true;
         }
     }
+    // 图例更新
     invalidateLegend();
-
+    // 发送信号
     if (labelChanged)
         emit q_ptr->labelChanged();
     if (brushChanged)

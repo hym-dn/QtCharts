@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -50,25 +50,26 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QPieLegendMarker;
 
+// 饼状图例标记私有
 class QT_CHARTS_PRIVATE_EXPORT QPieLegendMarkerPrivate : public QLegendMarkerPrivate
 {
     Q_OBJECT
 public:
-    explicit QPieLegendMarkerPrivate(QPieLegendMarker *q, QPieSeries *series, QPieSlice *slice, QLegend *legend);
-    virtual ~QPieLegendMarkerPrivate();
+    explicit QPieLegendMarkerPrivate(QPieLegendMarker *q, QPieSeries *series, QPieSlice *slice, QLegend *legend); // 构造
+    virtual ~QPieLegendMarkerPrivate(); // 析构
 
     // internal
-    virtual QPieSeries* series();
-    virtual QObject* relatedObject();
+    virtual QPieSeries* series(); // 获取所属序列
+    virtual QObject* relatedObject(); // 获取相关对象
 
 public Q_SLOTS:
-    virtual void updated();
+    virtual void updated(); // 更新
 
 private:
-    QPieLegendMarker *q_ptr;
+    QPieLegendMarker *q_ptr; // 所属标记
 
-    QPieSeries *m_series;
-    QPieSlice *m_slice;
+    QPieSeries *m_series; // 所属序列
+    QPieSlice *m_slice; // 所属切片
 
     Q_DECLARE_PUBLIC(QPieLegendMarker)
 };

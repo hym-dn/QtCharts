@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -34,36 +34,40 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 Scroller::Scroller()
-    : m_ticker(this),
-      m_timeTresholdMin(50),
-      m_timeTresholdMax(300),
-      m_state(Idle),
-      m_treshold(10)
+    : m_ticker(this), // 追踪器
+      m_timeTresholdMin(50), // 时间最小阈值
+      m_timeTresholdMax(300), // 时间最大阈值
+      m_state(Idle), // 状态
+      m_treshold(10) // 阈值
 {
 
 }
 
+// 析构
 Scroller::~Scroller()
 {
 }
 
+// 移动
 void Scroller::move(const QPointF &delta)
 {
     switch (m_state) {
-    case Pressed:
-        m_timeStamp = QTime::currentTime();
-        break;
-    case Scroll:
-        stopTicker();
-        m_timeStamp = QTime::currentTime();
-        break;
+    case Pressed: // 鼠标下压
+        m_timeStamp = QTime::currentTime(); // 当前时间
+        break; // 跳出
+    case Scroll: // 滚动
+        stopTicker(); // 停止追踪
+        m_timeStamp = QTime::currentTime(); // 当前时间
+        break; // 跳出
     default:
-        break;
+        break; // 跳出
     }
-    setOffset(offset() - delta);
+    setOffset(offset() - delta); // 设置偏移
 }
 
+// 滚动到指定位置
 void Scroller::scrollTo(const QPointF &delta)
 {
     // Starts scrolling, if at least m_timeTresholdMin msecs has gone since timestamp
@@ -94,6 +98,7 @@ void Scroller::scrollTo(const QPointF &delta)
     }
 }
 
+// 鼠标按下事件
 void Scroller::handleMousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     stopTicker();
@@ -103,6 +108,7 @@ void Scroller::handleMousePressEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 }
 
+// 鼠标移动事件
 void Scroller::handleMouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF delta = event->screenPos() - m_lastPos;
@@ -132,6 +138,7 @@ void Scroller::handleMouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+// 鼠标释放事件
 void Scroller::handleMouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     switch (m_state) {
@@ -150,22 +157,25 @@ void Scroller::handleMouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+// 启动追踪
 void Scroller::startTicker(int interval)
 {
     m_state = Scroll;
     m_ticker.start(interval);
 }
 
+// 停止追踪
 void Scroller::stopTicker()
 {
     m_state = Idle;
     m_ticker.stop();
 }
 
+// 滚动追踪
 void Scroller::scrollTick()
 {
     switch (m_state) {
-    case Scroll:
+    case Scroll: // 滚动
         lowerSpeed(m_speed);
         setOffset(offset() - m_speed);
         if (m_speed == QPointF(0, 0)) {
@@ -181,6 +191,7 @@ void Scroller::scrollTick()
     }
 }
 
+// 更低速度
 void Scroller::lowerSpeed(QPointF &speed, qreal maxSpeed)
 {
     qreal x = qBound(-maxSpeed, speed.x(), maxSpeed);
@@ -195,7 +206,7 @@ void Scroller::lowerSpeed(QPointF &speed, qreal maxSpeed)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 ScrollTicker::ScrollTicker(Scroller *scroller, QObject *parent)
     : QObject(parent),
       m_scroller(scroller)
@@ -203,21 +214,24 @@ ScrollTicker::ScrollTicker(Scroller *scroller, QObject *parent)
 
 }
 
+// 启动追踪
 void ScrollTicker::start(int interval)
 {
     if (!m_timer.isActive())
         m_timer.start(interval, this);
 }
 
+// 停止追踪
 void ScrollTicker::stop()
 {
     m_timer.stop();
 }
 
+// 时间事件
 void ScrollTicker::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
-    m_scroller->scrollTick();
+    m_scroller->scrollTick(); // 滚动追踪
 }
 
 #include "moc_scroller_p.cpp"

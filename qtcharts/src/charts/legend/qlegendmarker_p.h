@@ -59,28 +59,28 @@ class QT_CHARTS_PRIVATE_EXPORT QLegendMarkerPrivate : public QObject
 {
     Q_OBJECT
 public:
-    explicit QLegendMarkerPrivate(QLegendMarker *q, QLegend *legend);
-    virtual ~QLegendMarkerPrivate();
+    explicit QLegendMarkerPrivate(QLegendMarker *q, QLegend *legend); // 构造
+    virtual ~QLegendMarkerPrivate(); // 析构
 
     // Helper for now. (or declare LegendLayout as friend)
-    LegendMarkerItem* item() const { return m_item; }
+    LegendMarkerItem* item() const { return m_item; } // 获取标记项
 
-    virtual QAbstractSeries* series() = 0;
-    virtual QObject* relatedsetPosObject() = 0;
+    virtual QAbstractSeries* series() = 0; // 获取所属序列
+    virtual QObject* relatedsetPosObject() = 0; // 相关对象
 
-    void invalidateLegend();
-    void invalidateAllItems();
+    void invalidateLegend(); // 更新图例
+    void invalidateAllItems(); // 更新全部项
 
 public Q_SLOTS:
-    virtual void updated() = 0;
-    void handleShapeChange();
+    virtual void updated() = 0; // 更新
+    void handleShapeChange(); // 形状变化相应槽
 
 protected:
-    LegendMarkerItem *m_item;
-    QLegend *m_legend;
-    bool m_customLabel;
-    bool m_customBrush;
-    bool m_customPen;
+    LegendMarkerItem *m_item; // 标记项
+    QLegend *m_legend; // 所属图例
+    bool m_customLabel; // 是否定制标签
+    bool m_customBrush; // 是否定制画刷
+    bool m_customPen; // 是否定制画笔
 
 private:
     QLegendMarker *q_ptr; // 源图例标记

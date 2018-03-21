@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -50,23 +50,24 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QBarLegendMarker;
 
+// 条状图例标记私有成员
 class QT_CHARTS_PRIVATE_EXPORT QBarLegendMarkerPrivate : public QLegendMarkerPrivate
 {
     Q_OBJECT
 public:
-    explicit QBarLegendMarkerPrivate(QBarLegendMarker *q, QAbstractBarSeries *series, QBarSet *barset, QLegend *legend);
-    virtual ~QBarLegendMarkerPrivate();
+    explicit QBarLegendMarkerPrivate(QBarLegendMarker *q, QAbstractBarSeries *series, QBarSet *barset, QLegend *legend); // 构造
+    virtual ~QBarLegendMarkerPrivate(); // 析构
 
-    virtual QAbstractBarSeries* series();
-    virtual QObject* relatedObject();
+    virtual QAbstractBarSeries* series(); // 所属序列
+    virtual QObject* relatedObject(); // 相关对象
 
 public Q_SLOTS:
-    virtual void updated();
+    virtual void updated(); // 更新
 
 private:
-    QBarLegendMarker *q_ptr;
-    QAbstractBarSeries *m_series;
-    QBarSet *m_barset;
+    QBarLegendMarker *q_ptr; // 所属图例标记
+    QAbstractBarSeries *m_series; // 所属序列
+    QBarSet *m_barset; // 所属条集
 
     Q_DECLARE_PUBLIC(QBarLegendMarker)
 };

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -38,21 +38,22 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QBoxPlotLegendMarkerPrivate;
 
+// 盒子图例标记
 class QT_CHARTS_EXPORT QBoxPlotLegendMarker : public QLegendMarker
 {
     Q_OBJECT
 
 public:
-    explicit QBoxPlotLegendMarker(QBoxPlotSeries *series, QLegend *legend, QObject *parent = nullptr);
-    virtual ~QBoxPlotLegendMarker();
+    explicit QBoxPlotLegendMarker(QBoxPlotSeries *series, QLegend *legend, QObject *parent = nullptr); // 构造
+    virtual ~QBoxPlotLegendMarker(); // 析构
 
-    virtual LegendMarkerType type() { return LegendMarkerTypeBoxPlot; }
+    virtual LegendMarkerType type() { return LegendMarkerTypeBoxPlot; } // 图例标记类型
 
     // Related series
-    virtual QBoxPlotSeries* series();
+    virtual QBoxPlotSeries* series(); // 所属序列
 
 protected:
-    QBoxPlotLegendMarker(QBoxPlotLegendMarkerPrivate &d, QObject *parent = nullptr);
+    QBoxPlotLegendMarker(QBoxPlotLegendMarkerPrivate &d, QObject *parent = nullptr); // 构造
 
 private:
     Q_DECLARE_PRIVATE(QBoxPlotLegendMarker)

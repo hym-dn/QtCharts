@@ -68,57 +68,57 @@ public:
     explicit LegendMarkerItem(QLegendMarkerPrivate *marker, QGraphicsObject *parent = nullptr); // 构造
     ~LegendMarkerItem(); // 析构
 
-    void setPen(const QPen &pen);
-    QPen pen() const;
+    void setPen(const QPen &pen); // 设置画笔
+    QPen pen() const; // 获取画笔
 
-    void setBrush(const QBrush &brush);
-    QBrush brush() const;
+    void setBrush(const QBrush &brush); // 设置画刷
+    QBrush brush() const; // 返回画刷
 
-    void setSeriesPen(const QPen &pen);
-    void setSeriesBrush(const QBrush &brush);
+    void setSeriesPen(const QPen &pen); // 设置序列画笔
+    void setSeriesBrush(const QBrush &brush); // 设置序列画刷
 
-    void setFont(const QFont &font);
-    QFont font() const;
+    void setFont(const QFont &font); // 设置字体
+    QFont font() const; // 返回字体
 
-    void setLabel(const QString label);
-    QString label() const;
+    void setLabel(const QString label); // 设置标签
+    QString label() const; // 返回标签
 
-    void setLabelBrush(const QBrush &brush);
-    QBrush labelBrush() const;
+    void setLabelBrush(const QBrush &brush); // 设置标签画刷
+    QBrush labelBrush() const; // 返回标签画刷
 
-    void setGeometry(const QRectF &rect);
-    QRectF boundingRect() const;
-    QRectF markerRect() const;
+    void setGeometry(const QRectF &rect); // 设置几何尺寸
+    QRectF boundingRect() const; // 返回外接矩形尺寸
+    QRectF markerRect() const; // 标记尺寸
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget = nullptr);
-    QSizeF sizeHint (Qt::SizeHint which, const QSizeF &constraint) const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget = nullptr); // 绘制
+    QSizeF sizeHint (Qt::SizeHint which, const QSizeF &constraint) const; // 默认尺寸
 
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // 鼠标进入事件
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // 鼠标离去事件
 
-    QString displayedLabel() const;
-    void setToolTip(const QString &tooltip);
+    QString displayedLabel() const; // 显示标签
+    void setToolTip(const QString &tooltip); // 设置提示气泡
 
-    QLegend::MarkerShape markerShape() const;
-    void setMarkerShape(QLegend::MarkerShape shape);
+    QLegend::MarkerShape markerShape() const; // 获取标记形状
+    void setMarkerShape(QLegend::MarkerShape shape); // 设置标记形状
 
-    void updateMarkerShapeAndSize();
-    QLegend::MarkerShape effectiveMarkerShape() const;
-    qreal effectiveMarkerWidth() const;
+    void updateMarkerShapeAndSize(); // 更新标记形状以及尺寸
+    QLegend::MarkerShape effectiveMarkerShape() const; // 有效标记形状
+    qreal effectiveMarkerWidth() const; // 有效标记宽度
 
-    ItemType itemType() const { return m_itemType; }
+    ItemType itemType() const { return m_itemType; } // 项目类型
 
 Q_SIGNALS:
     void markerRectChanged();
 
 protected:
-    void setItemBrushAndPen();
-    void setItemRect();
-    bool useMaxWidth() const;
+    void setItemBrushAndPen(); // 设置项目画刷以及画笔
+    void setItemRect(); // 设置项目尺寸
+    bool useMaxWidth() const; // 是否使用最大宽度
 
     QLegendMarkerPrivate *m_marker; // Knows // 源标记
-    QRectF m_defaultMarkerRect; //默认标记矩形
-    QRectF m_markerRect; // 标记矩形
+    QRectF m_defaultMarkerRect; //默认标记矩形（父窗口坐标）
+    QRectF m_markerRect; // 标记矩形(父窗口坐标)
     QRectF m_boundingRect; // 外接矩形
     QGraphicsTextItem *m_textItem; // 文本项
     QGraphicsItem *m_markerItem; // 标记项

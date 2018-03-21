@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,19 +47,20 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 滚动图例
 class QT_CHARTS_PRIVATE_EXPORT LegendScroller: public QLegend, public Scroller
 {
     Q_OBJECT
 
 public:
-    LegendScroller(QChart *chart);
+    LegendScroller(QChart *chart); // 构造
 
-    void setOffset(const QPointF &point);
-    QPointF offset() const;
+    void setOffset(const QPointF &point); // 设置偏移
+    QPointF offset() const; // 获取偏移
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event); // 鼠标按下事件
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // 鼠标移动事件
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // 鼠标释放事件
 };
 
 QT_CHARTS_END_NAMESPACE

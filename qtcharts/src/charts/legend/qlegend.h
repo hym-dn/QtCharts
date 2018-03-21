@@ -71,50 +71,50 @@ public:
 
     ~QLegend(); // 析构函数
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr); // 绘制
 
-    void setBrush(const QBrush &brush);
-    QBrush brush() const;
-    void setColor(QColor color);
-    QColor color();
+    void setBrush(const QBrush &brush); // 设置画刷
+    QBrush brush() const; // 画刷
+    void setColor(QColor color); // 设置颜色
+    QColor color(); // 获取颜色
 
-    void setPen(const QPen &pen);
-    QPen pen() const;
-    void setBorderColor(QColor color);
-    QColor borderColor();
+    void setPen(const QPen &pen); // 设置画笔
+    QPen pen() const; // 获取画笔
+    void setBorderColor(QColor color); // 设置边框颜色
+    QColor borderColor(); // 获取边框颜色
 
-    void setFont(const QFont &font);
-    QFont font() const;
-    void setLabelBrush(const QBrush &brush);
-    QBrush labelBrush() const;
+    void setFont(const QFont &font); // 设置字体
+    QFont font() const; // 获取字体
+    void setLabelBrush(const QBrush &brush); // 设置标签画刷
+    QBrush labelBrush() const; // 获取标签画刷
 
-    void setLabelColor(QColor color);
-    QColor labelColor() const;
+    void setLabelColor(QColor color); // 设置标签颜色
+    QColor labelColor() const; // 返回标签颜色
 
-    void setAlignment(Qt::Alignment alignment);
-    Qt::Alignment alignment() const;
+    void setAlignment(Qt::Alignment alignment); // 设置停靠方式
+    Qt::Alignment alignment() const; // 返回停靠方式
 
-    void detachFromChart();
-    void attachToChart();
-    bool isAttachedToChart();
+    void detachFromChart(); // 松绑表格
+    void attachToChart(); // 绑定表格
+    bool isAttachedToChart(); // 是否绑定表格
 
-    void setBackgroundVisible(bool visible = true);
-    bool isBackgroundVisible() const;
+    void setBackgroundVisible(bool visible = true); // 设置背景是否可见
+    bool isBackgroundVisible() const; // 背景是否可见
 
-    QList <QLegendMarker*> markers(QAbstractSeries *series = nullptr) const;
+    QList <QLegendMarker*> markers(QAbstractSeries *series = nullptr) const; // 获取标记链表
 
-    bool reverseMarkers();
-    void setReverseMarkers(bool reverseMarkers = true);
+    bool reverseMarkers(); // 是否为逆向链表
+    void setReverseMarkers(bool reverseMarkers = true); // 设置逆向链表
 
-    bool showToolTips() const;
-    void setShowToolTips(bool show);
+    bool showToolTips() const; // 显示提示信息
+    void setShowToolTips(bool show); // 设置显示提示
 
-    MarkerShape markerShape() const;
-    void setMarkerShape(MarkerShape shape);
+    MarkerShape markerShape() const; // 获取标记形状
+    void setMarkerShape(MarkerShape shape); // 设置标记形状
 
 protected:
-    void hideEvent(QHideEvent *event);
-    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event); // 隐藏事件
+    void showEvent(QShowEvent *event); // 显示事件
 
 Q_SIGNALS:
     void backgroundVisibleChanged(bool visible);

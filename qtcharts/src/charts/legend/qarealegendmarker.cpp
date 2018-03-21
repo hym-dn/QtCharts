@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -53,15 +53,17 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
   \internal
 */
+// 构造
 QAreaLegendMarker::QAreaLegendMarker(QAreaSeries *series, QLegend *legend, QObject *parent) :
     QLegendMarker(*new QAreaLegendMarkerPrivate(this,series,legend), parent)
 {
-    d_ptr->updated();
+    d_ptr->updated(); // 更新
 }
 
 /*!
     Removes the legend marker for an area series.
 */
+// 析构
 QAreaLegendMarker::~QAreaLegendMarker()
 {
 }
@@ -69,6 +71,7 @@ QAreaLegendMarker::~QAreaLegendMarker()
 /*!
     \internal
 */
+// 构造
 QAreaLegendMarker::QAreaLegendMarker(QAreaLegendMarkerPrivate &d, QObject *parent) :
     QLegendMarker(d, parent)
 {
@@ -77,6 +80,7 @@ QAreaLegendMarker::QAreaLegendMarker(QAreaLegendMarkerPrivate &d, QObject *paren
 /*!
   \reimp
 */
+// 获取所属序列
 QAreaSeries* QAreaLegendMarker::series()
 {
     Q_D(QAreaLegendMarker);
@@ -85,44 +89,53 @@ QAreaSeries* QAreaLegendMarker::series()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 构造
 QAreaLegendMarkerPrivate::QAreaLegendMarkerPrivate(QAreaLegendMarker *q, QAreaSeries *series, QLegend *legend) :
     QLegendMarkerPrivate(q,legend),
-    q_ptr(q),
-    m_series(series)
+    q_ptr(q), // 所属图例标记
+    m_series(series) // 所属序列
 {
+    // 连接信号、槽
     QObject::connect(m_series->d_func(),SIGNAL(updated()), this, SLOT(updated()));
     QObject::connect(m_series, SIGNAL(nameChanged()), this, SLOT(updated()));
 }
 
+// 析构
 QAreaLegendMarkerPrivate::~QAreaLegendMarkerPrivate()
 {
 }
 
+// 获取所属序列
 QAreaSeries* QAreaLegendMarkerPrivate::series()
 {
     return m_series;
 }
 
+// 获取相关对象
 QObject* QAreaLegendMarkerPrivate::relatedObject()
 {
     return m_series;
 }
 
+// 更新
 void QAreaLegendMarkerPrivate::updated()
 {
+    // 更新标记
     bool labelChanged = false;
     bool brushChanged = false;
-
+    // 画刷更新
     if (!m_customBrush && (m_item->brush() != m_series->brush())) {
         m_item->setBrush(m_series->brush());
         brushChanged = true;
     }
+    // 标签更新
     if (!m_customLabel && (m_item->label() != m_series->name())) {
         m_item->setLabel(m_series->name());
         labelChanged = true;
     }
+    // 更新图例
     invalidateLegend();
-
+    // 发送更新信号
     if (labelChanged)
         emit q_ptr->labelChanged();
     if (brushChanged)

@@ -59,26 +59,26 @@ public:
     ~QLegendPrivate(); // 析构
 
     void setOffset(const QPointF &offset); // 设置偏移
-    QPointF offset() const;
-    int roundness(qreal size);
+    QPointF offset() const; // 获取偏移
+    int roundness(qreal size); // 圆角信息
 
-    QGraphicsItemGroup* items() { return m_items; }
+    QGraphicsItemGroup* items() { return m_items; } // 获取项目组
 
-    QList<QLegendMarker*> markers(QAbstractSeries *series = 0);
-    qreal maxMarkerWidth() const;
+    QList<QLegendMarker*> markers(QAbstractSeries *series = 0); // 获取指定序列的标记
+    qreal maxMarkerWidth() const; // 标记的最大宽度
 
 public Q_SLOTS:
-    void handleSeriesAdded(QAbstractSeries *series);
-    void handleSeriesRemoved(QAbstractSeries *series);
-    void handleSeriesVisibleChanged();
-    void handleCountChanged();
+    void handleSeriesAdded(QAbstractSeries *series); // 序列增加信号消息响应槽
+    void handleSeriesRemoved(QAbstractSeries *series); // 序列移除信号消息响应槽
+    void handleSeriesVisibleChanged(); // 序列可视变更消息信号相应槽
+    void handleCountChanged(); // 计数变更消息信息相应槽
 
 private:
     // Internal helpers
-    void addMarkers(QList<QLegendMarker *> markers);
-    void removeMarkers(QList<QLegendMarker *> markers);
-    void decorateMarkers(QList<QLegendMarker *> markers);
-    void updateToolTips();
+    void addMarkers(QList<QLegendMarker *> markers); // 增加标记
+    void removeMarkers(QList<QLegendMarker *> markers); // 删除标记
+    void decorateMarkers(QList<QLegendMarker *> markers); // 布置标记
+    void updateToolTips(); // 更新气泡提示
 
 private:
     QLegend *q_ptr; // 源图例

@@ -456,35 +456,42 @@ ChartTitle *ChartPresenter::titleElement()
     return m_title;
 }
 
+// 计算文本的外接矩形
 QRectF ChartPresenter::textBoundingRect(const QFont &font, const QString &text, qreal angle)
 {
+    // 静态对象
     static QGraphicsTextItem dummyTextItem;
     static bool initMargin = true;
     if (initMargin) {
-        dummyTextItem.document()->setDocumentMargin(textMargin());
+        dummyTextItem.document()->setDocumentMargin(textMargin()); // 设置文本留白
         initMargin = false;
     }
 
-    dummyTextItem.setFont(font);
-    dummyTextItem.setHtml(text);
-    QRectF boundingRect = dummyTextItem.boundingRect();
+    dummyTextItem.setFont(font); // 设置字体
+    dummyTextItem.setHtml(text); // 设置文字
+    QRectF boundingRect = dummyTextItem.boundingRect(); // 计算外接矩形
 
     // Take rotation into account
+    // 增加角度信息
     if (angle) {
         QTransform transform;
         transform.rotate(angle);
         boundingRect = transform.mapRect(boundingRect);
     }
 
+    // 返回外接矩形
     return boundingRect;
 }
 
 // boundingRect parameter returns the rotated bounding rect of the text
+// 剪裁文本，如果文本尺寸超过预订范围，则对文本进行剪裁
 QString ChartPresenter::truncatedText(const QFont &font, const QString &text, qreal angle,
                                       qreal maxWidth, qreal maxHeight, QRectF &boundingRect)
 {
     QString truncatedString(text);
+    // 计算文本的外接矩形
     boundingRect = textBoundingRect(font, truncatedString, angle);
+    // 如果尺寸超过最大尺寸，对文本进行剪裁
     if (boundingRect.width() > maxWidth || boundingRect.height() > maxHeight) {
         // It can be assumed that almost any amount of string manipulation is faster
         // than calculating one bounding rectangle, so first prepare a list of truncated strings

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -43,11 +43,14 @@ class QLegendMarkerPrivate;
 class QAbstractSeries;
 class QLegend;
 
+// 抽象描述图例上的一项标记
 class QT_CHARTS_EXPORT QLegendMarker : public QObject
 {
     Q_OBJECT
 
 public:
+
+    // 标记类型
     enum LegendMarkerType {
         LegendMarkerTypeArea,
         LegendMarkerTypeBar,
@@ -67,31 +70,31 @@ public:
     Q_ENUMS(LegendMarkerType)
 
 public:
-    virtual ~QLegendMarker();
-    virtual LegendMarkerType type() = 0;
+    virtual ~QLegendMarker(); // 析构函数
+    virtual LegendMarkerType type() = 0; // 标记类型
 
-    QString label() const;
-    void setLabel(const QString &label);
+    QString label() const; // 获取标签
+    void setLabel(const QString &label); // 设置标签
 
-    QBrush labelBrush() const;
-    void setLabelBrush(const QBrush &brush);
+    QBrush labelBrush() const; // 标签画刷
+    void setLabelBrush(const QBrush &brush); // 设置标签画刷
 
-    QFont font() const;
-    void setFont(const QFont &font);
+    QFont font() const; // 字体
+    void setFont(const QFont &font); // 设置字体
 
-    QPen pen() const;
-    void setPen(const QPen &pen);
+    QPen pen() const; // 画笔
+    void setPen(const QPen &pen); // 设置画笔
 
-    QBrush brush() const;
-    void setBrush(const QBrush &brush);
+    QBrush brush() const; // 画刷
+    void setBrush(const QBrush &brush); // 设置画刷
 
-    bool isVisible() const;
-    void setVisible(bool visible);
+    bool isVisible() const; // 是否可见
+    void setVisible(bool visible); // 设置可见
 
-    QLegend::MarkerShape shape() const;
-    void setShape(QLegend::MarkerShape shape);
+    QLegend::MarkerShape shape() const; // 形状
+    void setShape(QLegend::MarkerShape shape); // 设置形状
 
-    virtual QAbstractSeries* series() = 0;
+    virtual QAbstractSeries* series() = 0; // 获取所属序列
 
 Q_SIGNALS:
     void clicked();
@@ -105,9 +108,9 @@ Q_SIGNALS:
     void shapeChanged();
 
 protected:
-    explicit QLegendMarker(QLegendMarkerPrivate &d, QObject *parent = nullptr);
+    explicit QLegendMarker(QLegendMarkerPrivate &d, QObject *parent = nullptr); // 构造
 
-    QScopedPointer<QLegendMarkerPrivate> d_ptr;
+    QScopedPointer<QLegendMarkerPrivate> d_ptr; // 私有成员
     friend class QLegendPrivate;
     friend class QLegendMarkerPrivate;
     friend class LegendMarkerItem;

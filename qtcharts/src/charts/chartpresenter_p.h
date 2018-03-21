@@ -173,8 +173,8 @@ public:
 
     static QRectF textBoundingRect(const QFont &font, const QString &text, qreal angle = 0.0);
     static QString truncatedText(const QFont &font, const QString &text, qreal angle,
-                                 qreal maxWidth, qreal maxHeight, QRectF &boundingRect);
-    inline static qreal textMargin() { return qreal(0.5); }
+                                 qreal maxWidth, qreal maxHeight, QRectF &boundingRect); // 如果文本尺寸超过预订范围，则对文本进行剪裁
+    inline static qreal textMargin() { return qreal(0.5); } // 返回文本留白
 
     QString numberToString(double value, char f = 'g', int prec = 6);
     QString numberToString(int value);

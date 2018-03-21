@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -49,22 +49,23 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QAreaLegendMarker;
 
+// 区域图例标记私有成员
 class QT_CHARTS_PRIVATE_EXPORT QAreaLegendMarkerPrivate : public QLegendMarkerPrivate
 {
     Q_OBJECT
 public:
-    explicit QAreaLegendMarkerPrivate(QAreaLegendMarker *q, QAreaSeries *series, QLegend *legend);
-    virtual ~QAreaLegendMarkerPrivate();
+    explicit QAreaLegendMarkerPrivate(QAreaLegendMarker *q, QAreaSeries *series, QLegend *legend); // 构造
+    virtual ~QAreaLegendMarkerPrivate(); // 析构
 
-    virtual QAreaSeries* series();
-    virtual QObject* relatedObject();
+    virtual QAreaSeries* series(); // 所属序列
+    virtual QObject* relatedObject(); // 相关对象
 
 public Q_SLOTS:
-    virtual void updated();
+    virtual void updated(); // 更新
 
 private:
-    QAreaLegendMarker *q_ptr;
-    QAreaSeries *m_series;
+    QAreaLegendMarker *q_ptr; // 所属区域标记
+    QAreaSeries *m_series; // 所属序列
 
     Q_DECLARE_PUBLIC(QAreaLegendMarker)
 };

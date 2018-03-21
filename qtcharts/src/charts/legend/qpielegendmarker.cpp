@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -53,15 +53,17 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
   \internal
 */
+// 构造
 QPieLegendMarker::QPieLegendMarker(QPieSeries *series, QPieSlice *slice, QLegend *legend, QObject *parent) :
     QLegendMarker(*new QPieLegendMarkerPrivate(this,series,slice,legend), parent)
 {
-    d_ptr->updated();
+    d_ptr->updated(); // 更新
 }
 
 /*!
     Removes the legend marker for a pie series.
 */
+// 析构
 QPieLegendMarker::~QPieLegendMarker()
 {
 }
@@ -69,6 +71,7 @@ QPieLegendMarker::~QPieLegendMarker()
 /*!
     \internal
 */
+// 构造
 QPieLegendMarker::QPieLegendMarker(QPieLegendMarkerPrivate &d, QObject *parent) :
     QLegendMarker(d, parent)
 {
@@ -77,6 +80,7 @@ QPieLegendMarker::QPieLegendMarker(QPieLegendMarkerPrivate &d, QObject *parent) 
 /*!
     \reimp
 */
+// 所属序列
 QPieSeries* QPieLegendMarker::series()
 {
     Q_D(QPieLegendMarker);
@@ -86,6 +90,7 @@ QPieSeries* QPieLegendMarker::series()
 /*!
     Returns the slice of the pie related to the marker.
 */
+// 切分
 QPieSlice* QPieLegendMarker::slice()
 {
     Q_D(QPieLegendMarker);
@@ -93,52 +98,60 @@ QPieSlice* QPieLegendMarker::slice()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 QPieLegendMarkerPrivate::QPieLegendMarkerPrivate(QPieLegendMarker *q, QPieSeries *series, QPieSlice *slice, QLegend *legend) :
     QLegendMarkerPrivate(q,legend),
-    q_ptr(q),
-    m_series(series),
-    m_slice(slice)
+    q_ptr(q), // 所属标记
+    m_series(series), // 所属序列
+    m_slice(slice) // 切分
 {
     QObject::connect(m_slice, SIGNAL(labelChanged()), this, SLOT(updated()));
     QObject::connect(m_slice, SIGNAL(brushChanged()), this, SLOT(updated()));
     QObject::connect(m_slice, SIGNAL(penChanged()), this, SLOT(updated()));
 }
 
+// 析构
 QPieLegendMarkerPrivate::~QPieLegendMarkerPrivate()
 {
 }
 
+// 所属序列
 QPieSeries* QPieLegendMarkerPrivate::series()
 {
     return m_series;
 }
 
+// 相关对象
 QObject* QPieLegendMarkerPrivate::relatedObject()
 {
     return m_slice;
 }
 
+// 更新
 void QPieLegendMarkerPrivate::updated()
 {
+    // 变更标记
     bool labelChanged = false;
     bool brushChanged = false;
     bool penChanged = false;
-
+    // 画笔更新
     if (!m_customPen && (m_item->pen() != m_slice->pen())) {
         m_item->setPen(m_slice->pen());
         penChanged = true;
     }
+    // 画刷更新
     if (!m_customBrush && (m_item->brush() != m_slice->brush())) {
         m_item->setBrush(m_slice->brush());
         brushChanged = true;
     }
+    // 标签更新
     if (!m_customLabel && (m_item->label() != m_slice->label())) {
         m_item->setLabel(m_slice->label());
         labelChanged = true;
     }
+    // 图例更新
     invalidateLegend();
-
+    // 发送信号
     if (labelChanged)
         emit q_ptr->labelChanged();
     if (brushChanged)

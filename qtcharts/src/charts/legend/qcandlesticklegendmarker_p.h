@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,23 +47,24 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QCandlestickLegendMarker;
 class QCandlestickSeries;
 
+// 烛台图例标记私有成员
 class QT_CHARTS_PRIVATE_EXPORT QCandlestickLegendMarkerPrivate : public QLegendMarkerPrivate
 {
     Q_OBJECT
 public:
     explicit QCandlestickLegendMarkerPrivate(QCandlestickLegendMarker *q,
-                                             QCandlestickSeries *series, QLegend *legend);
-    virtual ~QCandlestickLegendMarkerPrivate();
+                                             QCandlestickSeries *series, QLegend *legend); // 构造
+    virtual ~QCandlestickLegendMarkerPrivate(); // 析构
 
-    virtual QAbstractSeries *series();
-    virtual QObject *relatedObject();
+    virtual QAbstractSeries *series(); // 所属序列
+    virtual QObject *relatedObject(); // 相关对象
 
 public Q_SLOTS:
-    virtual void updated();
+    virtual void updated(); // 更新
 
 private:
-    QCandlestickLegendMarker *q_ptr;
-    QCandlestickSeries *m_series;
+    QCandlestickLegendMarker *q_ptr; // 所属烛台标记
+    QCandlestickSeries *m_series; // 所属序列
 
     Q_DECLARE_PUBLIC(QCandlestickLegendMarker)
 };

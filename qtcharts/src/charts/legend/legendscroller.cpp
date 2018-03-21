@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -37,35 +37,43 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 LegendScroller::LegendScroller(QChart *chart) : QLegend(chart)
 {
 }
 
+// 设置偏移量
 void LegendScroller::setOffset(const QPointF &point)
 {
     d_ptr->setOffset(point);
 }
 
+// 获取偏移量
 QPointF LegendScroller::offset() const
 {
     return d_ptr->offset();
 }
 
+// 鼠标按下事件
 void LegendScroller::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Scroller::handleMousePressEvent(event);
 }
 
+// 鼠标移动事件
 void LegendScroller::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     Scroller::handleMouseMoveEvent(event);
 }
 
+// 鼠标释放事件
 void LegendScroller::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    // 鼠标释放事件
     Scroller::handleMouseReleaseEvent(event);
-
+    // 事件尚未被接收
     if (!event->isAccepted()) {
+        // 取定点击标记
         QList<QGraphicsItem *> items = scene()->items(event->scenePos());
 
         foreach (QGraphicsItem *i, items) {
@@ -74,6 +82,7 @@ void LegendScroller::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 emit marker->clicked();
             }
         }
+        // 接收事件
     event->accept();
     }
 }

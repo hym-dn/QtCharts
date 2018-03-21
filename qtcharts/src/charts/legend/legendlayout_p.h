@@ -54,31 +54,32 @@ public:
     LegendLayout(QLegend *legend); // 构造
     virtual ~LegendLayout(); // 析构
 
-    void setGeometry(const QRectF &rect);
+    void setGeometry(const QRectF &rect); // 设置几何尺寸
 
-    void setOffset(qreal x, qreal y);
-    QPointF offset() const;
+    void setOffset(qreal x, qreal y); // 设置偏移
+    QPointF offset() const; // 获取偏移
 
-    void invalidate();
+    void invalidate(); // 更新
 protected:
-    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const;
-    int count() const { return 0; }
-    QGraphicsLayoutItem *itemAt(int) const { return 0; };
-    void removeAt(int) {};
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const; // 默认尺寸
+    int count() const { return 0; } // 计数
+    QGraphicsLayoutItem *itemAt(int) const { return 0; }; // 指定项目
+    void removeAt(int) {}; // 删除项目
 
 private:
-    void setAttachedGeometry(const QRectF &rect);
-    void setDettachedGeometry(const QRectF &rect);
+    void setAttachedGeometry(const QRectF &rect); // 设置绑定几何尺寸
+    void setDettachedGeometry(const QRectF &rect); // 设置松绑几何尺寸
 
+    // 标记项、宽度结构体
     struct LegendWidthStruct {
         LegendMarkerItem *item;
         qreal width;
     };
     static bool widthLongerThan(const LegendWidthStruct *item1,
-                                const LegendWidthStruct *item2);
+                                const LegendWidthStruct *item2); // 标记项、宽度结构体比较函数
 
 private:
-    QLegend *m_legend; // 源图列
+    QLegend *m_legend; // 所属图例
     qreal m_offsetX; // x偏移
     qreal m_offsetY; // y偏移
     qreal m_minOffsetX; // 最小x偏移

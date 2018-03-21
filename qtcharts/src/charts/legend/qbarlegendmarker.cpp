@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -54,15 +54,17 @@ QT_CHARTS_BEGIN_NAMESPACE
   \internal
   Constructor
 */
+// 构造
 QBarLegendMarker::QBarLegendMarker(QAbstractBarSeries *series, QBarSet *barset, QLegend *legend, QObject *parent) :
     QLegendMarker(*new QBarLegendMarkerPrivate(this,series,barset,legend), parent)
 {
-    d_ptr->updated();
+    d_ptr->updated(); // 更新
 }
 
 /*!
     Removes the legend marker for a bar set.
 */
+// 析构
 QBarLegendMarker::~QBarLegendMarker()
 {
 }
@@ -70,6 +72,7 @@ QBarLegendMarker::~QBarLegendMarker()
 /*!
     \internal
 */
+// 构造
 QBarLegendMarker::QBarLegendMarker(QBarLegendMarkerPrivate &d, QObject *parent) :
     QLegendMarker(d, parent)
 {
@@ -78,6 +81,7 @@ QBarLegendMarker::QBarLegendMarker(QBarLegendMarkerPrivate &d, QObject *parent) 
 /*!
     \reimp
 */
+// 所属序列
 QAbstractBarSeries *QBarLegendMarker::series()
 {
     Q_D(QBarLegendMarker);
@@ -87,6 +91,7 @@ QAbstractBarSeries *QBarLegendMarker::series()
 /*!
   Returns the bar set related to the marker.
 */
+// 条集
 QBarSet* QBarLegendMarker::barset()
 {
     Q_D(QBarLegendMarker);
@@ -94,52 +99,60 @@ QBarSet* QBarLegendMarker::barset()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 QBarLegendMarkerPrivate::QBarLegendMarkerPrivate(QBarLegendMarker *q, QAbstractBarSeries *series, QBarSet *barset, QLegend *legend) :
     QLegendMarkerPrivate(q,legend),
-    q_ptr(q),
-    m_series(series),
-    m_barset(barset)
+    q_ptr(q), // 所属条图例标记
+    m_series(series), // 所属序列
+    m_barset(barset) // 条集
 {
     QObject::connect(m_barset, SIGNAL(penChanged()), this, SLOT(updated()));
     QObject::connect(m_barset, SIGNAL(labelChanged()), this, SLOT(updated()));
     QObject::connect(m_barset, SIGNAL(brushChanged()), this, SLOT(updated()));
 }
 
+// 析构
 QBarLegendMarkerPrivate::~QBarLegendMarkerPrivate()
 {
 }
 
+// 所属序列
 QAbstractBarSeries* QBarLegendMarkerPrivate::series()
 {
     return m_series;
 }
 
+// 相关对象
 QObject* QBarLegendMarkerPrivate::relatedObject()
 {
     return m_barset;
 }
 
+// 更新
 void QBarLegendMarkerPrivate::updated()
 {
+    // 更新标记
     bool labelChanged = false;
     bool brushChanged = false;
     bool penChanged = false;
-
+    // 画笔更新
     if (!m_customPen && (m_item->pen() != m_barset->pen())) {
         m_item->setPen(m_barset->pen());
         penChanged = true;
     }
+    // 画刷更新
     if (!m_customBrush && (m_item->brush() != m_barset->brush())) {
         m_item->setBrush(m_barset->brush());
         brushChanged = true;
     }
+    // 标签更新
     if (!m_customLabel && (m_item->label() != m_barset->label())) {
         m_item->setLabel(m_barset->label());
         labelChanged = true;
     }
+    // 图例更新
     invalidateLegend();
-
+    // 发送信号
     if (labelChanged)
         emit q_ptr->labelChanged();
     if (brushChanged)

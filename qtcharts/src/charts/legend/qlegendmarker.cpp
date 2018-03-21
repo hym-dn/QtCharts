@@ -171,16 +171,18 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
     \internal
  */
+// 构造函数
 QLegendMarker::QLegendMarker(QLegendMarkerPrivate &d, QObject *parent) :
     QObject(parent),
-    d_ptr(&d)
+    d_ptr(&d) // 私有成员
 {
-    d_ptr->m_item->setVisible(d_ptr->series()->isVisible());
+    d_ptr->m_item->setVisible(d_ptr->series()->isVisible()); // 设置可见
 }
 
 /*!
     Removes the legend marker.
 */
+// 析构函数
 QLegendMarker::~QLegendMarker()
 {
 }
@@ -188,6 +190,7 @@ QLegendMarker::~QLegendMarker()
 /*!
   Returns the label of the marker.
 */
+// 获取标签
 QString QLegendMarker::label() const
 {
     return d_ptr->m_item->label();
@@ -198,18 +201,20 @@ QString QLegendMarker::label() const
 
     \note Changing the name of a series also changes the label of its marker.
 */
+// 设置标签
 void QLegendMarker::setLabel(const QString &label)
 {
-    if (label.isEmpty()) {
-        d_ptr->m_customLabel = false;
-    } else {
-        d_ptr->m_customLabel = true;
-        d_ptr->m_item->setLabel(label);
+    if (label.isEmpty()) { // 标签为空
+        d_ptr->m_customLabel = false; // 定制标签为假
+    } else { // 标签非空
+        d_ptr->m_customLabel = true; // 定制标签为真
+        d_ptr->m_item->setLabel(label); // 设置标签
     }
 }
 /*!
     Returns the brush that is used to draw the label.
 */
+// 获取标签画刷
 QBrush QLegendMarker::labelBrush() const
 {
     return d_ptr->m_item->labelBrush();
@@ -218,6 +223,7 @@ QBrush QLegendMarker::labelBrush() const
 /*!
     Sets the the brush used to draw to label to \a brush.
 */
+// 设置标签画刷
 void QLegendMarker::setLabelBrush(const QBrush &brush)
 {
     d_ptr->m_item->setLabelBrush(brush);
@@ -226,6 +232,7 @@ void QLegendMarker::setLabelBrush(const QBrush &brush)
 /*!
     Retuns the font of the label.
 */
+// 获取字体
 QFont QLegendMarker::font() const
 {
     return d_ptr->m_item->font();
@@ -234,6 +241,7 @@ QFont QLegendMarker::font() const
 /*!
     Sets the font of the label to \a font.
 */
+// 设置字体
 void QLegendMarker::setFont(const QFont &font)
 {
     d_ptr->m_item->setFont(font);
@@ -242,6 +250,7 @@ void QLegendMarker::setFont(const QFont &font)
 /*!
     Returns the pen used to draw the outline of the icon.
 */
+// 获取画笔
 QPen QLegendMarker::pen() const
 {
     return d_ptr->m_item->pen();
@@ -250,6 +259,7 @@ QPen QLegendMarker::pen() const
 /*!
     Sets the \a pen used to draw the outline of the icon to \a pen.
 */
+// 设置画笔
 void QLegendMarker::setPen(const QPen &pen)
 {
     if (pen == QPen(Qt::NoPen)) {
@@ -263,6 +273,7 @@ void QLegendMarker::setPen(const QPen &pen)
 /*!
     Returns the brush used to fill the icon.
 */
+// 获取画刷
 QBrush QLegendMarker::brush() const
 {
     return d_ptr->m_item->brush();
@@ -273,6 +284,7 @@ QBrush QLegendMarker::brush() const
 
     \note Changing the color of the series also changes the color of the icon.
 */
+// 设置画刷
 void QLegendMarker::setBrush(const QBrush &brush)
 {
     if (brush == QBrush(Qt::NoBrush)) {
@@ -286,6 +298,7 @@ void QLegendMarker::setBrush(const QBrush &brush)
 /*!
     Returns the visibility of the marker.
 */
+// 是否可见
 bool QLegendMarker::isVisible() const
 {
     return d_ptr->m_item->isVisible();
@@ -294,16 +307,19 @@ bool QLegendMarker::isVisible() const
 /*!
     Sets the marker's visibility to \a visible.
 */
+// 设置是否可见
 void QLegendMarker::setVisible(bool visible)
 {
     d_ptr->m_item->setVisible(visible);
 }
 
+// 获取形状
 QLegend::MarkerShape QLegendMarker::shape() const
 {
     return d_ptr->m_item->markerShape();
 }
 
+// 设置形状
 void QLegendMarker::setShape(QLegend::MarkerShape shape)
 {
     if (shape != d_ptr->m_item->markerShape()) {
@@ -314,19 +330,21 @@ void QLegendMarker::setShape(QLegend::MarkerShape shape)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 构造
 QLegendMarkerPrivate::QLegendMarkerPrivate(QLegendMarker *q, QLegend *legend) :
-    m_legend(legend),
-    m_customLabel(false),
-    m_customBrush(false),
-    m_customPen(false),
-    q_ptr(q)
+    m_legend(legend), // 所属图例
+    m_customLabel(false), // 是否定制标签
+    m_customBrush(false), // 是否定制画刷
+    m_customPen(false), // 是否定制画笔
+    q_ptr(q) // 所属标记
 {
-    m_item = new LegendMarkerItem(this);
+    m_item = new LegendMarkerItem(this); // 创建标记项
 
     connect(legend, &QLegend::markerShapeChanged, this,
-            &QLegendMarkerPrivate::handleShapeChange);
+            &QLegendMarkerPrivate::handleShapeChange); // 绑定信号
 }
-maxMarkerWidth
+
+// 析构
 QLegendMarkerPrivate::~QLegendMarkerPrivate()
 {
     delete m_item;
@@ -335,7 +353,7 @@ QLegendMarkerPrivate::~QLegendMarkerPrivate()
 // 更新图例
 void QLegendMarkerPrivate::invalidateLegend()
 {
-    m_item->updateGeometry(); // 更新图例项
+    m_item->updateGeometry(); // 更新标记项
     m_legend->d_ptr->m_layout->invalidate(); // 更新图例布局
 }
 
@@ -348,6 +366,7 @@ void QLegendMarkerPrivate::invalidateAllItems()
     m_legend->d_ptr->m_layout->invalidate(); // 更新布局
 }
 
+// 形状变化信号相应槽
 void QLegendMarkerPrivate::handleShapeChange()
 {
     m_item->updateMarkerShapeAndSize();
