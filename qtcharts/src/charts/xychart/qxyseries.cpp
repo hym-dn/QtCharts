@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -914,21 +914,21 @@ QXYSeries &QXYSeries::operator<< (const QList<QPointF>& points)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// 构造
 QXYSeriesPrivate::QXYSeriesPrivate(QXYSeries *q)
-    : QAbstractSeriesPrivate(q),
-      m_pen(QChartPrivate::defaultPen()),
-      m_brush(QChartPrivate::defaultBrush()),
-      m_pointsVisible(false),
-      m_pointLabelsFormat(QLatin1String("@xPoint, @yPoint")),
-      m_pointLabelsVisible(false),
-      m_pointLabelsFont(QChartPrivate::defaultFont()),
-      m_pointLabelsColor(QChartPrivate::defaultPen().color()),
-      m_pointLabelsClipping(true)
+    : QAbstractSeriesPrivate(q), // 所属序列
+      m_pen(QChartPrivate::defaultPen()), // 画笔
+      m_brush(QChartPrivate::defaultBrush()), // 画刷
+      m_pointsVisible(false), // 点是否可见
+      m_pointLabelsFormat(QLatin1String("@xPoint, @yPoint")), // 点标签格式
+      m_pointLabelsVisible(false), // 标签是否可视
+      m_pointLabelsFont(QChartPrivate::defaultFont()), // 标签字体
+      m_pointLabelsColor(QChartPrivate::defaultPen().color()), // 标签颜色
+      m_pointLabelsClipping(true) // 标签是否可以检测
 {
 }
 
+// 初始化区域
 void QXYSeriesPrivate::initializeDomain()
 {
     qreal minX(0);

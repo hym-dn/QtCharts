@@ -52,6 +52,7 @@ class QT_CHARTS_EXPORT QAbstractSeries : public QObject
     Q_ENUMS(SeriesType)
 
 public:
+
     // 序列类型
     enum SeriesType {
         SeriesTypeLine,
@@ -70,6 +71,8 @@ public:
     };
 
 protected:
+
+    // 构造
     QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent = nullptr);
 
 public:

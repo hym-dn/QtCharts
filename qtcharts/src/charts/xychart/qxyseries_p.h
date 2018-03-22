@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,6 +47,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QXYSeries;
 class QAbstractAxis;
 
+// x、y序列私有成员
 class QT_CHARTS_PRIVATE_EXPORT QXYSeriesPrivate: public QAbstractSeriesPrivate
 {
     Q_OBJECT
@@ -71,15 +72,15 @@ Q_SIGNALS:
     void updated();
 
 protected:
-    QVector<QPointF> m_points;
-    QPen m_pen;
-    QBrush m_brush;
-    bool m_pointsVisible;
-    QString m_pointLabelsFormat;
-    bool m_pointLabelsVisible;
-    QFont m_pointLabelsFont;
-    QColor m_pointLabelsColor;
-    bool m_pointLabelsClipping;
+    QVector<QPointF> m_points; // 点集
+    QPen m_pen; // 画笔
+    QBrush m_brush; // 画刷
+    bool m_pointsVisible; // 是否点可见
+    QString m_pointLabelsFormat; // 点标签格式
+    bool m_pointLabelsVisible; // 点标签是否可见
+    QFont m_pointLabelsFont; // 点标签字体
+    QColor m_pointLabelsColor; // 点标签颜色
+    bool m_pointLabelsClipping; // 点标签是否可以剪裁
 
 private:
     Q_DECLARE_PUBLIC(QXYSeries)

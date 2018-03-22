@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -47,6 +47,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QAreaSeries;
 class QLineSeries;
 
+// 区域序列私有成员
 class QT_CHARTS_PRIVATE_EXPORT QAreaSeriesPrivate: public QAbstractSeriesPrivate
 {
     Q_OBJECT
@@ -70,7 +71,7 @@ Q_SIGNALS:
     void updated();
 
 protected:
-    QBrush m_brush;
+    QBrush m_brush; // 画刷
     QPen m_pen;
     QLineSeries *m_upperSeries;
     QLineSeries *m_lowerSeries;

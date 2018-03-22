@@ -258,9 +258,9 @@ QT_CHARTS_BEGIN_NAMESPACE
     \brief Constructs QAbstractSeries object with \a parent.
 */
 // 构造函数
-QAbstractSeries::QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent) :
+QAbstractSeries::QAbstractSeries(QAbstractSeriesPrivate &d,QObject *parent) :
     QObject(parent),
-    d_ptr(&d)
+    d_ptr(&d) // 私有成员
 {
 }
 
@@ -270,24 +270,27 @@ QAbstractSeries::QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent) :
 // 析构函数
 QAbstractSeries::~QAbstractSeries()
 {
+    // 如果仍然帮定到图表
     if (d_ptr->m_chart)
         qFatal("Series still bound to a chart when destroyed!");
 }
 
-
+// 设置名称
 void QAbstractSeries::setName(const QString &name)
 {
-    if (name != d_ptr->m_name) {
-        d_ptr->m_name = name;
-        emit nameChanged();
+    if (name != d_ptr->m_name) { // 名称不同
+        d_ptr->m_name = name; // 设置名称
+        emit nameChanged(); // 发送名称改变信号
     }
 }
 
+// 获取名称
 QString QAbstractSeries::name() const
 {
-    return d_ptr->m_name;
+    return d_ptr->m_name; // 返回名称
 }
 
+// 设置是否可见
 void QAbstractSeries::setVisible(bool visible)
 {
     if (visible != d_ptr->m_visible) {
@@ -296,16 +299,19 @@ void QAbstractSeries::setVisible(bool visible)
     }
 }
 
+// 获取是否可见
 bool QAbstractSeries::isVisible() const
 {
     return d_ptr->m_visible;
 }
 
+// 获取不透明度
 qreal QAbstractSeries::opacity() const
 {
     return d_ptr->m_opacity;
 }
 
+// 设置不透明度
 void QAbstractSeries::setOpacity(qreal opacity)
 {
     if (opacity != d_ptr->m_opacity) {
@@ -314,6 +320,7 @@ void QAbstractSeries::setOpacity(qreal opacity)
     }
 }
 
+// 设置是否使用 OpenGL
 void QAbstractSeries::setUseOpenGL(bool enable)
 {
 #ifdef QT_NO_OPENGL
@@ -331,6 +338,7 @@ void QAbstractSeries::setUseOpenGL(bool enable)
 #endif
 }
 
+// 获取是否使用 OpenGL
 bool QAbstractSeries::useOpenGL() const
 {
     return d_ptr->m_useOpenGL;
@@ -342,6 +350,7 @@ bool QAbstractSeries::useOpenGL() const
     Set automatically when the series is added to the chart,
     and unset when the series is removed from the chart.
 */
+// 获取捆绑图表
 QChart *QAbstractSeries::chart() const
 {
     return d_ptr->m_chart;
@@ -352,6 +361,7 @@ QChart *QAbstractSeries::chart() const
 
     \sa setVisible(), isVisible()
 */
+// 显示序列
 void QAbstractSeries::show()
 {
     setVisible(true);
@@ -362,6 +372,7 @@ void QAbstractSeries::show()
 
     \sa setVisible(), isVisible()
 */
+// 隐藏序列
 void QAbstractSeries::hide()
 {
     setVisible(false);
@@ -377,11 +388,13 @@ void QAbstractSeries::hide()
 
  \sa QChart::addAxis(), QChart::createDefaultAxes()
  */
+// 捆绑坐标轴
 bool QAbstractSeries::attachAxis(QAbstractAxis* axis)
 {
-    if(d_ptr->m_chart) {
+    if(d_ptr->m_chart) { // 已捆绑图表
+        // 命令图表捆绑坐标轴
         return d_ptr->m_chart->d_ptr->m_dataset->attachAxis(this, axis);
-    } else {
+    } else { // 尚未捆绑图表
         qWarning()<<"Series not in the chart. Please addSeries to chart first.";
         return false;
     }
@@ -394,12 +407,14 @@ bool QAbstractSeries::attachAxis(QAbstractAxis* axis)
 
  \sa QChart::removeAxis()
  */
+// 松绑坐标轴
 bool QAbstractSeries::detachAxis(QAbstractAxis* axis)
 {
-    if(d_ptr->m_chart) {
+    if(d_ptr->m_chart) { // 已捆绑图表
+        // 松绑坐标轴
         return d_ptr->m_chart->d_ptr->m_dataset->detachAxis(this, axis);
     }
-    else {
+    else { // 尚未捆绑图表
         qWarning()<<"Series not in the chart. Please addSeries to chart first.";
         return false;
     }
@@ -410,23 +425,24 @@ bool QAbstractSeries::detachAxis(QAbstractAxis* axis)
     are attached to a series, except for QPieSeries, which does not have any axes attached.
  \sa attachAxis(), detachAxis()
  */
+// 获取捆绑坐标轴
 QList<QAbstractAxis*> QAbstractSeries::attachedAxes()
 {
+    // 返回捆绑坐标轴
     return d_ptr->m_axes;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
 // 构造函数
 QAbstractSeriesPrivate::QAbstractSeriesPrivate(QAbstractSeries *q)
     : q_ptr(q), // 所属序列
       m_chart(0), // 所属图表
       m_item(0), // 图表项
       m_domain(new XYDomain()), // 区域
-      m_visible(true),
-      m_opacity(1.0),
-      m_useOpenGL(false),
-      m_blockOpenGL(false)
+      m_visible(true), // 是否可见
+      m_opacity(1.0), // 不透明度
+      m_useOpenGL(false), // 是否使用 OpenGL
+      m_blockOpenGL(false) // 是否阻塞 OpenGL
 {
 }
 
@@ -454,13 +470,13 @@ void QAbstractSeriesPrivate::setDomain(AbstractDomain* domain)
     }
 }
 
-// 设置主持人（处理事件）
+// 设置主持
 void QAbstractSeriesPrivate::setPresenter(ChartPresenter *presenter)
 {
     m_presenter = presenter;
 }
 
-// 获取主持人（协调处理事件）
+// 获取主持人
 ChartPresenter *QAbstractSeriesPrivate::presenter() const
 {
     return m_presenter;
@@ -471,6 +487,7 @@ void QAbstractSeriesPrivate::initializeGraphics(QGraphicsItem* parent)
 {
     Q_ASSERT(!m_item.isNull());
     Q_UNUSED(parent);
+    // 连接区域更新信号
     QObject::connect(m_domain.data(), SIGNAL(updated()),m_item.data(), SLOT(handleDomainUpdated()));
 }
 
@@ -485,7 +502,7 @@ void QAbstractSeriesPrivate::initializeAnimations(QChart::AnimationOptions optio
 
 // This function can be used to explicitly block OpenGL use from some otherwise supported series,
 // such as the line series used as edge series of an area series.
-// 设置是否阻止penGL
+// 设置是否阻止OpenGL
 void QAbstractSeriesPrivate::setBlockOpenGL(bool enable)
 {
     m_blockOpenGL = enable;
