@@ -92,7 +92,7 @@ public:
 
     QChart* chart() { return m_chart; } // 返回所属图表
 
-    void setBlockOpenGL(bool enable); // ???
+    void setBlockOpenGL(bool enable); // 是否阻塞OpenGL
 
 Q_SIGNALS:
     void countChanged(); // 计数变更信号

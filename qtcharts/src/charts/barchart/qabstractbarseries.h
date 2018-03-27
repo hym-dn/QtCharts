@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -39,6 +39,7 @@ class QBarSet;
 class QAbstractBarSeriesPrivate;
 
 // Container for series
+// 柱状图序列抽象类，它是系统中全部柱状图序列的基类
 class QT_CHARTS_EXPORT QAbstractBarSeries : public QAbstractSeries
 {
     Q_OBJECT
@@ -52,6 +53,8 @@ class QT_CHARTS_EXPORT QAbstractBarSeries : public QAbstractSeries
     Q_ENUMS(LabelsPosition)
 
 public:
+
+    // 标签位置
     enum LabelsPosition {
         LabelsCenter = 0,
         LabelsInsideEnd,

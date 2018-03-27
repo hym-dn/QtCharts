@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -38,6 +38,7 @@
 QT_CHARTS_BEGIN_NAMESPACE
 class QBarSetPrivate;
 
+// 柱状图集合
 class QT_CHARTS_EXPORT QBarSet : public QObject
 {
     Q_OBJECT
@@ -51,47 +52,48 @@ class QT_CHARTS_EXPORT QBarSet : public QObject
     Q_PROPERTY(QColor labelColor READ labelColor WRITE setLabelColor NOTIFY labelColorChanged)
 
 public:
-    explicit QBarSet(const QString label, QObject *parent = nullptr);
-    virtual ~QBarSet();
+    explicit QBarSet(const QString label, QObject *parent = Q_NULLPTR); // 构造
+    virtual ~QBarSet(); // 析构
 
-    void setLabel(const QString label);
-    QString label() const;
+    void setLabel(const QString label); // 设置标签
+    QString label() const; // 获取标签
 
-    void append(const qreal value);
-    void append(const QList<qreal> &values);
+    void append(const qreal value); // 追加值
+    void append(const QList<qreal> &values); // 追加值集
 
-    QBarSet &operator << (const qreal &value);
+    QBarSet &operator << (const qreal &value); // 追加值
 
-    void insert(const int index, const qreal value);
-    void remove(const int index, const int count = 1);
-    void replace(const int index, const qreal value);
-    qreal at(const int index) const;
-    qreal operator [](const int index) const;
-    int count() const;
-    qreal sum() const;
+    void insert(const int index, const qreal value); // 插入值
+    void remove(const int index, const int count = 1); // 删除
+    void replace(const int index, const qreal value); // 替换
+    qreal at(const int index) const; // 取指定值
+    qreal operator [](const int index) const; // 取指定值
+    int count() const; // 计数
+    qreal sum() const; // 和
 
-    void setPen(const QPen &pen);
-    QPen pen() const;
+    void setPen(const QPen &pen); // 设置画笔
+    QPen pen() const; // 获取画笔
 
-    void setBrush(const QBrush &brush);
-    QBrush brush() const;
+    void setBrush(const QBrush &brush); // 设置画刷
+    QBrush brush() const; // 获取画刷
 
-    void setLabelBrush(const QBrush &brush);
-    QBrush labelBrush() const;
+    void setLabelBrush(const QBrush &brush); // 设置标签画刷
+    QBrush labelBrush() const; // 获取标签画刷
 
-    void setLabelFont(const QFont &font);
-    QFont labelFont() const;
+    void setLabelFont(const QFont &font); // 设置标签字体
+    QFont labelFont() const; // 获取标签字体
 
-    QColor color();
-    void setColor(QColor color);
+    QColor color(); // 获取颜色
+    void setColor(QColor color); // 设置颜色
 
-    QColor borderColor();
-    void setBorderColor(QColor color);
+    QColor borderColor(); // 边框颜色
+    void setBorderColor(QColor color); // 设置边框颜色
 
-    QColor labelColor();
-    void setLabelColor(QColor color);
+    QColor labelColor(); // 标签颜色
+    void setLabelColor(QColor color); // 设置标签颜色
 
 Q_SIGNALS:
+
     void clicked(int index);
     void hovered(bool status, int index);
     void pressed(int index);
@@ -111,7 +113,7 @@ Q_SIGNALS:
     void valueChanged(int index);
 
 private:
-    QScopedPointer<QBarSetPrivate> d_ptr;
+    QScopedPointer<QBarSetPrivate> d_ptr; // 私有成员
     Q_DISABLE_COPY(QBarSet)
     friend class QAbstractBarSeries;
     friend class BarLegendMarker;

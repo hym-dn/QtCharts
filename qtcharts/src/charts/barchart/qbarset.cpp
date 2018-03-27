@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -326,15 +326,17 @@ QT_CHARTS_BEGIN_NAMESPACE
 /*!
     Constructs a bar set with the label \a label and the parent \a parent.
 */
+// 构造函数
 QBarSet::QBarSet(const QString label, QObject *parent)
-    : QObject(parent),
-      d_ptr(new QBarSetPrivate(label, this))
+    : QObject(parent)
+    , d_ptr(new QBarSetPrivate(label, this))
 {
 }
 
 /*!
     Removes the bar set.
 */
+// 析构函数
 QBarSet::~QBarSet()
 {
     // NOTE: d_ptr destroyed by QObject
@@ -343,16 +345,21 @@ QBarSet::~QBarSet()
 /*!
     Sets \a label as the new label for the bar set.
 */
+// 设置标签
 void QBarSet::setLabel(const QString label)
 {
+    // 设置标签
     d_ptr->m_label = label;
+    // ???
     d_ptr->setLabelsDirty(true);
+    // 发送标签变更信号
     emit labelChanged();
 }
 
 /*!
     Returns the label of the bar set.
 */
+// 获取标签
 QString QBarSet::label() const
 {
     return d_ptr->m_label;
@@ -366,11 +373,15 @@ QString QBarSet::label() const
 /*!
     Appends the new value specified by \a value to the end of the bar set.
 */
+// 追加值
 void QBarSet::append(const qreal value)
 {
     // Convert to QPointF
+    // 记录计数
     int index = d_ptr->m_values.count();
+    // 追加点
     d_ptr->append(QPointF(d_ptr->m_values.count(), value));
+    // 发送增加值信号
     emit valuesAdded(index, 1);
 }
 
@@ -379,10 +390,14 @@ void QBarSet::append(const qreal value)
 
     \sa append()
 */
+// 追加值集
 void QBarSet::append(const QList<qreal> &values)
 {
+    // 获取值集合数量
     int index = d_ptr->m_values.count();
+    // 追加值集合
     d_ptr->append(values);
+    // 发送值添加信号
     emit valuesAdded(index, values.count());
 }
 
@@ -392,6 +407,7 @@ void QBarSet::append(const QList<qreal> &values)
 
     \sa append()
 */
+// 追加值
 QBarSet &QBarSet::operator << (const qreal &value)
 {
     append(value);
@@ -404,6 +420,7 @@ QBarSet &QBarSet::operator << (const qreal &value)
 
     \sa remove()
 */
+// 插入值
 void QBarSet::insert(const int index, const qreal value)
 {
     d_ptr->insert(index, value);
@@ -423,6 +440,7 @@ void QBarSet::insert(const int index, const qreal value)
     the value specified by \a index.
     \sa insert()
 */
+// 删除
 void QBarSet::remove(const int index, const int count)
 {
     int removedCount = d_ptr->remove(index, count);
@@ -440,6 +458,7 @@ void QBarSet::remove(const int index, const int count)
 /*!
     Adds the value specified by \a value to the bar set at the position specified by \a index.
 */
+// 替换
 void QBarSet::replace(const int index, const qreal value)
 {
     if (index >= 0 && index < d_ptr->m_values.count()) {
@@ -458,6 +477,7 @@ void QBarSet::replace(const int index, const qreal value)
     Returns the value specified by \a index from the bar set.
     If the index is out of bounds, 0.0 is returned.
 */
+// 获取指定值
 qreal QBarSet::at(const int index) const
 {
     if (index < 0 || index >= d_ptr->m_values.count())
@@ -469,6 +489,7 @@ qreal QBarSet::at(const int index) const
     Returns the value of the bar set specified by \a index.
     If the index is out of bounds, 0.0 is returned.
 */
+// 获取指定值
 qreal QBarSet::operator [](const int index) const
 {
     return at(index);
@@ -477,6 +498,7 @@ qreal QBarSet::operator [](const int index) const
 /*!
     Returns the number of values in a bar set.
 */
+// 值计数
 int QBarSet::count() const
 {
     return d_ptr->m_values.count();
@@ -485,6 +507,7 @@ int QBarSet::count() const
 /*!
     Returns the sum of all values in the bar set.
 */
+// 计算值和
 qreal QBarSet::sum() const
 {
     qreal total(0);
@@ -496,6 +519,7 @@ qreal QBarSet::sum() const
 /*!
     Sets the pen used to draw the lines in the bar set to \a pen.
 */
+// 设置画笔
 void QBarSet::setPen(const QPen &pen)
 {
     if (d_ptr->m_pen != pen) {
@@ -509,6 +533,7 @@ void QBarSet::setPen(const QPen &pen)
 /*!
     Returns the pen used to draw the lines in the bar set.
 */
+// 获取画笔
 QPen QBarSet::pen() const
 {
     if (d_ptr->m_pen == QChartPrivate::defaultPen())
@@ -520,6 +545,7 @@ QPen QBarSet::pen() const
 /*!
     Sets the brush used to fill the bars in the bar set to \a brush.
 */
+// 设置画刷
 void QBarSet::setBrush(const QBrush &brush)
 {
     if (d_ptr->m_brush != brush) {
@@ -533,6 +559,7 @@ void QBarSet::setBrush(const QBrush &brush)
 /*!
     Returns the brush used to fill the bars in the bar set.
 */
+// 获取画刷
 QBrush QBarSet::brush() const
 {
     if (d_ptr->m_brush == QChartPrivate::defaultBrush())
@@ -544,6 +571,7 @@ QBrush QBarSet::brush() const
 /*!
     Sets the brush used to draw values on top of this bar set to \a brush.
 */
+// 设置标签画刷
 void QBarSet::setLabelBrush(const QBrush &brush)
 {
     if (d_ptr->m_labelBrush != brush) {
@@ -557,6 +585,7 @@ void QBarSet::setLabelBrush(const QBrush &brush)
 /*!
     Returns the brush used to draw values on top of this bar set.
 */
+// 获取标签画刷
 QBrush QBarSet::labelBrush() const
 {
     if (d_ptr->m_labelBrush == QChartPrivate::defaultBrush())
@@ -568,6 +597,7 @@ QBrush QBarSet::labelBrush() const
 /*!
     Sets the font used to draw values on top of this bar set to \a font.
 */
+// 设置标签字体
 void QBarSet::setLabelFont(const QFont &font)
 {
     if (d_ptr->m_labelFont != font) {
@@ -581,6 +611,7 @@ void QBarSet::setLabelFont(const QFont &font)
 /*!
     Returns the pen used to draw values on top of this bar set.
 */
+// 获取标签字体
 QFont QBarSet::labelFont() const
 {
     return d_ptr->m_labelFont;
@@ -589,6 +620,7 @@ QFont QBarSet::labelFont() const
 /*!
     Returns the fill color for the bar set.
 */
+// 获取颜色
 QColor QBarSet::color()
 {
     return brush().color();
@@ -597,6 +629,7 @@ QColor QBarSet::color()
 /*!
     Sets the fill color for the bar set to \a color.
 */
+// 设置颜色
 void QBarSet::setColor(QColor color)
 {
     QBrush b = brush();
@@ -617,6 +650,7 @@ void QBarSet::setColor(QColor color)
 /*!
     Returns the line color for the bar set.
 */
+// 获取边框颜色
 QColor QBarSet::borderColor()
 {
     return pen().color();
@@ -625,6 +659,7 @@ QColor QBarSet::borderColor()
 /*!
     Sets the line color for the bar set to \a color.
 */
+// 设置边框颜色
 void QBarSet::setBorderColor(QColor color)
 {
     QPen p = pen();
@@ -638,6 +673,7 @@ void QBarSet::setBorderColor(QColor color)
 /*!
     Returns the text color for the bar set.
 */
+// 获取标签颜色
 QColor QBarSet::labelColor()
 {
     return labelBrush().color();
@@ -646,6 +682,7 @@ QColor QBarSet::labelColor()
 /*!
     Sets the text color for the bar set to \a color.
 */
+// 设置标签颜色
 void QBarSet::setLabelColor(QColor color)
 {
     QBrush b = labelBrush();
@@ -660,99 +697,127 @@ void QBarSet::setLabelColor(QColor color)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造函数
 QBarSetPrivate::QBarSetPrivate(const QString label, QBarSet *parent) : QObject(parent),
-    q_ptr(parent),
-    m_label(label),
-    m_pen(QChartPrivate::defaultPen()),
-    m_brush(QChartPrivate::defaultBrush()),
-    m_labelBrush(QChartPrivate::defaultBrush()),
-    m_visualsDirty(true)
+    q_ptr(parent), // 所属柱状图集合
+    m_label(label), // 标签
+    m_pen(QChartPrivate::defaultPen()), // 画笔
+    m_brush(QChartPrivate::defaultBrush()), // 画刷
+    m_labelBrush(QChartPrivate::defaultBrush()), // 标签画刷
+    m_visualsDirty(true) // ???
 {
 }
 
+// 析构函数
 QBarSetPrivate::~QBarSetPrivate()
 {
 }
 
+// 追加一个点
 void QBarSetPrivate::append(QPointF value)
 {
-    if (isValidValue(value)) {
-        m_values.append(value);
-        emit valueAdded(m_values.size() - 1, 1);
+    if (isValidValue(value)) { // 有效值
+        m_values.append(value); // 追加一个点
+        emit valueAdded(m_values.size() - 1, 1); // 发送追加信号
     }
 }
 
+// 追加点集
 void QBarSetPrivate::append(QList<QPointF> values)
 {
+    // 点集计数
     int originalIndex = m_values.count();
+    // 遍历点集
     for (int i = 0; i < values.count(); i++) {
-        if (isValidValue(values.at(i)))
-            m_values.append(values.at(i));
+        if (isValidValue(values.at(i))) // 数据有效
+            m_values.append(values.at(i)); // 追加点
     }
+    // 发送信号
     emit valueAdded(originalIndex, values.size());
 }
 
+// 追加点集
 void QBarSetPrivate::append(QList<qreal> values)
 {
+    // 点集计数
     int originalIndex = m_values.count();
+    // 记录下标
     int index = originalIndex;
+    // 遍历值集
     for (int i = 0; i < values.count(); i++) {
-        if (isValidValue(values.at(i))) {
-            m_values.append(QPointF(index, values.at(i)));
-            index++;
+        if (isValidValue(values.at(i))) { // 值有效
+            m_values.append(QPointF(index, values.at(i))); // 追加点集
+            index++; // 下标自增
         }
     }
+    // 发送信号
     emit valueAdded(originalIndex, values.size());
 }
 
+// 插入值
 void QBarSetPrivate::insert(const int index, const qreal value)
 {
     m_values.insert(index, QPointF(index, value));
     emit valueAdded(index, 1);
 }
 
+// 插入值
 void QBarSetPrivate::insert(const int index, const QPointF value)
 {
     m_values.insert(index, value);
     emit valueAdded(index, 1);
 }
 
+// 删除指定值
 int QBarSetPrivate::remove(const int index, const int count)
 {
+    // 记录删除计数
     int removeCount = count;
-
+    // 如果索引非法，值计数为空
     if ((index < 0) || (m_values.count() == 0))
         return 0; // Invalid index or not values in list, remove nothing.
+    // 如果计数超出范围
     else if ((index + count) > m_values.count())
         removeCount = m_values.count() - index; // Trying to remove more items than list has. Limit amount to be removed.
 
+    // 逐个删除
     int c = 0;
     while (c < removeCount) {
         m_values.removeAt(index);
         c++;
     }
+    // 发送信号
     emit valueRemoved(index, removeCount);
+    // 返回删除计数
     return removeCount;
 }
 
+// 替换指定值
 void QBarSetPrivate::replace(const int index, const qreal value)
 {
+    // 替换指定索引指定值
     m_values.replace(index, QPointF(index, value));
+    // 发送信号
     emit valueChanged(index);
 }
 
+// 获取指定索引的x位置
 qreal QBarSetPrivate::pos(const int index)
 {
+    // 索引小于0或者索引大于等于值集计数
     if (index < 0 || index >= m_values.count())
         return 0;
+    // 获取指定x位置
     return m_values.at(index).x();
 }
 
+// 获取指定值
 qreal QBarSetPrivate::value(const int index)
 {
+    // 如果索引非法
     if (index < 0 || index >= m_values.count())
         return 0;
+    // 获取指定y值
     return m_values.at(index).y();
 }
 

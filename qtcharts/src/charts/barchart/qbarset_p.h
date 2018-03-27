@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -48,31 +48,32 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 柱状数据集合私有成员
 class QT_CHARTS_PRIVATE_EXPORT QBarSetPrivate : public QObject
 {
     Q_OBJECT
 
 public:
-    QBarSetPrivate(const QString label, QBarSet *parent);
-    ~QBarSetPrivate();
+    QBarSetPrivate(const QString label, QBarSet *parent); // 构造
+    ~QBarSetPrivate(); // 析构
 
-    void append(QPointF value);
-    void append(QList<QPointF> values);
-    void append(QList<qreal> values);
+    void append(QPointF value); // 追加点
+    void append(QList<QPointF> values); // 追加点集
+    void append(QList<qreal> values); // 追加值
 
-    void insert(const int index, const qreal value);
-    void insert(const int index, const QPointF value);
-    int remove(const int index, const int count);
+    void insert(const int index, const qreal value); // 插入值
+    void insert(const int index, const QPointF value); // 插入点
+    int remove(const int index, const int count); // 删除
 
-    void replace(const int index, const qreal value);
+    void replace(const int index, const qreal value); // 替换值
 
-    qreal pos(const int index);
-    qreal value(const int index);
+    qreal pos(const int index); // 获取指定位置
+    qreal value(const int index); // 获取指定值
 
-    void setVisualsDirty(bool dirty) { m_visualsDirty = dirty; }
-    bool visualsDirty() const { return m_visualsDirty; }
-    void setLabelsDirty(bool dirty) { m_labelsDirty = dirty; }
-    bool labelsDirty() const { return m_labelsDirty; }
+    void setVisualsDirty(bool dirty) { m_visualsDirty = dirty; } // ???
+    bool visualsDirty() const { return m_visualsDirty; } // ???
+    void setLabelsDirty(bool dirty) { m_labelsDirty = dirty; } // ???
+    bool labelsDirty() const { return m_labelsDirty; } // ???
 
 Q_SIGNALS:
     void updatedBars();
@@ -81,15 +82,15 @@ Q_SIGNALS:
     void valueRemoved(int index, int count);
 
 public:
-    QBarSet * const q_ptr;
-    QString m_label;
-    QList<QPointF> m_values;
-    QPen m_pen;
-    QBrush m_brush;
-    QBrush m_labelBrush;
-    QFont m_labelFont;
-    bool m_visualsDirty;
-    bool m_labelsDirty;
+    QBarSet * const q_ptr; // 所属柱状数据集合
+    QString m_label; // 标签
+    QList<QPointF> m_values; // 值链表
+    QPen m_pen; // 画笔
+    QBrush m_brush; // 画刷
+    QBrush m_labelBrush; // 标签画刷
+    QFont m_labelFont; // 标签字体
+    bool m_visualsDirty; // ???
+    bool m_labelsDirty; // ???
 
     friend class QBarSet;
 };

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -109,6 +109,7 @@ QT_CHARTS_BEGIN_NAMESPACE
     When the series object is added to a QChartView or QChart instance, the ownership
     is transferred.
 */
+// 构造
 QLineSeries::QLineSeries(QObject *parent)
     : QXYSeries(*new QLineSeriesPrivate(this), parent)
 {
@@ -118,6 +119,7 @@ QLineSeries::QLineSeries(QObject *parent)
 /*!
     \internal
 */
+// 构造
 QLineSeries::QLineSeries(QLineSeriesPrivate &d, QObject *parent)
     : QXYSeries(d, parent)
 {
@@ -127,16 +129,18 @@ QLineSeries::QLineSeries(QLineSeriesPrivate &d, QObject *parent)
     Destroys the object. Series added to QChartView or QChart instances are owned by the
     instances and deleted when the instances are destroyed.
 */
+// 析构
 QLineSeries::~QLineSeries()
 {
     Q_D(QLineSeries);
     if (d->m_chart)
-        d->m_chart->removeSeries(this);
+        d->m_chart->removeSeries(this); // 删除序列
 }
 
 /*!
     \reimp
 */
+// 序列类型
 QAbstractSeries::SeriesType QLineSeries::type() const
 {
     return QAbstractSeries::SeriesTypeLine;
@@ -155,34 +159,44 @@ QDebug operator<< (QDebug debug, const QLineSeries series)
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 QLineSeriesPrivate::QLineSeriesPrivate(QLineSeries *q)
     : QXYSeriesPrivate(q)
 {
 
 }
 
+// 初始化图像
 void QLineSeriesPrivate::initializeGraphics(QGraphicsItem *parent)
 {
+    // 启用私有成员
     Q_Q(QLineSeries);
+    // 创建线图表项
     LineChartItem *line = new LineChartItem(q,parent);
+    // 重置图表项
     m_item.reset(line);
+    // 调用基类相应处理函数
     QAbstractSeriesPrivate::initializeGraphics(parent);
 }
 
+// 初始化主题
 void QLineSeriesPrivate::initializeTheme(int index, ChartTheme* theme, bool forced)
 {
+    // 启用私有成员
     Q_Q(QLineSeries);
+    // 序列颜色
     const QList<QColor> colors = theme->seriesColors();
-
+    // 强制或默认画笔
     if (forced || QChartPrivate::defaultPen() == m_pen) {
+        // 设置画笔
         QPen pen;
         pen.setColor(colors.at(index % colors.size()));
         pen.setWidthF(2);
         q->setPen(pen);
     }
-
+    // 强制或默认颜色
     if (forced || QChartPrivate::defaultPen().color() == m_pointLabelsColor) {
+        // 设置颜色
         QColor color = theme->labelBrush().color();
         q->setPointLabelsColor(color);
     }

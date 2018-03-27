@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -51,9 +51,11 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QBarSet;
 
+// 条状图模型私有成员
 class QT_CHARTS_PRIVATE_EXPORT QBarModelMapperPrivate : public QObject
 {
     Q_OBJECT
+// 构造
 public:
     explicit QBarModelMapperPrivate(QBarModelMapper *q);
 
@@ -87,16 +89,16 @@ private:
     void blockSeriesSignals(bool block = true);
 
 private:
-    QAbstractBarSeries *m_series;
-    QList<QBarSet *> m_barSets;
-    QAbstractItemModel *m_model;
-    int m_first;
-    int m_count;
-    Qt::Orientation m_orientation;
-    int m_firstBarSetSection;
-    int m_lastBarSetSection;
-    bool m_seriesSignalsBlock;
-    bool m_modelSignalsBlock;
+    QAbstractBarSeries *m_series; // 所属序列
+    QList<QBarSet *> m_barSets; // 数据集合
+    QAbstractItemModel *m_model; // 抽象项目模型
+    int m_first; // 第一个
+    int m_count; // 计数
+    Qt::Orientation m_orientation; // 方向
+    int m_firstBarSetSection; // 第一个条形图段
+    int m_lastBarSetSection; // 最后一个条形图段
+    bool m_seriesSignalsBlock; // 序列信号阻塞
+    bool m_modelSignalsBlock; // 模型信号阻塞
 
 private:
     QBarModelMapper *q_ptr;

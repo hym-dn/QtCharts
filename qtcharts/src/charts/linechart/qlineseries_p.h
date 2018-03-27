@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -44,13 +44,13 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
-
+// 线序列私有成员
 class QT_CHARTS_PRIVATE_EXPORT QLineSeriesPrivate: public QXYSeriesPrivate
 {
 public:
-    QLineSeriesPrivate(QLineSeries *q);
-    void initializeGraphics(QGraphicsItem* parent);
-    void initializeTheme(int index, ChartTheme* theme, bool forced = false);
+    QLineSeriesPrivate(QLineSeries *q); // 构造
+    void initializeGraphics(QGraphicsItem* parent); // 初始化图像
+    void initializeTheme(int index, ChartTheme* theme, bool forced = false); // 初始化主题
 
 private:
     Q_DECLARE_PUBLIC(QLineSeries);

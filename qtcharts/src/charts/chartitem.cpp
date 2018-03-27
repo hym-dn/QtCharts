@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -34,24 +34,28 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 ChartItem::ChartItem(QAbstractSeriesPrivate *series,QGraphicsItem* item):
-      ChartElement(item),
-      m_validData(true),
-      m_series(series)
+      ChartElement(item), // 基类
+      m_validData(true), // 数据是否有效
+      m_series(series) // 所属序列私有成员
 {
 
 }
 
+// 获取所属序列区域
 AbstractDomain* ChartItem::domain() const
 {
     return m_series->domain();
 }
 
+// 清除信号连接
 void ChartItem::cleanup()
 {
     disconnect();
 }
 
+// 区域更新相应槽
 void ChartItem::handleDomainUpdated()
 {
     qWarning() <<  __FUNCTION__<< "Slot not implemented";

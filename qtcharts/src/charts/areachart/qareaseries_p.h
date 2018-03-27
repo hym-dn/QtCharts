@@ -53,34 +53,34 @@ class QT_CHARTS_PRIVATE_EXPORT QAreaSeriesPrivate: public QAbstractSeriesPrivate
     Q_OBJECT
 
 public:
-    QAreaSeriesPrivate(QLineSeries *upperSeries, QLineSeries *lowerSeries, QAreaSeries *q);
+    QAreaSeriesPrivate(QLineSeries *upperSeries, QLineSeries *lowerSeries, QAreaSeries *q); // 构造
 
-    void initializeDomain();
-    void initializeAxes();
-    void initializeGraphics(QGraphicsItem* parent);
-    void initializeTheme(int index, ChartTheme* theme, bool forced = false);
+    void initializeDomain(); // 初始化区域
+    void initializeAxes(); // 初始化轴
+    void initializeGraphics(QGraphicsItem* parent); // 初始化图像
+    void initializeTheme(int index, ChartTheme* theme, bool forced = false); // 初始化主题
     void initializeAnimations(QChart::AnimationOptions options, int duration,
-                              QEasingCurve &curve);
+                              QEasingCurve &curve); // 初始化动画
 
-    QList<QLegendMarker *> createLegendMarkers(QLegend *legend);
+    QList<QLegendMarker *> createLegendMarkers(QLegend *legend); // 创建图例标记
 
-    QAbstractAxis::AxisType defaultAxisType(Qt::Orientation orientation) const;
-    QAbstractAxis* createDefaultAxis(Qt::Orientation) const;
+    QAbstractAxis::AxisType defaultAxisType(Qt::Orientation orientation) const; // 默认轴类型
+    QAbstractAxis* createDefaultAxis(Qt::Orientation) const; // 创建默认轴
 
 Q_SIGNALS:
     void updated();
 
 protected:
     QBrush m_brush; // 画刷
-    QPen m_pen;
-    QLineSeries *m_upperSeries;
-    QLineSeries *m_lowerSeries;
-    bool m_pointsVisible;
-    QString m_pointLabelsFormat;
-    bool m_pointLabelsVisible;
-    QFont m_pointLabelsFont;
-    QColor m_pointLabelsColor;
-    bool m_pointLabelsClipping;
+    QPen m_pen; // 画笔
+    QLineSeries *m_upperSeries; // 序列上界
+    QLineSeries *m_lowerSeries; // 序列下界
+    bool m_pointsVisible; // 点集是否可视
+    QString m_pointLabelsFormat; // 点标签格式
+    bool m_pointLabelsVisible; // 点标签是否可见
+    QFont m_pointLabelsFont; // 点标签字体
+    QColor m_pointLabelsColor; // 点标签颜色
+    bool m_pointLabelsClipping; // 点标签是否剪裁
 
 private:
     Q_DECLARE_PUBLIC(QAreaSeries);

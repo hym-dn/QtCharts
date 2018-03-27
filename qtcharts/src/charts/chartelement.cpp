@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -34,40 +34,46 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造函数
 ChartElement::ChartElement(QGraphicsItem* item):
-      QGraphicsObject(item),
-      m_presenter(0),
-      m_themeManager(0),
-      m_dataSet(0)
+      QGraphicsObject(item), // 基类构造
+      m_presenter(0), // 图表主持
+      m_themeManager(0), // 图表主题
+      m_dataSet(0) // 数据集
 {
-
 }
 
+// 设置主持
 void ChartElement::setPresenter(ChartPresenter *presenter)
 {
     m_presenter = presenter;
 }
 
+// 获取主持
 ChartPresenter *ChartElement::presenter() const
 {
     return m_presenter;
 }
 
+// 设置主题
 void ChartElement::setThemeManager(ChartThemeManager *manager)
 {
     m_themeManager = manager;
 }
 
+// 返回主题
 ChartThemeManager* ChartElement::themeManager() const
 {
     return m_themeManager;
 }
 
+// 设置数据集
 void ChartElement::setDataSet(ChartDataSet *dataSet)
 {
     m_dataSet = dataSet;
 }
 
+// 返回数据集
 ChartDataSet *ChartElement::dataSet() const
 {
     return m_dataSet;

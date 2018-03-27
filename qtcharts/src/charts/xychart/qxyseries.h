@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -44,6 +44,7 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QXYSeriesPrivate;
 class QXYModelMapper;
 
+// x、y序列
 class QT_CHARTS_EXPORT QXYSeries : public QAbstractSeries
 {
     Q_OBJECT
@@ -56,61 +57,61 @@ class QT_CHARTS_EXPORT QXYSeries : public QAbstractSeries
     Q_PROPERTY(bool pointLabelsClipping READ pointLabelsClipping WRITE setPointLabelsClipping NOTIFY pointLabelsClippingChanged)
 
 protected:
-    explicit QXYSeries(QXYSeriesPrivate &d, QObject *parent = nullptr);
+    explicit QXYSeries(QXYSeriesPrivate &d, QObject *parent = Q_NULLPTR); // 构造
 
 public:
-    ~QXYSeries();
-    void append(qreal x, qreal y);
-    void append(const QPointF &point);
-    void append(const QList<QPointF> &points);
-    void replace(qreal oldX, qreal oldY, qreal newX, qreal newY);
-    void replace(const QPointF &oldPoint, const QPointF &newPoint);
-    void replace(int index, qreal newX, qreal newY);
-    void replace(int index, const QPointF &newPoint);
-    void remove(qreal x, qreal y);
-    void remove(const QPointF &point);
-    void remove(int index);
-    void removePoints(int index, int count);
-    void insert(int index, const QPointF &point);
-    void clear();
+    ~QXYSeries(); // 析构
+    void append(qreal x, qreal y); // 追加点
+    void append(const QPointF &point); // 追加点
+    void append(const QList<QPointF> &points); // 追加点集
+    void replace(qreal oldX, qreal oldY, qreal newX, qreal newY); // 替换点
+    void replace(const QPointF &oldPoint, const QPointF &newPoint); // 替换点
+    void replace(int index, qreal newX, qreal newY); // 替换点
+    void replace(int index, const QPointF &newPoint); // 替换点
+    void remove(qreal x, qreal y); // 删除点
+    void remove(const QPointF &point); // 删除点
+    void remove(int index); // 删除点
+    void removePoints(int index, int count); // 删除点集
+    void insert(int index, const QPointF &point); // 插入点
+    void clear(); // 清除
 
-    int count() const;
-    QList<QPointF> points() const;
-    QVector<QPointF> pointsVector() const;
-    const QPointF &at(int index) const;
+    int count() const; // 计数
+    QList<QPointF> points() const; // 获取点集
+    QVector<QPointF> pointsVector() const; // 获取点集
+    const QPointF &at(int index) const; // 获取点
 
-    QXYSeries &operator << (const QPointF &point);
-    QXYSeries &operator << (const QList<QPointF> &points);
+    QXYSeries &operator << (const QPointF &point); // 插入点
+    QXYSeries &operator << (const QList<QPointF> &points); // 插入点集
 
-    virtual void setPen(const QPen &pen);
-    QPen pen() const;
+    virtual void setPen(const QPen &pen); // 设置画笔
+    QPen pen() const; // 获取画笔
 
-    virtual void setBrush(const QBrush &brush);
-    QBrush brush() const;
+    virtual void setBrush(const QBrush &brush); // 设置画刷
+    QBrush brush() const; // 返回画刷
 
-    virtual void setColor(const QColor &color);
-    virtual QColor color() const;
+    virtual void setColor(const QColor &color); // 设置颜色
+    virtual QColor color() const; // 返回颜色
 
-    void setPointsVisible(bool visible = true);
-    bool pointsVisible() const;
+    void setPointsVisible(bool visible = true); // 设置点集是否可见
+    bool pointsVisible() const; // 获取点集是否可见
 
-    void setPointLabelsFormat(const QString &format);
-    QString pointLabelsFormat() const;
+    void setPointLabelsFormat(const QString &format); // 设置点集标签格式
+    QString pointLabelsFormat() const; // 获取点集标签格式
 
-    void setPointLabelsVisible(bool visible = true);
-    bool pointLabelsVisible() const;
+    void setPointLabelsVisible(bool visible = true); // 设置点集标签是否可见
+    bool pointLabelsVisible() const; // 获取点集标签是否可见
 
-    void setPointLabelsFont(const QFont &font);
-    QFont pointLabelsFont() const;
+    void setPointLabelsFont(const QFont &font); // 设置点标签字体
+    QFont pointLabelsFont() const; // 获取点标签字体
 
-    void setPointLabelsColor(const QColor &color);
-    QColor pointLabelsColor() const;
+    void setPointLabelsColor(const QColor &color); // 设置点标签颜色
+    QColor pointLabelsColor() const; // 获取点标签颜色
 
-    void setPointLabelsClipping(bool enabled = true);
-    bool pointLabelsClipping() const;
+    void setPointLabelsClipping(bool enabled = true); // 设置点标签是否剪裁
+    bool pointLabelsClipping() const; // 获取点标签是否剪裁
 
-    void replace(QList<QPointF> points);
-    void replace(QVector<QPointF> points);
+    void replace(QList<QPointF> points); // 替换点集
+    void replace(QVector<QPointF> points); // 替换点集
 
 Q_SIGNALS:
     void clicked(const QPointF &point);

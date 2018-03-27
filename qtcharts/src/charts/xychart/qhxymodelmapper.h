@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -33,7 +33,7 @@
 #include <QtCharts/QXYModelMapper>
 
 QT_CHARTS_BEGIN_NAMESPACE
-/* Comment line for syncqt to generate the fwd-include correctly, due to QTBUG-22432 */
+/* Comment line for sync qt to generate the fwd-include correctly, due to QTBUG-22432 */
 class QT_CHARTS_EXPORT QHXYModelMapper : public QXYModelMapper
 {
     Q_OBJECT

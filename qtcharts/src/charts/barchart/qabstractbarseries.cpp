@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -663,71 +663,86 @@ int QAbstractBarSeries::labelsPrecision() const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造函数
 QAbstractBarSeriesPrivate::QAbstractBarSeriesPrivate(QAbstractBarSeries *q) :
-    QAbstractSeriesPrivate(q),
-    m_barWidth(0.5),  // Default value is 50% of category width
-    m_labelsVisible(false),
-    m_visible(true),
-    m_blockBarUpdate(false),
-    m_labelsFormat(),
-    m_labelsPosition(QAbstractBarSeries::LabelsCenter),
-    m_labelsAngle(0),
-    m_labelsPrecision(6),
-    m_visualsDirty(true),
-    m_labelsDirty(true)
+    QAbstractSeriesPrivate(q), // 基类相应构造函数
+    m_barWidth(0.5),  // Default value is 50% of category width // 柱状宽度
+    m_labelsVisible(false), // 标签是否可见
+    m_visible(true), // 是否可见
+    m_blockBarUpdate(false), // 是否阻塞柱状图更新
+    m_labelsFormat(), // 标签格式
+    m_labelsPosition(QAbstractBarSeries::LabelsCenter), // 标签位置
+    m_labelsAngle(0), // 标签角度
+    m_labelsPrecision(6), // 标签轻
+    m_visualsDirty(true), // ???
+    m_labelsDirty(true) // ???
 {
 }
 
+// 获取最大的柱状图集合计数
 int QAbstractBarSeriesPrivate::categoryCount() const
 {
     // No categories defined. return count of longest set.
     int count = 0;
-    for (int i = 0; i < m_barSets.count(); i++) {
+    for (int i = 0; i < m_barSets.count(); i++) { // 遍历柱状集合
         if (m_barSets.at(i)->count() > count)
-            count = m_barSets.at(i)->count();
+            count = m_barSets.at(i)->count(); // 获取最大的柱状图集合计数
     }
 
-    return count;
+    return count; // 返回计数
 }
 
+// 设置柱状宽度
 void QAbstractBarSeriesPrivate::setBarWidth(qreal width)
 {
+    // 确保宽度合法
     if (width < 0.0)
         width = 0.0;
+    // 设置柱图宽度
     m_barWidth = width;
+    // 发送更新布局信号
     emit updatedLayout();
 }
 
+// 获取柱状宽度
 qreal QAbstractBarSeriesPrivate::barWidth() const
 {
     return m_barWidth;
 }
 
+// 获取指定柱状集合指定内容
 QBarSet *QAbstractBarSeriesPrivate::barsetAt(int index)
 {
     return m_barSets.at(index);
 }
 
+// 设置是否可见
 void QAbstractBarSeriesPrivate::setVisible(bool visible)
 {
+    // 设置相应标记
     m_visible = visible;
+    // 发送可见变更信号
     emit visibleChanged();
 }
 
+// 设置标签是否可视
 void QAbstractBarSeriesPrivate::setLabelsVisible(bool visible)
 {
+    // 设置相应标记
     m_labelsVisible = visible;
+    // 发送标签可视变更信号
     emit labelsVisibleChanged(visible);
 }
 
+// 最小值
 qreal QAbstractBarSeriesPrivate::min()
 {
+    // 如果柱状数据集为空
     if (m_barSets.count() <= 0)
         return 0;
 
+    // 获取柱状图数据集中的最小值
     qreal min = INT_MAX;
-
     for (int i = 0; i < m_barSets.count(); i++) {
         int categoryCount = m_barSets.at(i)->count();
         for (int j = 0; j < categoryCount; j++) {
@@ -736,16 +751,20 @@ qreal QAbstractBarSeriesPrivate::min()
                 min = temp;
         }
     }
+
+    // 返回最小值
     return min;
 }
 
+// 最大值
 qreal QAbstractBarSeriesPrivate::max()
 {
+    // 如果柱状图数据集为空
     if (m_barSets.count() <= 0)
         return 0;
 
+    // 获取柱状图数据集中的最大值
     qreal max = INT_MIN;
-
     for (int i = 0; i < m_barSets.count(); i++) {
         int categoryCount = m_barSets.at(i)->count();
         for (int j = 0; j < categoryCount; j++) {
@@ -755,9 +774,11 @@ qreal QAbstractBarSeriesPrivate::max()
         }
     }
 
+    // 返回最大值
     return max;
 }
 
+// 获取指定的集合中的指定值
 qreal QAbstractBarSeriesPrivate::valueAt(int set, int category)
 {
     if ((set < 0) || (set >= m_barSets.count()))
@@ -768,6 +789,7 @@ qreal QAbstractBarSeriesPrivate::valueAt(int set, int category)
     return m_barSets.at(set)->at(category);
 }
 
+// 获取集合中的百分比
 qreal QAbstractBarSeriesPrivate::percentageAt(int set, int category)
 {
     if ((set < 0) || (set >= m_barSets.count()))
@@ -783,6 +805,7 @@ qreal QAbstractBarSeriesPrivate::percentageAt(int set, int category)
     return value / sum;
 }
 
+// 记录指定目录的和
 qreal QAbstractBarSeriesPrivate::categorySum(int category)
 {
     qreal sum(0);
@@ -794,6 +817,7 @@ qreal QAbstractBarSeriesPrivate::categorySum(int category)
     return sum;
 }
 
+// 计算指定目录的绝对值和
 qreal QAbstractBarSeriesPrivate::absoluteCategorySum(int category)
 {
     qreal sum(0);
@@ -805,6 +829,7 @@ qreal QAbstractBarSeriesPrivate::absoluteCategorySum(int category)
     return sum;
 }
 
+// 最大目录和
 qreal QAbstractBarSeriesPrivate::maxCategorySum()
 {
     qreal max = INT_MIN;
@@ -817,6 +842,7 @@ qreal QAbstractBarSeriesPrivate::maxCategorySum()
     return max;
 }
 
+// 最小x
 qreal QAbstractBarSeriesPrivate::minX()
 {
     if (m_barSets.count() <= 0)
@@ -835,6 +861,7 @@ qreal QAbstractBarSeriesPrivate::minX()
     return min;
 }
 
+// 最大x
 qreal QAbstractBarSeriesPrivate::maxX()
 {
     if (m_barSets.count() <= 0)
@@ -854,6 +881,7 @@ qreal QAbstractBarSeriesPrivate::maxX()
     return max;
 }
 
+// 目录顶部（所有正数的和）
 qreal QAbstractBarSeriesPrivate::categoryTop(int category)
 {
     // Returns top (sum of all positive values) of category.
@@ -871,6 +899,7 @@ qreal QAbstractBarSeriesPrivate::categoryTop(int category)
     return top;
 }
 
+// 目录底部（所有负数的和）
 qreal QAbstractBarSeriesPrivate::categoryBottom(int category)
 {
     // Returns bottom (sum of all negative values) of category
@@ -888,6 +917,7 @@ qreal QAbstractBarSeriesPrivate::categoryBottom(int category)
     return bottom;
 }
 
+// 获取全部顶部的和
 qreal QAbstractBarSeriesPrivate::top()
 {
     // Returns top of all categories
@@ -901,6 +931,7 @@ qreal QAbstractBarSeriesPrivate::top()
     return top;
 }
 
+// 获取全部底部的和
 qreal QAbstractBarSeriesPrivate::bottom()
 {
     // Returns bottom of all categories
@@ -914,53 +945,75 @@ qreal QAbstractBarSeriesPrivate::bottom()
     return bottom;
 }
 
+// 阻止柱状图更新
 bool QAbstractBarSeriesPrivate::blockBarUpdate()
 {
     return m_blockBarUpdate;
 }
 
+// 标签角度
 qreal QAbstractBarSeriesPrivate::labelsAngle() const
 {
     return m_labelsAngle;
 }
 
+// 初始化区域
 void QAbstractBarSeriesPrivate::initializeDomain()
 {
+    // 初始化最大、最小x、y
     qreal minX(domain()->minX());
     qreal minY(domain()->minY());
     qreal maxX(domain()->maxX());
     qreal maxY(domain()->maxY());
 
+    // 记录序列中最小、最大x
     qreal seriesMinX = this->minX();
     qreal seriesMaxX = this->maxX();
+
+    // 获取最大y
     qreal y = max();
+
+    // 计算最小、最大x、y
     minX = qMin(minX, seriesMinX - (qreal)0.5);
     minY = qMin(minY, y);
     maxX = qMax(maxX, seriesMaxX + (qreal)0.5);
     maxY = qMax(maxY, y);
 
+    // 设置范围
     domain()->setRange(minX, maxX, minY, maxY);
 }
 
+// 创建图例标记
 QList<QLegendMarker*> QAbstractBarSeriesPrivate::createLegendMarkers(QLegend* legend)
 {
+    // 启用所属序列
     Q_Q(QAbstractBarSeries);
+
+    // 图列标记
     QList<QLegendMarker*> markers;
 
+    // 创建、存储图例
     foreach(QBarSet* set, q->barSets()) {
         QBarLegendMarker* marker = new QBarLegendMarker(q,set,legend);
         markers << marker;
     }
+
+    // 返回图例标记
     return markers;
 }
 
-
+// 追加图例序列
 bool QAbstractBarSeriesPrivate::append(QBarSet *set)
 {
+
+    // 如果柱状图包含数据集，或数据集为空
     if ((m_barSets.contains(set)) || (set == 0))
         return false; // Fail if set is already in list or set is null.
 
+    // 追加数据集
     m_barSets.append(set);
+
+    // 捆绑信号
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::updatedBars,
                      this, &QAbstractBarSeriesPrivate::updatedBars);
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::valueChanged,
@@ -970,16 +1023,24 @@ bool QAbstractBarSeriesPrivate::append(QBarSet *set)
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::valueRemoved,
                      this, &QAbstractBarSeriesPrivate::handleSetValueRemove);
 
+    // 发送信号
     emit restructuredBars(); // this notifies barchartitem
+
+    // 返回结果
     return true;
 }
 
+// 删除
 bool QAbstractBarSeriesPrivate::remove(QBarSet *set)
 {
+    // 如果不包含序列
     if (!m_barSets.contains(set))
         return false; // Fail if set is not in list
 
+    // 删除指定序列
     m_barSets.removeOne(set);
+
+    // 断开信号、槽
     QObject::disconnect(set->d_ptr.data(), &QBarSetPrivate::updatedBars,
                         this, &QAbstractBarSeriesPrivate::updatedBars);
     QObject::disconnect(set->d_ptr.data(), &QBarSetPrivate::valueChanged,
@@ -989,12 +1050,17 @@ bool QAbstractBarSeriesPrivate::remove(QBarSet *set)
     QObject::disconnect(set->d_ptr.data(), &QBarSetPrivate::valueRemoved,
                         this, &QAbstractBarSeriesPrivate::handleSetValueRemove);
 
+    // 发送信号
     emit restructuredBars(); // this notifies barchartitem
+
+    // 返回
     return true;
 }
 
+// 追加序列
 bool QAbstractBarSeriesPrivate::append(QList<QBarSet * > sets)
 {
+    // 遍历集合列表中的集合
     foreach (QBarSet *set, sets) {
         if ((set == 0) || (m_barSets.contains(set)))
             return false; // Fail if any of the sets is null or is already appended.
@@ -1002,6 +1068,7 @@ bool QAbstractBarSeriesPrivate::append(QList<QBarSet * > sets)
             return false; // Also fail if same set is more than once in given list.
     }
 
+    // 遍历集合绑定信号
     foreach (QBarSet *set, sets) {
         m_barSets.append(set);
         QObject::connect(set->d_ptr.data(), &QBarSetPrivate::updatedBars,
@@ -1014,15 +1081,21 @@ bool QAbstractBarSeriesPrivate::append(QList<QBarSet * > sets)
                          this, &QAbstractBarSeriesPrivate::handleSetValueRemove);
     }
 
+    // 发送信号
     emit restructuredBars(); // this notifies barchartitem
+
+    // 返回
     return true;
 }
 
+// 移除集合
 bool QAbstractBarSeriesPrivate::remove(QList<QBarSet * > sets)
 {
+    // 集合为空
     if (sets.count() == 0)
         return false;
 
+    // 遍历集合
     foreach (QBarSet *set, sets) {
         if ((set == 0) || (!m_barSets.contains(set)))
             return false; // Fail if any of the sets is null or is not in series
@@ -1030,8 +1103,11 @@ bool QAbstractBarSeriesPrivate::remove(QList<QBarSet * > sets)
             return false; // Also fail if same set is more than once in given list.
     }
 
+    // 遍历集合
     foreach (QBarSet *set, sets) {
+        // 移除
         m_barSets.removeOne(set);
+        // 断开信号槽
         QObject::disconnect(set->d_ptr.data(), &QBarSetPrivate::updatedBars,
                             this, &QAbstractBarSeriesPrivate::updatedBars);
         QObject::disconnect(set->d_ptr.data(), &QBarSetPrivate::valueChanged,
@@ -1042,17 +1118,24 @@ bool QAbstractBarSeriesPrivate::remove(QList<QBarSet * > sets)
                             this, &QAbstractBarSeriesPrivate::handleSetValueRemove);
     }
 
+    // 发送信号
     emit restructuredBars();        // this notifies barchartitem
 
+    // 返回
     return true;
 }
 
+// 插入集合
 bool QAbstractBarSeriesPrivate::insert(int index, QBarSet *set)
 {
+    // 如果包含集合或集合为0
     if ((m_barSets.contains(set)) || (set == 0))
         return false; // Fail if set is already in list or set is null.
 
+    // 插入集合
     m_barSets.insert(index, set);
+
+    // 连接集合
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::updatedBars,
                      this, &QAbstractBarSeriesPrivate::updatedBars);
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::valueChanged,
@@ -1062,23 +1145,33 @@ bool QAbstractBarSeriesPrivate::insert(int index, QBarSet *set)
     QObject::connect(set->d_ptr.data(), &QBarSetPrivate::valueRemoved,
                      this, &QAbstractBarSeriesPrivate::handleSetValueRemove);
 
+    // 发送信号
     emit restructuredBars();      // this notifies barchartitem
+
+    // 返回
     return true;
 }
 
+// 初始化坐标轴
 void QAbstractBarSeriesPrivate::initializeAxes()
 {
+    // 启用所属序列
     Q_Q(QAbstractBarSeries);
 
+    // 遍历坐标轴
     foreach(QAbstractAxis* axis, m_axes) {
+        // 坐标轴类型
         if (axis->type() == QAbstractAxis::AxisTypeBarCategory) {
+            // 所属序列类型
             switch (q->type()) {
+            // 序列类型
             case QAbstractSeries::SeriesTypeHorizontalBar:
             case QAbstractSeries::SeriesTypeHorizontalPercentBar:
             case QAbstractSeries::SeriesTypeHorizontalStackedBar:
                 if (axis->orientation() == Qt::Vertical)
                 populateCategories(qobject_cast<QBarCategoryAxis *>(axis));
             break;
+            // 序列类型
             case QAbstractSeries::SeriesTypeBar:
             case QAbstractSeries::SeriesTypePercentBar:
             case QAbstractSeries::SeriesTypeStackedBar:
@@ -1087,23 +1180,29 @@ void QAbstractBarSeriesPrivate::initializeAxes()
                 if (axis->orientation() == Qt::Horizontal)
                     populateCategories(qobject_cast<QBarCategoryAxis *>(axis));
             break;
+            // 默认的
             default:
                 qWarning() << "Unexpected series type";
+            // 跳出
             break;
             }
         }
     }
 
+    // 重置动画
     // Make sure series animations are reset when axes change
     AbstractBarChartItem *item = qobject_cast<AbstractBarChartItem *>(m_item.data());
     if (item)
         item->resetAnimation();
 }
 
+// 默认的轴类型
 QAbstractAxis::AxisType QAbstractBarSeriesPrivate::defaultAxisType(Qt::Orientation orientation) const
 {
+    // 启用所属序列
     Q_Q(const QAbstractBarSeries);
 
+    // 根据所属序列类型，返回轴类型
     switch (q->type()) {
     case QAbstractSeries::SeriesTypeHorizontalBar:
     case QAbstractSeries::SeriesTypeHorizontalPercentBar:
@@ -1127,6 +1226,7 @@ QAbstractAxis::AxisType QAbstractBarSeriesPrivate::defaultAxisType(Qt::Orientati
 
 }
 
+// 设置值范围信号响应槽
 void QAbstractBarSeriesPrivate::handleSetValueChange(int index)
 {
     QBarSetPrivate *priv = qobject_cast<QBarSetPrivate *>(sender());
@@ -1134,6 +1234,7 @@ void QAbstractBarSeriesPrivate::handleSetValueChange(int index)
         emit setValueChanged(index, priv->q_ptr);
 }
 
+// 设置值添加信号响应槽
 void QAbstractBarSeriesPrivate::handleSetValueAdd(int index, int count)
 {
     QBarSetPrivate *priv = qobject_cast<QBarSetPrivate *>(sender());
@@ -1141,6 +1242,7 @@ void QAbstractBarSeriesPrivate::handleSetValueAdd(int index, int count)
         emit setValueAdded(index, count, priv->q_ptr);
 }
 
+// 设置值删除信号响应槽
 void QAbstractBarSeriesPrivate::handleSetValueRemove(int index, int count)
 {
     QBarSetPrivate *priv = qobject_cast<QBarSetPrivate *>(sender());
@@ -1148,6 +1250,7 @@ void QAbstractBarSeriesPrivate::handleSetValueRemove(int index, int count)
         emit setValueRemoved(index, count, priv->q_ptr);
 }
 
+// 为指定轴创建目录
 void QAbstractBarSeriesPrivate::populateCategories(QBarCategoryAxis *axis)
 {
     QStringList categories;
@@ -1158,6 +1261,7 @@ void QAbstractBarSeriesPrivate::populateCategories(QBarCategoryAxis *axis)
     }
 }
 
+// 创建默认轴
 QAbstractAxis* QAbstractBarSeriesPrivate::createDefaultAxis(Qt::Orientation orientation) const
 {
     if (defaultAxisType(orientation) == QAbstractAxis::AxisTypeBarCategory)
@@ -1166,10 +1270,13 @@ QAbstractAxis* QAbstractBarSeriesPrivate::createDefaultAxis(Qt::Orientation orie
         return new QValueAxis;
 }
 
+// 初始化主题
 void QAbstractBarSeriesPrivate::initializeTheme(int index, ChartTheme* theme, bool forced)
 {
+    // 阻止更新
     m_blockBarUpdate = true; // Ensures that the bars are not updated before the theme is ready
 
+    // 获取主题中的序列梯度
     const QList<QGradient> gradients = theme->seriesGradients();
 
     // Since each bar series uses different number of colors, we need to account for other
@@ -1194,6 +1301,7 @@ void QAbstractBarSeriesPrivate::initializeTheme(int index, ChartTheme* theme, bo
             }
         }
     }
+
 
     qreal takeAtPos = 0.5;
     qreal step = 0.2;
@@ -1245,6 +1353,7 @@ void QAbstractBarSeriesPrivate::initializeTheme(int index, ChartTheme* theme, bo
     emit updatedBars();
 }
 
+// 初始化动画
 void QAbstractBarSeriesPrivate::initializeAnimations(QChart::AnimationOptions options, int duration,
                                                      QEasingCurve &curve)
 {

@@ -53,23 +53,24 @@ class QT_CHARTS_PRIVATE_EXPORT QXYSeriesPrivate: public QAbstractSeriesPrivate
     Q_OBJECT
 
 public:
+    // 构造
     QXYSeriesPrivate(QXYSeries *q);
 
-    void initializeDomain();
-    void initializeAxes();
+    void initializeDomain(); // 初始化区域
+    void initializeAxes(); // 初始化轴
     void initializeAnimations(QtCharts::QChart::AnimationOptions options, int duration,
-                              QEasingCurve &curve);
+                              QEasingCurve &curve); // 初始化动画
 
-    QList<QLegendMarker*> createLegendMarkers(QLegend* legend);
+    QList<QLegendMarker*> createLegendMarkers(QLegend* legend); // 创建图例标记
 
-    QAbstractAxis::AxisType defaultAxisType(Qt::Orientation orientation) const;
-    QAbstractAxis* createDefaultAxis(Qt::Orientation orientation) const;
+    QAbstractAxis::AxisType defaultAxisType(Qt::Orientation orientation) const; // 默认轴类型
+    QAbstractAxis* createDefaultAxis(Qt::Orientation orientation) const; // 创建默认轴
 
     void drawSeriesPointLabels(QPainter *painter, const QVector<QPointF> &points,
-                               const int offset = 0);
+                               const int offset = 0); // 绘制序列点标签
 
 Q_SIGNALS:
-    void updated();
+    void updated(); // 更新信号
 
 protected:
     QVector<QPointF> m_points; // 点集

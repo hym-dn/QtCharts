@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -41,27 +41,28 @@
 
 QT_CHARTS_BEGIN_NAMESPACE
 
+// 构造
 AreaChartItem::AreaChartItem(QAreaSeries *areaSeries, QGraphicsItem* item)
-    : ChartItem(areaSeries->d_func(),item),
-      m_series(areaSeries),
-      m_upper(0),
-      m_lower(0),
-      m_pointsVisible(false),
-      m_pointLabelsVisible(false),
-      m_pointLabelsFormat(areaSeries->pointLabelsFormat()),
-      m_pointLabelsFont(areaSeries->pointLabelsFont()),
-      m_pointLabelsColor(areaSeries->pointLabelsColor()),
-      m_pointLabelsClipping(true),
-      m_mousePressed(false)
+    : ChartItem(areaSeries->d_func(),item), // 基类构造
+      m_series(areaSeries), // 所属序列
+      m_upper(0), // 上限图表项
+      m_lower(0), // 下限图表项
+      m_pointsVisible(false), // 点集是否可见
+      m_pointLabelsVisible(false), // 点标签是否可见
+      m_pointLabelsFormat(areaSeries->pointLabelsFormat()), // 点标签格式
+      m_pointLabelsFont(areaSeries->pointLabelsFont()), // 点标签字体
+      m_pointLabelsColor(areaSeries->pointLabelsColor()), // 点标签颜色
+      m_pointLabelsClipping(true), // 点标签是否剪裁
+      m_mousePressed(false) // 鼠标是否按下
 {
-    setAcceptHoverEvents(true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setZValue(ChartPresenter::LineChartZValue);
-    if (m_series->upperSeries())
+    setAcceptHoverEvents(true); // 接收在其上事件
+    setFlag(QGraphicsItem::ItemIsSelectable, true); // 设置标准
+    setZValue(ChartPresenter::LineChartZValue); // 设置z轴坐标
+    if (m_series->upperSeries()) // 上序列
         m_upper = new AreaBoundItem(this, m_series->upperSeries());
-    if (m_series->lowerSeries())
+    if (m_series->lowerSeries()) // 下序列
         m_lower = new AreaBoundItem(this, m_series->lowerSeries());
-
+    // 连接信号槽
     QObject::connect(m_series->d_func(), SIGNAL(updated()), this, SLOT(handleUpdated()));
     QObject::connect(m_series, SIGNAL(visibleChanged()), this, SLOT(handleUpdated()));
     QObject::connect(m_series, SIGNAL(opacityChanged()), this, SLOT(handleUpdated()));
@@ -81,16 +82,18 @@ AreaChartItem::AreaChartItem(QAreaSeries *areaSeries, QGraphicsItem* item)
                      this, SLOT(handleUpdated()));
     QObject::connect(areaSeries, SIGNAL(pointLabelsClippingChanged(bool)),
                      this, SLOT(handleUpdated()));
-
+    // 调用更新槽
     handleUpdated();
 }
 
+// 析构
 AreaChartItem::~AreaChartItem()
 {
     delete m_upper;
     delete m_lower;
 }
 
+// 设置主持
 void AreaChartItem::setPresenter(ChartPresenter *presenter)
 {
     if (m_upper)
@@ -100,6 +103,7 @@ void AreaChartItem::setPresenter(ChartPresenter *presenter)
     ChartItem::setPresenter(presenter);
 }
 
+// 设置上限序列
 void AreaChartItem::setUpperSeries(QLineSeries *series)
 {
     delete m_upper;
@@ -115,6 +119,7 @@ void AreaChartItem::setUpperSeries(QLineSeries *series)
     }
 }
 
+// 设置下限序列
 void AreaChartItem::setLowerSeries(QLineSeries *series)
 {
     delete m_lower;
@@ -130,16 +135,19 @@ void AreaChartItem::setLowerSeries(QLineSeries *series)
     }
 }
 
+// 获取外接矩形
 QRectF AreaChartItem::boundingRect() const
 {
     return m_rect;
 }
 
+// 获取形状
 QPainterPath AreaChartItem::shape() const
 {
     return m_path;
 }
 
+// 更新路径
 void AreaChartItem::updatePath()
 {
     QPainterPath path;
@@ -185,6 +193,7 @@ void AreaChartItem::updatePath()
     }
 }
 
+// 更新信号响应槽
 void AreaChartItem::handleUpdated()
 {
     setVisible(m_series->isVisible());
@@ -202,12 +211,14 @@ void AreaChartItem::handleUpdated()
     update();
 }
 
+// 区域更新响应槽
 void AreaChartItem::handleDomainUpdated()
 {
     fixEdgeSeriesDomain(m_upper);
     fixEdgeSeriesDomain(m_lower);
 }
 
+// 修改边界序列区域
 void AreaChartItem::fixEdgeSeriesDomain(LineChartItem *edgeSeries)
 {
     if (edgeSeries) {
@@ -227,6 +238,7 @@ void AreaChartItem::fixEdgeSeriesDomain(LineChartItem *edgeSeries)
     }
 }
 
+// 绘制
 void AreaChartItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget)
@@ -307,6 +319,7 @@ void AreaChartItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     painter->restore();
 }
 
+// 鼠标按下事件
 void AreaChartItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     emit pressed(domain()->calculateDomainPoint(event->pos()));
@@ -315,6 +328,7 @@ void AreaChartItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     ChartItem::mousePressEvent(event);
 }
 
+// 鼠标进入事件
 void AreaChartItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     emit hovered(domain()->calculateDomainPoint(event->pos()), true);
@@ -322,6 +336,7 @@ void AreaChartItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 //    QGraphicsItem::hoverEnterEvent(event);
 }
 
+// 鼠标悬浮事件
 void AreaChartItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     emit hovered(domain()->calculateDomainPoint(event->pos()), false);
@@ -329,6 +344,7 @@ void AreaChartItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //    QGraphicsItem::hoverEnterEvent(event);
 }
 
+// 鼠标释放事件
 void AreaChartItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     emit released(domain()->calculateDomainPoint(m_lastMousePos));
@@ -338,6 +354,7 @@ void AreaChartItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     ChartItem::mouseReleaseEvent(event);
 }
 
+// 鼠标双击事件
 void AreaChartItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     emit doubleClicked(domain()->calculateDomainPoint(m_lastMousePos));

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -38,17 +38,18 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class QLineSeriesPrivate;
 
+// 线序列
 class QT_CHARTS_EXPORT QLineSeries : public QXYSeries
 {
     Q_OBJECT
 
 public:
-    explicit QLineSeries(QObject *parent = nullptr);
-    ~QLineSeries();
-    QAbstractSeries::SeriesType type() const;
+    explicit QLineSeries(QObject *parent = nullptr); // 构造
+    ~QLineSeries(); // 析构
+    QAbstractSeries::SeriesType type() const; // 序列类型
 
 protected:
-    QLineSeries(QLineSeriesPrivate &d, QObject *parent = nullptr);
+    QLineSeries(QLineSeriesPrivate &d, QObject *parent = nullptr); // 构造
 
 private:
     Q_DECLARE_PRIVATE(QLineSeries)

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -50,56 +50,57 @@ QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
 class ChartPresenter;
 
+// 线图表项
 class QT_CHARTS_PRIVATE_EXPORT LineChartItem :  public XYChart
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 public:
-    explicit LineChartItem(QLineSeries *series, QGraphicsItem *item = 0);
-    ~LineChartItem() {}
+    explicit LineChartItem(QLineSeries *series, QGraphicsItem *item = 0); // 构造
+    ~LineChartItem() {} // 析构
 
     //from QGraphicsItem
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QPainterPath shape() const;
+    QRectF boundingRect() const; // 外接矩形
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); // 绘图
+    QPainterPath shape() const; // 形状
 
-    QPainterPath path() const { return m_fullPath; }
+    QPainterPath path() const { return m_fullPath; } // 绘制路径
 
 public Q_SLOTS:
-    void handleUpdated();
+    void handleUpdated(); // 更新信号响应槽
 
 protected:
-    void updateGeometry();
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
-    void suppressPoints() { m_pointsVisible = false; }
-    void forceChartType(QChart::ChartType chartType) { m_chartType = chartType; }
+    void updateGeometry(); // 更新几何图形
+    void mousePressEvent(QGraphicsSceneMouseEvent *event); // 鼠标按下事件
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // 鼠标在其上事件
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // 鼠标离开事件
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // 鼠标释放事件
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event); // 鼠标双击事件
+    void suppressPoints() { m_pointsVisible = false; } //  废除点集
+    void forceChartType(QChart::ChartType chartType) { m_chartType = chartType; } // 强制类型
 
 private:
-    QLineSeries *m_series;
-    QPainterPath m_linePath;
-    QPainterPath m_linePathPolarRight;
-    QPainterPath m_linePathPolarLeft;
-    QPainterPath m_fullPath;
-    QPainterPath m_shapePath;
+    QLineSeries *m_series; // 所属序列
+    QPainterPath m_linePath; // 线路径
+    QPainterPath m_linePathPolarRight; // 极右路径
+    QPainterPath m_linePathPolarLeft; // 极左路径
+    QPainterPath m_fullPath; // 填充路径
+    QPainterPath m_shapePath; // 形状路径
 
-    QVector<QPointF> m_linePoints;
-    QRectF m_rect;
-    QPen m_linePen;
-    bool m_pointsVisible;
-    QChart::ChartType m_chartType;
+    QVector<QPointF> m_linePoints; // 线点集
+    QRectF m_rect; // 矩形尺寸
+    QPen m_linePen; // 线画笔
+    bool m_pointsVisible; // 点集是否可见
+    QChart::ChartType m_chartType; // 图表类型
 
-    bool m_pointLabelsVisible;
-    QString m_pointLabelsFormat;
-    QFont m_pointLabelsFont;
-    QColor m_pointLabelsColor;
-    bool m_pointLabelsClipping;
+    bool m_pointLabelsVisible; // 点标签是否可见
+    QString m_pointLabelsFormat; // 点标签格式
+    QFont m_pointLabelsFont; // 点标签字体
+    QColor m_pointLabelsColor; // 点标签颜色
+    bool m_pointLabelsClipping; // 点标签是否支持剪裁
 
-    QPointF m_lastMousePos;
-    bool m_mousePressed;
+    QPointF m_lastMousePos; // 鼠标最后位置
+    bool m_mousePressed; // 鼠标按下
 };
 
 QT_CHARTS_END_NAMESPACE

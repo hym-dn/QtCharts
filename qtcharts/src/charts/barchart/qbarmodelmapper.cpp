@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -209,67 +209,81 @@ void QBarModelMapper::setLastBarSetSection(int lastBarSetSection)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// 构造
 QBarModelMapperPrivate::QBarModelMapperPrivate(QBarModelMapper *q) :
-    QObject(q),
-    m_series(0),
-    m_model(0),
-    m_first(0),
-    m_count(-1),
-    m_orientation(Qt::Vertical),
-    m_firstBarSetSection(-1),
-    m_lastBarSetSection(-1),
-    m_seriesSignalsBlock(false),
-    m_modelSignalsBlock(false),
-    q_ptr(q)
+    QObject(q), // 调用基类响应函数
+    m_series(0), // 所属序列
+    m_model(0), // 抽象模型
+    m_first(0), // 第一个
+    m_count(-1), // 计数
+    m_orientation(Qt::Vertical), // 方向
+    m_firstBarSetSection(-1), // 第一个条状图集合位置
+    m_lastBarSetSection(-1), // 最后一个条状图集合位置
+    m_seriesSignalsBlock(false), // 阻塞序列信号
+    m_modelSignalsBlock(false), // 阻塞模型信号
+    q_ptr(q) // 所属映射
 {
 }
 
+// 阻塞信号
 void QBarModelMapperPrivate::blockModelSignals(bool block)
 {
     m_modelSignalsBlock = block;
 }
 
+// 阻塞序列信号
 void QBarModelMapperPrivate::blockSeriesSignals(bool block)
 {
     m_seriesSignalsBlock = block;
 }
 
+// 条状图集合
 QBarSet *QBarModelMapperPrivate::barSet(QModelIndex index)
 {
+    // 索引非法
     if (!index.isValid())
         return 0;
 
+    // 垂直&&索引合法
     if (m_orientation == Qt::Vertical && index.column() >= m_firstBarSetSection && index.column() <= m_lastBarSetSection) {
         if (index.row() >= m_first && (m_count == - 1 || index.row() < m_first + m_count)) {
             return m_series->barSets().at(index.column() - m_firstBarSetSection);
         }
-    } else if (m_orientation == Qt::Horizontal && index.row() >= m_firstBarSetSection && index.row() <= m_lastBarSetSection) {
+    }
+    // 水平&&索引合法
+    else if (m_orientation == Qt::Horizontal && index.row() >= m_firstBarSetSection && index.row() <= m_lastBarSetSection) {
         if (index.column() >= m_first && (m_count == - 1 || index.column() < m_first + m_count))
             return m_series->barSets().at(index.row() - m_firstBarSetSection);
     }
     return 0; // This part of model has not been mapped to any slice
 }
 
+// 模型索引
 QModelIndex QBarModelMapperPrivate::barModelIndex(int barSection, int posInBar)
 {
+    // 索引无效
     if (m_count != -1 && posInBar >= m_count)
         return QModelIndex(); // invalid
 
+    //  索引无效
     if (barSection < m_firstBarSetSection || barSection > m_lastBarSetSection)
         return QModelIndex(); // invalid
 
+    // 垂直
     if (m_orientation == Qt::Vertical)
         return m_model->index(posInBar + m_first, barSection);
+    // 水平
     else
         return m_model->index(barSection, posInBar + m_first);
 }
 
+// 序列销毁信号响应槽
 void QBarModelMapperPrivate::handleSeriesDestroyed()
 {
     m_series = 0;
 }
 
+// 更新模型
 void QBarModelMapperPrivate::modelUpdated(QModelIndex topLeft, QModelIndex bottomRight)
 {
     Q_UNUSED(topLeft)

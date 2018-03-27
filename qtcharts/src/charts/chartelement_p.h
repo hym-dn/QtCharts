@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -54,24 +54,25 @@ class ChartThemeManager;
 class AbstractDomain;
 class ChartDataSet;
 
+// 图表元素类，他是图表中全部元素的基类
 class QT_CHARTS_PRIVATE_EXPORT ChartElement: public QGraphicsObject
 {
 
 public:
-    explicit ChartElement(QGraphicsItem* item = 0);
+    explicit ChartElement(QGraphicsItem* item = 0); // 构造
 
-    virtual ChartAnimation *animation() const { return 0; }
-    virtual void setPresenter(ChartPresenter *presenter);
-    ChartPresenter *presenter() const;
-    virtual void setThemeManager(ChartThemeManager *manager);
-    ChartThemeManager* themeManager() const;
+    virtual ChartAnimation *animation() const { return 0; } // 获取动画
+    virtual void setPresenter(ChartPresenter *presenter); // 设置主持
+    ChartPresenter *presenter() const; // 返回主持
+    virtual void setThemeManager(ChartThemeManager *manager); // 设置主题
+    ChartThemeManager* themeManager() const; // 返回主题
     virtual void setDataSet(ChartDataSet *dataSet);
     ChartDataSet *dataSet() const;
 
 private:
-    ChartPresenter *m_presenter;
-    ChartThemeManager *m_themeManager;
-    ChartDataSet *m_dataSet;
+    ChartPresenter *m_presenter; // 图表主持
+    ChartThemeManager *m_themeManager; // 图表主题
+    ChartDataSet *m_dataSet; // 数据集
 };
 
 QT_CHARTS_END_NAMESPACE

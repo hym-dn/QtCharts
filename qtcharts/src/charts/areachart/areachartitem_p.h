@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -49,35 +49,36 @@ QT_CHARTS_BEGIN_NAMESPACE
 
 class AreaChartItem;
 
+// 区域图表项
 class QT_CHARTS_PRIVATE_EXPORT AreaChartItem : public ChartItem
 {
     Q_OBJECT
 public:
-    AreaChartItem(QAreaSeries *areaSeries, QGraphicsItem* item = 0);
-    ~AreaChartItem();
+    AreaChartItem(QAreaSeries *areaSeries, QGraphicsItem* item = 0); // 构造
+    ~AreaChartItem(); // 析构
 
     //from QGraphicsItem
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QPainterPath shape() const;
+    QRectF boundingRect() const; // 外接矩形
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); // 绘图
+    QPainterPath shape() const; // 形状
 
-    LineChartItem *upperLineItem() const { return m_upper; }
-    LineChartItem *lowerLineItem() const { return m_lower; }
+    LineChartItem *upperLineItem() const { return m_upper; } // 上限图形项
+    LineChartItem *lowerLineItem() const { return m_lower; } // 下限图形项
 
-    void updatePath();
+    void updatePath(); // 更新路径
 
-    void setPresenter(ChartPresenter *presenter);
-    QAreaSeries *series() const { return m_series; }
+    void setPresenter(ChartPresenter *presenter); // 设置主持
+    QAreaSeries *series() const { return m_series; } // 获取序列
 
-    void setUpperSeries(QLineSeries *series);
-    void setLowerSeries(QLineSeries *series);
+    void setUpperSeries(QLineSeries *series); // 设置上界序列
+    void setLowerSeries(QLineSeries *series); // 设置下界序列
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event); // 鼠标按下事件
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // 鼠标进入事件
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // 鼠标离开事件
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // 鼠标释放事件
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event); // 鼠标双击事件
 
 Q_SIGNALS:
     void clicked(const QPointF &point);
@@ -87,36 +88,38 @@ Q_SIGNALS:
     void doubleClicked(const QPointF &point);
 
 public Q_SLOTS:
-    void handleUpdated();
-    void handleDomainUpdated();
+    void handleUpdated(); // 更新信号响应槽
+    void handleDomainUpdated(); // 区域更新响应槽
 
 private:
-    void fixEdgeSeriesDomain(LineChartItem *edgeSeries);
+    void fixEdgeSeriesDomain(LineChartItem *edgeSeries); // 修复边界序列区域
 
-    QAreaSeries *m_series;
-    LineChartItem *m_upper;
-    LineChartItem *m_lower;
-    QPainterPath m_path;
-    QRectF m_rect;
-    QPen m_linePen;
-    QPen m_pointPen;
-    QBrush m_brush;
-    bool m_pointsVisible;
+    QAreaSeries *m_series; // 所属序列
+    LineChartItem *m_upper; // 上限图表项
+    LineChartItem *m_lower; // 下限图表项
+    QPainterPath m_path; // 路径
+    QRectF m_rect; // 尺寸
+    QPen m_linePen; // 线画笔
+    QPen m_pointPen; // 电画笔
+    QBrush m_brush; // 画刷
+    bool m_pointsVisible; // 点是否可见
 
-    bool m_pointLabelsVisible;
-    QString m_pointLabelsFormat;
-    QFont m_pointLabelsFont;
-    QColor m_pointLabelsColor;
-    bool m_pointLabelsClipping;
+    bool m_pointLabelsVisible; // 点标签是否可见
+    QString m_pointLabelsFormat; // 点标签格式
+    QFont m_pointLabelsFont; // 点标签字体
+    QColor m_pointLabelsColor; // 点标签颜色
+    bool m_pointLabelsClipping; // 点标签是否可剪裁
 
-    QPointF m_lastMousePos;
-    bool m_mousePressed;
+    QPointF m_lastMousePos; // 最后鼠标位置
+    bool m_mousePressed; // 鼠标是否被按下
 
 };
 
+// 区域范围项目
 class QT_CHARTS_PRIVATE_EXPORT AreaBoundItem : public LineChartItem
 {
 public:
+    // 构造
     AreaBoundItem(AreaChartItem *area, QLineSeries *lineSeries,QGraphicsItem* item = 0)
         : LineChartItem(lineSeries, item), m_item(area)
     {
@@ -124,25 +127,29 @@ public:
         // Drawing is done in AreaChartItem only.
         setVisible(false);
     }
+    // 析构
     ~AreaBoundItem() {}
 
+    // 更新几何图形
     void updateGeometry()
     {
         // Make sure the series is in a chart before trying to update
-        if (m_item->series()->chart()) {
+        if (m_item->series()->chart()) { // 图表存在
             // Turn off points drawing from component line chart item, as that
             // messes up the fill for area series.
-            suppressPoints();
+            suppressPoints(); // 阻止点集显示
             // Component lineseries are not necessarily themselves on the chart,
             // so get the chart type for them from area chart.
-            forceChartType(m_item->series()->chart()->chartType());
+            forceChartType(m_item->series()->chart()->chartType()); // 强制设置图表类型
+            // 更新几何
             LineChartItem::updateGeometry();
+            // 更新路径
             m_item->updatePath();
         }
     }
 
 private:
-    AreaChartItem *m_item;
+    AreaChartItem *m_item; // 所属图表区域项
 };
 
 QT_CHARTS_END_NAMESPACE

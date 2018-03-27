@@ -76,26 +76,26 @@ protected:
     QAbstractSeries(QAbstractSeriesPrivate &d, QObject *parent = nullptr);
 
 public:
-    ~QAbstractSeries();
-    virtual SeriesType type() const = 0;
+    ~QAbstractSeries(); // 析构
+    virtual SeriesType type() const = 0; // 序列类型
 
-    void setName(const QString &name);
-    QString name() const;
-    void setVisible(bool visible = true);
-    bool isVisible() const;
-    qreal opacity() const;
-    void setOpacity(qreal opacity);
-    void setUseOpenGL(bool enable = true);
-    bool useOpenGL() const;
+    void setName(const QString &name); // 设置名字
+    QString name() const; // 获取名字
+    void setVisible(bool visible = true); // 设置是否可见
+    bool isVisible() const; // 获取是否可见
+    qreal opacity() const; // 获取不透明度
+    void setOpacity(qreal opacity); // 设置透明度
+    void setUseOpenGL(bool enable = true); // 设置是否使用OpenGL
+    bool useOpenGL() const; // 获取是否使用OpenGl
 
-    QChart *chart() const;
+    QChart *chart() const; // 获取所属图表
 
-    bool attachAxis(QAbstractAxis *axis);
-    bool detachAxis(QAbstractAxis *axis);
-    QList<QAbstractAxis*> attachedAxes();
+    bool attachAxis(QAbstractAxis *axis); // 捆绑坐标轴
+    bool detachAxis(QAbstractAxis *axis); // 松绑坐标轴
+    QList<QAbstractAxis*> attachedAxes(); // 获取捆绑坐标轴
 
-    void show();
-    void hide();
+    void show(); // 显示
+    void hide(); // 隐藏
 
 Q_SIGNALS:
     void nameChanged();

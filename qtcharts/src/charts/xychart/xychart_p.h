@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -51,33 +51,34 @@ QT_CHARTS_BEGIN_NAMESPACE
 class ChartPresenter;
 class QXYSeries;
 
+// x、y图表项
 class QT_CHARTS_PRIVATE_EXPORT XYChart :  public ChartItem
 {
     Q_OBJECT
 public:
-    explicit XYChart(QXYSeries *series,QGraphicsItem *item = 0);
-    ~XYChart() {}
+    explicit XYChart(QXYSeries *series,QGraphicsItem *item = 0); // 构造
+    ~XYChart() {} // 析构
 
-    void setGeometryPoints(const QVector<QPointF> &points);
-    QVector<QPointF> geometryPoints() const { return m_points; }
+    void setGeometryPoints(const QVector<QPointF> &points); // 设置几何点集
+    QVector<QPointF> geometryPoints() const { return m_points; } // 获取几何点集
 
-    void setAnimation(XYAnimation *animation);
-    ChartAnimation *animation() const { return m_animation; }
-    virtual void updateGeometry() = 0;
+    void setAnimation(XYAnimation *animation); // 设置动画
+    ChartAnimation *animation() const { return m_animation; } // 获取动画
+    virtual void updateGeometry() = 0; // 更新几何
 
-    bool isDirty() const { return m_dirty; }
-    void setDirty(bool dirty);
+    bool isDirty() const { return m_dirty; } // 是否为脏数据
+    void setDirty(bool dirty); // 设置脏数据
 
-    void getSeriesRanges(qreal &minX, qreal &maxX, qreal &minY, qreal &maxY);
-    QVector<bool> offGridStatusVector();
+    void getSeriesRanges(qreal &minX, qreal &maxX, qreal &minY, qreal &maxY); // 设置序列范围
+    QVector<bool> offGridStatusVector(); // 获取点集的范围标记
 
 public Q_SLOTS:
-    void handlePointAdded(int index);
-    void handlePointRemoved(int index);
-    void handlePointsRemoved(int index, int count);
-    void handlePointReplaced(int index);
-    void handlePointsReplaced();
-    void handleDomainUpdated();
+    void handlePointAdded(int index); // 点增加信号响应槽
+    void handlePointRemoved(int index); // 点移除信号响应槽
+    void handlePointsRemoved(int index, int count); // 点集移除信号响应槽
+    void handlePointReplaced(int index); // 点替换信号响应槽
+    void handlePointsReplaced(); // 点集替换信号响应槽
+    void handleDomainUpdated(); // 区域更新信号响应槽
 
 Q_SIGNALS:
     void clicked(const QPointF &point);
@@ -87,18 +88,18 @@ Q_SIGNALS:
     void doubleClicked(const QPointF &point);
 
 protected:
-    virtual void updateChart(QVector<QPointF> &oldPoints, QVector<QPointF> &newPoints, int index = -1);
-    virtual void updateGlChart();
-    virtual void refreshGlChart();
+    virtual void updateChart(QVector<QPointF> &oldPoints, QVector<QPointF> &newPoints, int index = -1); // 更新图表
+    virtual void updateGlChart(); // 更新OpenGL图表
+    virtual void refreshGlChart(); // 刷新OpenGL图表
 
 private:
-    inline bool isEmpty();
+    inline bool isEmpty(); // 是否为空
 
 protected:
-    QXYSeries *m_series;
-    QVector<QPointF> m_points;
-    XYAnimation *m_animation;
-    bool m_dirty;
+    QXYSeries *m_series; // 所属序列
+    QVector<QPointF> m_points; // 存储点
+    XYAnimation *m_animation; // 动画
+    bool m_dirty; // 是否为脏数据
 
     friend class AreaChartItem;
 };
